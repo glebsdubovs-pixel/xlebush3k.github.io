@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#020805">
+<title>xlebush3k // ARCADE</title>
+<style>
+:root{--g:#00ff66;--g2:#8dffb3;--bg:#020805;--panel:rgba(0,18,8,.92);--line:#00ff6655;--muted:#8eb99b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--g);font-family:Consolas,"Courier New",monospace;min-height:100vh}
+a{color:inherit;text-decoration:none}
+#matrix{position:fixed;inset:0;width:100%;height:100%;z-index:-1;opacity:.15;pointer-events:none}
+header{position:sticky;top:0;z-index:5;background:#020805ee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:14px max(4%,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-weight:bold;text-shadow:0 0 12px var(--g);font-size:18px}
+nav{display:flex;gap:16px;flex-wrap:wrap;font-size:13px}
+nav a:hover{color:white;text-shadow:0 0 8px var(--g)}
+main{width:min(1000px,92%);margin:auto;padding:28px 0 50px}
+.hero{text-align:center;padding:28px 0 22px}
+h1{font-size:clamp(30px,7vw,54px);margin:8px 0;text-shadow:0 0 12px #00ff66aa}
+.hero p{color:var(--g2);line-height:1.6}
+.status{font-size:12px;color:var(--g2)}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);margin-right:7px}
+.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{min-width:0;border:1px solid var(--line);background:var(--panel);padding:18px;box-shadow:0 0 24px #00ff6608}
+h2{font-size:18px;margin:0 0 12px;letter-spacing:1px}
+.desc{color:var(--muted);font-size:13px;line-height:1.6;min-height:38px}
+button,input{font:inherit}
+button{background:#001b0a;color:var(--g);border:1px solid var(--g);padding:11px 13px;min-height:42px;cursor:pointer;touch-action:manipulation}
+button:hover,button:focus-visible{background:var(--g);color:#001006;outline:none;box-shadow:0 0 16px #00ff6655}
+button:disabled{opacity:.45;cursor:not-allowed}
+input{width:100%;background:#000;color:var(--g);border:1px solid var(--line);padding:12px;min-height:44px;outline:none}
+input:focus{border-color:var(--g)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row input{flex:1;min-width:90px}
+.output{min-height:24px;color:var(--g2);font-size:13px;line-height:1.6;margin:10px 0 0;overflow-wrap:anywhere}
+canvas.game-canvas{display:block;width:100%;height:auto;aspect-ratio:1/1;background:#000;border:1px solid #00ff6644;image-rendering:pixelated;touch-action:none}
+.snake-controls{display:grid;grid-template-columns:repeat(3,52px);justify-content:center;gap:6px;margin:12px auto 0}
+.snake-controls button{padding:8px;min-height:46px;font-size:20px}
+.snake-controls .empty{visibility:hidden}
+.shooter-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.shooter-controls button{font-size:13px}
+.reaction-pad{width:100%;min-height:112px;font-size:17px;font-weight:bold;letter-spacing:1px;margin-top:8px}
+.small{font-size:11px;color:var(--muted);line-height:1.5}
+footer{text-align:center;color:#689b78;border-top:1px solid #00ff6633;padding:22px;font-size:12px;line-height:1.8}
+@media(max-width:720px){.game-grid{grid-template-columns:1fr}.desc{min-height:0}.card{padding:15px}header{padding-top:12px;padding-bottom:12px}nav{gap:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="matrix" aria-hidden="true"></canvas>
+<header>
+  <a class="logo" href="index.html">[ xlebush3k ]</a>
+  <nav aria-label="Main menu">
+    <a href="index.html">HOME</a>
+    <a href="#snake">SNAKE</a>
+    <a href="#hack">HACK</a>
+    <a href="#reaction">REACTION</a>
+    <a href="#shooter">SHOOTER</a>
+  </nav>
+  <div class="status"><span class="dot"></span>ARCADE ONLINE</div>
+</header>
+<main>
+  <section class="hero">
+    <div class="status">/// XLEBUSH3K DIGITAL ENTERTAINMENT SYSTEM ///</div>
+    <h1>MATRIX ARCADE</h1>
+    <p>Choose your challenge. Beat your score. Stay in the system.</p>
+  </section>
+
+  <div class="game-grid">
+    <section class="card" id="snake">
+      <h2>// 01 — Snake.exe</h2>
+      <p class="desc">Eat the glowing data blocks. Use the on-screen arrows, swipe the board, or use keyboard arrows.</p>
+      <canvas class="game-canvas" id="snakeCanvas" width="300" height="300" aria-label="Snake game board"></canvas>
+      <div class="row" style="margin-top:10px;justify-content:space-between">
+        <span class="status">SCORE: <b id="snakeScore">0</b></span>
+        <button id="snakeStart">START / RESTART</button>
+      </div>
+      <div class="snake-controls" aria-label="Snake movement controls">
+        <span class="empty"></span><button data-dir="up" aria-label="Up">▲</button><span class="empty"></span>
+        <button data-dir="left" aria-label="Left">◀</button><button data-dir="down" aria-label="Down">▼</button><button data-dir="right" aria-label="Right">▶</button>
+      </div>
+      <p class="output" id="snakeMsg" aria-live="polite">Press START to play.</p>
+    </section>
+
+    <section class="card" id="hack">
+      <h2>// 02 — Hack the Code</h2>
+      <p class="desc">Guess the secret 4-digit code. Digits are unique. Hints show exact matches and correct digits in the wrong position.</p>
+      <div class="row"><input id="guessInput" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="4 unique digits" aria-label="Enter four digit guess"><button id="guessBtn">SUBMIT</button></div>
+      <div class="row" style="margin-top:8px"><button id="newCode">NEW CODE</button><span class="status">TRIES: <b id="tries">0</b>/8</span></div>
+      <p class="output" id="hackMsg" aria-live="polite">System locked. Crack the code in 8 tries.</p>
+      <div id="guessHistory" class="output"></div>
+    </section>
+
+    <section class="card" id="reaction">
+      <h2>// 03 — Reaction.exe</h2>
+      <p class="desc">Start the test and wait for the panel to turn green. Tap it as fast as you can. Don't tap early!</p>
+      <button id="reactionBtn" class="reaction-pad">START TEST</button>
+      <p class="output" id="reactionMsg" aria-live="polite">Ready when you are.</p>
+      <p class="small">Your reaction time is measured locally in this browser.</p>
+    </section>
+
+    <section class="card" id="shooter">
+      <h2>// 04 — Cyber Shooter</h2>
+      <p class="desc">Defend the terminal! Move left/right and fire at falling data intruders. Works with touch controls or keyboard.</p>
+      <canvas class="game-canvas" id="shootCanvas" width="320" height="360" aria-label="Cyber shooter game board"></canvas>
+      <div class="row" style="justify-content:space-between;margin-top:10px">
+        <span class="status">SCORE: <b id="shootScore">0</b></span><button id="shootStart">START / RESTART</button>
+      </div>
+      <div class="shooter-controls">
+        <button id="moveLeft" aria-label="Move left">◀ LEFT</button>
+        <button id="fire" aria-label="Fire">FIRE ●</button>
+        <button id="moveRight" aria-label="Move right">RIGHT ▶</button>
+      </div>
+      <p class="output" id="shootMsg" aria-live="polite">Press START. Use LEFT / RIGHT and FIRE.</p>
+    </section>
+  </div>
+</main>
+<footer>
+  <div>© <span id="year"></span> XLEBUSH3K // MATRIX ARCADE</div>
+  <div>HTML · CSS · JAVASCRIPT — NO DOWNLOADS REQUIRED</div>
+  <div><a href="https://www.tiktok.com/@xlebush3k00" target="_blank" rel="noopener noreferrer">TIKTOK @xlebush3k00 ↗</a></div>
+</footer>
+<script>
+"use strict";
+
+// Background Matrix rain
+(() => {
+  const c=document.getElementById("matrix"),x=c.getContext("2d");
+  const chars="アイウエオカキクケコサシスセソ0123456789ABCDEF";
+  let drops=[],cols=0,w=0,h=0;
+  function resize(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;
+    c.width=Math.floor(w*dpr);c.height=Math.floor(h*dpr);c.style.width=w+"px";c.style.height=h+"px";
+    x.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(w/15);drops=Array.from({length:cols},()=>Math.random()*-50);
+  }
+  function draw(){
+    x.fillStyle="rgba(2,8,5,.12)";x.fillRect(0,0,w,h);x.fillStyle="#00ff66";x.font="15px monospace";
+    for(let i=0;i<drops.length;i++){x.fillText(chars[Math.floor(Math.random()*chars.length)],i*15,drops[i]*15);if(drops[i]*15>h&&Math.random()>.975)drops[i]=0;drops[i]+=.55}
+    requestAnimationFrame(draw);
+  }
+  resize();addEventListener("resize",resize);draw();
+})();
+document.getElementById("year").textContent=new Date().getFullYear();
+
+// SNAKE
+(() => {
+  const c=document.getElementById("snakeCanvas"),ctx=c.getContext("2d");
+  const N=20,CELL=15;let snake,food,dir,next,score,timer,running=false,over=true;
+  const scoreEl=document.getElementById("snakeScore"),msg=document.getElementById("snakeMsg");
+  function foodSpot(){let p;do{p={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)}}while(snake.some(s=>s.x===p.x&&s.y===p.y));return p}
+  function draw(){
+    ctx.fillStyle="#000";ctx.fillRect(0,0,300,300);
+    ctx.strokeStyle="#003b19";ctx.lineWidth=.5;
+    for(let i=0;i<=N;i++){ctx.beginPath();ctx.moveTo(i*CELL,0);ctx.lineTo(i*CELL,300);ctx.stroke();ctx.beginPath();ctx.moveTo(0,i*CELL);ctx.lineTo(300,i*CELL);ctx.stroke()}
+    if(food){ctx.fillStyle="#baff00";ctx.shadowColor="#00ff66";ctx.shadowBlur=12;ctx.fillRect(food.x*CELL+3,food.y*CELL+3,9,9);ctx.shadowBlur=0}
+    if(snake)snake.forEach((s,i)=>{ctx.fillStyle=i===0?"#caffd8":"#00ff66";ctx.shadowColor="#00ff66";ctx.shadowBlur=i===0?10:3;ctx.fillRect(s.x*CELL+1,s.y*CELL+1,CELL-2,CELL-2)});ctx.shadowBlur=0;
+    if(over){ctx.fillStyle="#00ff66";ctx.font="bold 14px monospace";ctx.textAlign="center";ctx.fillText(running?"GAME OVER":"SNAKE.EXE",150,145);ctx.textAlign="left"}
+  }
+  function start(){clearInterval(timer);snake=[{x:9,y:10},{x:8,y:10},{x:7,y:10}];dir={x:1,y:0};next=dir;score=0;food=foodSpot();running=true;over=false;scoreEl.textContent="0";msg.textContent="Collect the glowing data.";draw();timer=setInterval(step,125)}
+  function step(){
+    dir=next;const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+    const ate=head.x===food.x&&head.y===food.y;
+    if(head.x<0||head.x>=N||head.y<0||head.y>=N||snake.slice(0,ate?snake.length:snake.length-1).some(s=>s.x===head.x&&s.y===head.y)){
+      clearInterval(timer);running=false;over=true;msg.textContent="GAME OVER — score: "+score+". Press START / RESTART.";draw();return
+    }
+    snake.unshift(head);if(ate){score++;scoreEl.textContent=score;food=foodSpot();if(snake.length===N*N){clearInterval(timer);running=false;over=true;msg.textContent="MAXIMUM DATA COLLECTED. YOU WIN!";draw();return}}else snake.pop();draw()
+  }
+  function turn(d){if(!running)return;if(d.x===-dir.x&&d.y===-dir.y)return;next=d}
+  document.querySelectorAll("[data-dir]").forEach(b=>b.addEventListener("click",()=>{const d=b.dataset.dir;turn(({up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}})[d])}));
+  document.addEventListener("keydown",e=>{const m={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}};if(m[e.key]&&document.activeElement.tagName!=="INPUT"){e.preventDefault();turn(m[e.key])}});
+  let touch=null;c.addEventListener("touchstart",e=>{const t=e.changedTouches[0];touch={x:t.clientX,y:t.clientY}},{passive:true});
+  c.addEventListener("touchend",e=>{if(!touch)return;const t=e.changedTouches[0],dx=t.clientX-touch.x,dy=t.clientY-touch.y;if(Math.max(Math.abs(dx),Math.abs(dy))>18){if(Math.abs(dx)>Math.abs(dy))turn({x:Math.sign(dx),y:0});else turn({x:0,y:Math.sign(dy)})}touch=null},{passive:true});
+  document.getElementById("snakeStart").addEventListener("click",start);draw();
+})();
+
+// HACK THE CODE
+(() => {
+  const input=document.getElementById("guessInput"),btn=document.getElementById("guessBtn"),fresh=document.getElementById("newCode");
+  const msg=document.getElementById("hackMsg"),triesEl=document.getElementById("tries"),history=document.getElementById("guessHistory");
+  let secret="",tries=0,finished=false;
+  function reset(){secret="";while(secret.length<4){const d=String(Math.floor(Math.random()*10));if(!secret.includes(d))secret+=d}tries=0;finished=false;triesEl.textContent="0";history.innerHTML="";msg.textContent="System locked. Crack the code in 8 tries.";input.value="";input.disabled=false;btn.disabled=false;input.focus()}
+  function submit(){
+    if(finished)return;const guess=input.value.trim();
+    if(!/^\d{4}$/.test(guess)||new Set(guess).size!==4){msg.textContent="ERROR: enter exactly 4 different digits.";return}
+    tries++;triesEl.textContent=tries;let exact=0,misplaced=0;
+    for(let i=0;i<4;i++){if(guess[i]===secret[i])exact++;else if(secret.includes(guess[i]))misplaced++}
+    const line=document.createElement("div");line.textContent=tries+". "+guess+" → exact: "+exact+" | misplaced: "+misplaced;history.prepend(line);
+    if(exact===4){msg.textContent="ACCESS GRANTED. Code cracked in "+tries+" tries!";finished=true;input.disabled=true;btn.disabled=true}
+    else if(tries>=8){msg.textContent="ACCESS DENIED. Secret code: "+secret+". Press NEW CODE to retry.";finished=true;input.disabled=true;btn.disabled=true}
+    else msg.textContent="Access denied. "+(8-tries)+" tries remaining.";
+    input.value="";
+  }
+  btn.addEventListener("click",submit);fresh.addEventListener("click",reset);input.addEventListener("keydown",e=>{if(e.key==="Enter")submit()});input.addEventListener("input",()=>{input.value=input.value.replace(/\D/g,"").slice(0,4)});reset();
+})();
+
+// REACTION TEST
+(() => {
+  const btn=document.getElementById("reactionBtn"),msg=document.getElementById("reactionMsg");
+  let state="idle",timeout=null,startTime=0;
+  function start(){clearTimeout(timeout);state="waiting";btn.textContent="WAIT FOR GREEN...";btn.style.background="#352800";btn.style.color="#ffe58a";btn.style.borderColor="#ffe58a";msg.textContent="Don't tap yet!";timeout=setTimeout(()=>{state="go";startTime=performance.now();btn.textContent="TAP NOW!";btn.style.background="#00ff66";btn.style.color="#001006";btn.style.borderColor="#00ff66";msg.textContent="NOW! NOW! NOW!"},1200+Math.random()*3000)}
+  btn.addEventListener("click",()=>{
+    if(state==="idle"||state==="done"||state==="early"){start();return}
+    if(state==="waiting"){clearTimeout(timeout);state="early";btn.textContent="TOO EARLY! — TRY AGAIN";btn.style.background="#281000";btn.style.color="#ffb080";btn.style.borderColor="#ff6b00";msg.textContent="Wait until the button turns green.";return}
+    if(state==="go"){const ms=Math.round(performance.now()-startTime);state="done";btn.textContent=ms+" ms — PLAY AGAIN";btn.style.background="#001b0a";btn.style.color="#00ff66";btn.style.borderColor="#00ff66";msg.textContent=ms<220?"Incredible reflexes!":ms<320?"Fast reaction!":ms<450?"Nice! Try to beat this.":"Try again to improve your time."}
+  });
+})();
+
+// CYBER SHOOTER
+(() => {
+  const c=document.getElementById("shootCanvas"),ctx=c.getContext("2d");
+  const scoreEl=document.getElementById("shootScore"),msg=document.getElementById("shootMsg");
+  const W=320,H=360;let player,bullets,enemies,score,running=false,last=0,spawn=0,raf=0,keys={left:false,right:false,fire:false},pointerFire=false;
+  function reset(){player={x:W/2,y:H-28};bullets=[];enemies=[];score=0;scoreEl.textContent="0";running=true;last=performance.now();spawn=0;msg.textContent="SYSTEM ACTIVE — destroy the intruders.";cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+  function end(){running=false;msg.textContent="GAME OVER — score: "+score+". Press START / RESTART.";draw()}
+  function draw(){
+    ctx.fillStyle="#000";ctx.fillRect(0,0,W,H);ctx.strokeStyle="#003b19";
+    for(let y=0;y<H;y+=24){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+    ctx.fillStyle="#00ff66";ctx.shadowColor="#00ff66";ctx.shadowBlur=10;
+    if(player){ctx.beginPath();ctx.moveTo(player.x,player.y-12);ctx.lineTo(player.x-10,player.y+10);ctx.lineTo(player.x+10,player.y+10);ctx.closePath();ctx.fill()}
+    ctx.shadowBlur=0;
+    ctx.fillStyle="#caffd8";bullets.forEach(b=>ctx.fillRect(b.x-2,b.y-6,4,9));
+    enemies.forEach(e=>{ctx.strokeStyle="#00ff66";ctx.lineWidth=2;ctx.strokeRect(e.x-8,e.y-8,16,16);ctx.fillStyle="#00ff66";ctx.fillRect(e.x-3,e.y-3,6,6)});
+  }
+  function loop(now){
+    if(!running)return;const dt=Math.min((now-last)/16.67,2);last=now;
+    if(keys.left)player.x-=3.3*dt;if(keys.right)player.x+=3.3*dt;player.x=Math.max(12,Math.min(W-12,player.x));
+    if((keys.fire||pointerFire)&&now-(loop.lastShot||0)>220){bullets.push({x:player.x,y:player.y-12});loop.lastShot=now}
+    bullets.forEach(b=>b.y-=6*dt);bullets=bullets.filter(b=>b.y>-10);
+    spawn+=dt;if(spawn>34){spawn=0;enemies.push({x:12+Math.random()*(W-24),y:-10+Math.random()*-25,speed:1+Math.random()*1.1+score*.008})}
+    enemies.forEach(e=>e.y+=e.speed*dt);
+    for(let i=enemies.length-1;i>=0;i--){const e=enemies[i];let hit=false;for(let j=bullets.length-1;j>=0;j--){const b=bullets[j];if(Math.abs(e.x-b.x)<12&&Math.abs(e.y-b.y)<13){enemies.splice(i,1);bullets.splice(j,1);score++;scoreEl.textContent=score;hit=true;break}}if(!hit&&e.y>H-43){end();return}}
+    draw();raf=requestAnimationFrame(loop)
+  }
+  function bindHold(id,key){const el=document.getElementById(id);const on=()=>keys[key]=true,off=()=>keys[key]=false;el.addEventListener("pointerdown",e=>{e.preventDefault();on();el.setPointerCapture?.(e.pointerId)});["pointerup","pointercancel","lostpointercapture"].forEach(ev=>el.addEventListener(ev,off))}
+  bindHold("moveLeft","left");bindHold("moveRight","right");bindHold("fire","fire");
+  document.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight"," ","a","d","A","D"].includes(e.key)&&document.activeElement.tagName!=="INPUT"){e.preventDefault();if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=true;if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=true;if(e.key===" ")keys.fire=true}});
+  document.addEventListener("keyup",e=>{if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=false;if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=false;if(e.key===" ")keys.fire=false});
+  c.addEventListener("pointerdown",e=>{if(running){pointerFire=true;c.setPointerCapture?.(e.pointerId)}});c.addEventListener("pointerup",()=>pointerFire=false);c.addEventListener("pointercancel",()=>pointerFire=false);
+  document.getElementById("shootStart").addEventListener("click",reset);
+  draw();
+})();
+</script>
+</body>
+</html>
