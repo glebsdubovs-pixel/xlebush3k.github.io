@@ -1,28 +1,120 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080b12">
-<title>xlebush3k — интерактивная вселенная</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>xlebush3k | MATRIX</title>
 <style>
-:root{--bg:#080b12;--panel:#101622;--line:#253044;--text:#edf4ff;--muted:#9aa8bd;--green:#b6ff5c;--cyan:#65f3ff;--pink:#ff6be8}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#152337 0,transparent 42%),radial-gradient(ellipse at 90% 20%,#261536 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
-a{color:inherit;text-decoration:none}.wrap{width:min(1100px,calc(100% - 32px));margin:auto}
-nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid #ffffff12}.logo{font-weight:900;letter-spacing:-1px;font-size:20px}.logo span{color:var(--green)}.navlinks{display:flex;gap:18px;color:var(--muted);font-size:14px}
-.hero{padding:74px 0 42px;text-align:center}.eyebrow{color:var(--green);font-size:12px;letter-spacing:3px;text-transform:uppercase;font-weight:800}.hero h1{font-size:clamp(42px,8vw,82px);line-height:.98;letter-spacing:-4px;margin:18px auto;max-width:850px}.hero h1 em{font-style:normal;color:var(--green);text-shadow:0 0 32px #b6ff5c36}.hero p{max-width:600px;margin:0 auto;color:var(--muted);font-size:17px;line-height:1.7}.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:27px}.btn{display:inline-flex;justify-content:center;align-items:center;padding:12px 18px;border-radius:12px;font-weight:800;border:1px solid var(--line);background:#111a27}.btn.primary{background:var(--green);color:#11170a;border-color:var(--green)}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:36px 0 16px}.section-head h2{margin:0;font-size:25px;letter-spacing:-1px}.section-head p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{display:flex;flex-direction:column;min-height:235px;padding:20px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#121b2aee,#0c111bee);transition:transform .2s,border-color .2s;position:relative;overflow:hidden}.card:before{content:"";position:absolute;width:140px;height:140px;border-radius:50%;filter:blur(55px);opacity:.15;right:-40px;top:-50px;background:var(--glow,var(--green))}.card:hover{transform:translateY(-4px);border-color:#536780}.emoji{font-size:34px;margin-bottom:18px}.tag{color:var(--glow,var(--green));font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.card h3{font-size:21px;margin:8px 0}.card p{color:var(--muted);line-height:1.55;font-size:14px;margin:0 0 20px}.open{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 14px;border-radius:11px;background:var(--glow,var(--green));color:#091018;font-weight:900;font-size:13px;border:1px solid var(--glow,var(--green));transition:filter .2s,transform .2s}.open span{color:inherit}.card:hover .open{filter:brightness(1.12);transform:translateY(-1px)}.card:focus-visible,.small-card:focus-visible,.btn:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}.small-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0 50px}.small-card{padding:19px;border:1px solid var(--line);border-radius:15px;background:#0e1420;display:flex;align-items:center;gap:15px}.small-card .emoji{margin:0;font-size:27px}.small-card p{margin:4px 0 0;color:var(--muted);font-size:13px}.footer{border-top:1px solid #ffffff12;padding:24px 0 35px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-@media(max-width:750px){.grid{grid-template-columns:repeat(2,1fr)}.hero{padding-top:54px}.hero h1{letter-spacing:-2px}.navlinks{gap:10px;font-size:12px}.section-head{align-items:start;flex-direction:column}}
-@media(max-width:500px){.grid,.small-grid{grid-template-columns:1fr}.card{min-height:205px}.hero p{font-size:15px}.navlinks a:first-child{display:none}}
-</style></head><body><div class="wrap">
-<nav><a class="logo" href="index.html">xlebush3k<span>.</span></a><div class="navlinks"><a href="#projects">Эксперименты</a><a href="#games">Игры</a><a href="https://www.tiktok.com/@xlebush3k00" target="_blank" rel="noopener">TikTok ↗</a></div></nav>
-<header class="hero"><div class="eyebrow">маленькая вселенная в интернете</div><h1>Нажимай. <em>Пробуй.</em><br>Открывай.</h1><p>Коллекция странных идей, мини-игр и интерактивных экспериментов. Здесь можно потратить миллиард, смешать стихии или отправиться за пределы Земли.</p><div class="hero-actions"><a class="btn primary" href="#projects">Исследовать проекты ↓</a><a class="btn" href="games.html">Открыть аркаду ↗</a></div></header>
-<section id="projects"><div class="section-head"><div><h2>Лаборатория идей</h2><p>Выбери эксперимент и начни играть.</p></div><span class="tag">01 / explore</span></div>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#000900;color:#d8ffe0;font-family:Consolas,monospace}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.12;background:repeating-linear-gradient(0deg,transparent 0 3px,#00ff41 4px)}
+.wrap{width:min(1000px,92%);margin:auto}
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid #07551c;gap:12px}
+.logo{color:#00ff41;font-size:22px;font-weight:bold;text-shadow:0 0 12px #00ff41}
+a{color:inherit;text-decoration:none}
+.navlinks{display:flex;gap:14px;font-size:12px;color:#00ff41}
+.hero{text-align:center;padding:65px 0 40px}
+.kicker{color:#00ff41;letter-spacing:4px;font-size:12px}
+h1{font-size:clamp(38px,9vw,76px);line-height:1.05;margin:20px 0;text-shadow:0 0 20px #00ff4150}
+h1 span,h2{color:#00ff41}
+.hero p{color:#91b69a;line-height:1.7;max-width:600px;margin:auto}
+.btn,.play{display:inline-flex;justify-content:center;align-items:center;gap:8px;background:#00ff41;color:#001504;border:1px solid #00ff41;padding:12px 17px;border-radius:5px;font-weight:900;font-family:inherit;cursor:pointer}
+.btn{margin:22px 5px 0}
+.btn:hover,.play:hover{background:#c2ffce;box-shadow:0 0 18px #00ff4160}
+.heading{display:flex;justify-content:space-between;align-items:end;margin:25px 0 15px;gap:10px}
+h2{font-size:22px;margin:0}
+.heading p{color:#91b69a;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{display:flex;flex-direction:column;background:#020e05;border:1px solid #07551c;padding:18px;border-radius:6px;min-height:255px;transition:.2s}
+.card:hover{border-color:#00ff41;transform:translateY(-3px);box-shadow:0 0 20px #00ff4120}
+.emoji{font-size:30px}
+.tag{font-size:10px;letter-spacing:2px;color:#00ff41;margin-top:12px}
+h3{font-size:20px;margin:9px 0}
+.card p{font-size:13px;line-height:1.6;color:#91b69a;margin:0 0 20px}
+.play{width:100%;margin-top:auto;padding:13px;font-size:12px}
+.smallgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0 35px}
+.smallcard{border:1px solid #07551c;background:#020e05;padding:17px;display:flex;align-items:center;gap:14px;border-radius:5px}
+.smallcard:hover{border-color:#00ff41}
+.smallcard p{font-size:12px;color:#91b69a;margin:5px 0 0}
+footer{border-top:1px solid #07551c;padding:23px 0;color:#73917a;font-size:11px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-top:45px}}
+@media(max-width:480px){.grid,.smallgrid{grid-template-columns:1fr}.navlinks{gap:8px;font-size:10px}.card{min-height:220px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<a class="logo" href="index.html">xlebush3k_</a>
+<div class="navlinks"><a href="#projects">[ ПРОЕКТЫ ]</a><a href="#games">[ ИГРЫ ]</a></div>
+</nav>
+
+<header class="hero">
+<div class="kicker">/// SYSTEM ONLINE ///</div>
+<h1>WELCOME TO<br><span>THE MATRIX</span></h1>
+<p>Твоя личная зона экспериментов. Выбирай игру, нажимай кнопку и начинай приключение.</p>
+<a class="btn" href="#projects">▼ ВЫБРАТЬ ИГРУ</a>
+</header>
+
+<section id="projects">
+<div class="heading"><div><h2>&gt; ПРОЕКТЫ</h2><p>Выбери модуль и нажми кнопку.</p></div></div>
 <div class="grid">
-<a class="card" href="craft.html" style="--glow:#b6ff5c"><div class="emoji">🧪</div><div class="tag">комбинации</div><h3>Infinite Mix</h3><p>Соединяй стихии и открывай новые элементы. Что получится из огня и воды?</p><div class="open">ИГРАТЬ — открыть <span>↗</span></div></a>
-<a class="card" href="space.html" style="--glow:#65f3ff"><div class="emoji">🌌</div><div class="tag">путешествие</div><h3>Выше облаков</h3><p>Поднимайся от поверхности Земли к Луне, планетам и краю известного космоса.</p><div class="open">ИГРАТЬ — открыть <span>↗</span></div></a>
-<a class="card" href="billion.html" style="--glow:#ffcf6b"><div class="emoji">💸</div><div class="tag">симулятор</div><h3>Потрать миллиард</h3><p>На счету €1 000 000 000. Покупай странные и роскошные вещи, пока деньги не закончатся.</p><div class="open">ИГРАТЬ — открыть <span>↗</span></div></a>
-<a class="card" href="password.html" style="--glow:#ff6be8"><div class="emoji">🔐</div><div class="tag">головоломка</div><h3>Пароль безумия</h3><p>Собери пароль, который должен выполнить всё больше необычных правил.</p><div class="open">ИГРАТЬ — открыть <span>↗</span></div></a>
-<a class="card" href="games.html" style="--glow:#ff785c"><div class="emoji">🕹️</div><div class="tag">аркада</div><h3>Мини-игры</h3><p>Быстрые игры, в которые можно зайти на пару минут и попробовать побить рекорд.</p><div class="open">ИГРАТЬ — открыть <span>↗</span></div></a>
-<a class="card" href="rpg.html" style="--glow:#ad8bff"><div class="emoji">⚔️</div><div class="tag">приключение</div><h3>SHADOW QUEST</h3><p>Монстры, боссы, зелья и случайные способности. Твоя RPG-приключенческая история.</p><div class="open">ИГРАТЬ — открыть <span>↗</span></div></a>
-</div></section>
-<section id="games"><div class="section-head"><div><h2>Твоя территория</h2><p>Сайт продолжает расти.</p></div></div><div class="small-grid"><a class="small-card" href="games.html"><div class="emoji">🎮</div><div><strong>Аркада xlebush3k</strong><p>Все мини-игры в одном месте</p></div></a><a class="small-card" href="rpg.html"><div class="emoji">🗡️</div><div><strong>SHADOW QUEST</strong><p>Сохраняй прогресс и возвращайся</p></div></a></div></section>
-<footer><span>© xlebush3k · создано для любопытных</span><span>Необычное начинается с одного клика.</span></footer></div></body></html>
+
+<a class="card" href="craft.html">
+<div class="emoji">🧪</div><div class="tag">MODULE 01</div>
+<h3>Infinite Mix</h3>
+<p>Смешивай элементы, открывай новые комбинации и собирай коллекцию.</p>
+<span class="play">▶ ИГРАТЬ В INFINITE MIX ↗</span>
+</a>
+
+<a class="card" href="space.html">
+<div class="emoji">🌌</div><div class="tag">MODULE 02</div>
+<h3>Космос</h3>
+<p>Отправляйся от Земли к планетам и далёким уголкам Вселенной.</p>
+<span class="play">▶ ИГРАТЬ ↗</span>
+</a>
+
+<a class="card" href="billion.html">
+<div class="emoji">💸</div><div class="tag">MODULE 03</div>
+<h3>Потрать миллиард</h3>
+<p>У тебя миллиард евро. Сможешь потратить всё до последнего цента?</p>
+<span class="play">▶ ИГРАТЬ ↗</span>
+</a>
+
+<a class="card" href="password.html">
+<div class="emoji">🔐</div><div class="tag">MODULE 04</div>
+<h3>Пароль безумия</h3>
+<p>Придумай пароль, который должен выполнять всё больше правил.</p>
+<span class="play">▶ НАЧАТЬ ↗</span>
+</a>
+
+<a class="card" href="games.html">
+<div class="emoji">🕹️</div><div class="tag">MODULE 05</div>
+<h3>Мини-игры</h3>
+<p>Открой свою аркаду с мини-играми.</p>
+<span class="play">▶ ОТКРЫТЬ АРКАДУ ↗</span>
+</a>
+
+<a class="card" href="rpg.html">
+<div class="emoji">⚔️</div><div class="tag">MODULE 06</div>
+<h3>SHADOW QUEST</h3>
+<p>Сражайся с монстрами и проходи приключение.</p>
+<span class="play">▶ ПРОДОЛЖИТЬ КВЕСТ ↗</span>
+</a>
+
+</div>
+</section>
+
+<section id="games">
+<div class="heading"><div><h2>&gt; БЫСТРЫЙ ДОСТУП</h2><p>Войти в игру одним нажатием.</p></div></div>
+<div class="smallgrid">
+<a class="smallcard" href="games.html"><div class="emoji">🎮</div><div><strong>АРКАДА</strong><p>Открыть мини-игры →</p></div></a>
+<a class="smallcard" href="rpg.html"><div class="emoji">🗡️</div><div><strong>SHADOW QUEST</strong><p>Продолжить квест →</p></div></a>
+</div>
+</section>
+
+<footer><span>© XLEBUSH3K</span><span>/// SYSTEM ONLINE ///</span></footer>
+</div>
+</body>
+</html>
