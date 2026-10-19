@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b12">
+<title>xlebush3k — интерактивная вселенная</title>
+<style>
+:root{--bg:#080b12;--line:#253044;--text:#edf4ff;--muted:#9aa8bd;--green:#b6ff5c}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 15% 0%,#152337,transparent 42%),radial-gradient(ellipse at 90% 20%,#261536,transparent 35%),var(--bg);color:var(--text);font-family:system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1100px,calc(100% - 32px));margin:auto}
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid #ffffff12}
+.logo{font-weight:900;font-size:20px}
+.logo span{color:var(--green)}
+.navlinks{display:flex;gap:18px;color:var(--muted);font-size:14px}
+.hero{padding:74px 0 42px;text-align:center}
+.eyebrow{color:var(--green);font-size:12px;letter-spacing:3px;font-weight:800}
+.hero h1{font-size:clamp(42px,8vw,82px);line-height:.98;letter-spacing:-4px;margin:18px auto}
+.hero h1 em{font-style:normal;color:var(--green);text-shadow:0 0 32px #b6ff5c36}
+.hero p{max-width:600px;margin:auto;color:var(--muted);font-size:17px;line-height:1.7}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:27px}
+.btn{display:inline-flex;padding:12px 18px;border-radius:12px;font-weight:800;border:1px solid var(--line);background:#111a27}
+.btn.primary{background:var(--green);color:#11170a}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:36px 0 16px}
+.section-head h2{margin:0;font-size:25px}
+.section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{display:flex;flex-direction:column;min-height:235px;padding:20px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#121b2aee,#0c111bee);transition:.2s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-4px);border-color:#536780}
+.emoji{font-size:34px;margin-bottom:18px}
+.tag{color:var(--glow,var(--green));font-size:11px;font-weight:900;letter-spacing:2px}
+.card h3{font-size:21px;margin:8px 0}
+.card p{color:var(--muted);line-height:1.55;font-size:14px;margin:0 0 20px}
+.open{margin-top:auto;font-weight:800;font-size:13px}
+.open span{color:var(--glow,var(--green))}
+.small-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0 50px}
+.small-card{padding:19px;border:1px solid var(--line);border-radius:15px;background:#0e1420;display:flex;align-items:center;gap:15px}
+.small-card .emoji{margin:0;font-size:27px}
+.small-card p{margin:4px 0 0;color:var(--muted);font-size:13px}
+footer{border-top:1px solid #ffffff12;padding:24px 0 35px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:750px){.grid{grid-template-columns:repeat(2,1fr)}.hero{padding-top:54px}.hero h1{letter-spacing:-2px}.navlinks{gap:10px;font-size:12px}}
+@media(max-width:500px){.grid,.small-grid{grid-template-columns:1fr}.card{min-height:205px}.hero p{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<a class="logo" href="index.html">xlebush3k<span>.</span></a>
+<div class="navlinks">
+<a href="#projects">Эксперименты</a>
+<a href="#games">Игры</a>
+<a href="https://www.tiktok.com/@xlebush3k00" target="_blank" rel="noopener">TikTok ↗</a>
+</div>
+</nav>
+
+<header class="hero">
+<div class="eyebrow">МАЛЕНЬКАЯ ВСЕЛЕННАЯ В ИНТЕРНЕТЕ</div>
+<h1>Нажимай. <em>Пробуй.</em><br>Открывай.</h1>
+<p>Коллекция странных идей, мини-игр и интерактивных экспериментов. Потрать миллиард, смешай стихии или отправляйся в космос.</p>
+<div class="hero-actions">
+<a class="btn primary" href="#projects">Исследовать проекты ↓</a>
+<a class="btn" href="games.html">Открыть аркаду ↗</a>
+</div>
+</header>
+
+<section id="projects">
+<div class="section-head"><div><h2>Лаборатория идей</h2><p>Выбери эксперимент и начни играть.</p></div><span class="tag">01 / EXPLORE</span></div>
+<div class="grid">
+<a class="card" href="craft.html" style="--glow:#b6ff5c"><div class="emoji">🧪</div><div class="tag">КОМБИНАЦИИ</div><h3>Infinite Mix</h3><p>Соединяй стихии и открывай новые элементы.</p><div class="open">Запустить эксперимент <span>↗</span></div></a>
+<a class="card" href="space.html" style="--glow:#65f3ff"><div class="emoji">🌌</div><div class="tag">ПУТЕШЕСТВИЕ</div><h3>Выше облаков</h3><p>Путешествуй от Земли к Луне и далёким мирам.</p><div class="open">Взлететь <span>↗</span></div></a>
+<a class="card" href="billion.html" style="--glow:#ffcf6b"><div class="emoji">💸</div><div class="tag">СИМУЛЯТОР</div><h3>Потрать миллиард</h3><p>Покупай машины, острова и другие вещи за виртуальные деньги.</p><div class="open">Начать тратить <span>↗</span></div></a>
+<a class="card" href="password.html" style="--glow:#ff6be8"><div class="emoji">🔐</div><div class="tag">ГОЛОВОЛОМКА</div><h3>Пароль безумия</h3><p>Собери пароль, выполняющий необычные правила.</p><div class="open">Принять вызов <span>↗</span></div></a>
+<a class="card" href="games.html" style="--glow:#ff785c"><div class="emoji">🕹️</div><div class="tag">АРКАДА</div><h3>Мини-игры</h3><p>Быстрые игры и попытки побить рекорд.</p><div class="open">Играть <span>↗</span></div></a>
+<a class="card" href="rpg.html" style="--glow:#ad8bff"><div class="emoji">⚔️</div><div class="tag">ПРИКЛЮЧЕНИЕ</div><h3>SHADOW QUEST</h3><p>Монстры, боссы, зелья и случайные способности.</p><div class="open">Начать квест <span>↗</span></div></a>
+</div>
+</section>
+
+<section id="games">
+<div class="section-head"><div><h2>Твоя территория</h2><p>Сайт продолжает расти.</p></div></div>
+<div class="small-grid">
+<a class="small-card" href="games.html"><div class="emoji">🎮</div><div><strong>Аркада xlebush3k</strong><p>Все мини-игры в одном месте</p></div></a>
+<a class="small-card" href="rpg.html"><div class="emoji">🗡️</div><div><strong>SHADOW QUEST</strong><p>Сохраняй прогресс и возвращайся</p></div></a>
+</div>
+</section>
+<footer><span>© xlebush3k · создано для любопытных</span><span>Необычное начинается с одного клика.</span></footer>
+</div>
+</body>
+</html>
