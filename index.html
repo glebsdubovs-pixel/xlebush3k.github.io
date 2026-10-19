@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xlebush3k | Terminal</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #050807;
+  color: #00ff88;
+  font-family: monospace;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    transparent 0px,
+    transparent 3px,
+    #00ff8808 4px
+  );
+  pointer-events: none;
+}
+
+header {
+  padding: 22px;
+  border-bottom: 1px solid #00ff8844;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  text-shadow: 0 0 12px #00ff88;
+}
+
+.status {
+  color: #00ff88;
+  font-size: 12px;
+}
+
+main {
+  max-width: 850px;
+  margin: auto;
+  padding: 65px 22px;
+}
+
+.tag {
+  color: #7a8c82;
+  letter-spacing: 3px;
+  font-size: 12px;
+}
+
+h1 {
+  font-size: clamp(35px, 9vw, 68px);
+  margin: 18px 0;
+  text-shadow: 0 0 25px #00ff8844;
+  overflow-wrap: anywhere;
+}
+
+h1 span {
+  color: white;
+}
+
+.subtitle {
+  color: #8da69a;
+  line-height: 1.8;
+  max-width: 530px;
+}
+
+.terminal {
+  margin-top: 38px;
+  border: 1px solid #00ff8855;
+  background: #07100c;
+  box-shadow: 0 0 30px #00ff880b;
+}
+
+.term-head {
+  padding: 13px;
+  border-bottom: 1px solid #00ff8833;
+  color: #8da69a;
+  font-size: 12px;
+}
+
+.term-body {
+  padding: 20px;
+  min-height: 150px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+.dim {
+  color: #71877b;
+}
+
+button {
+  background: transparent;
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  padding: 12px 16px;
+  font: inherit;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+button:hover {
+  background: #00ff8818;
+}
+
+footer {
+  padding: 25px;
+  border-top: 1px solid #00ff8833;
+  color: #71877b;
+  text-align: center;
+  font-size: 12px;
+}
+
+.cursor {
+  animation: blink 1s steps(2) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@media (max-width: 480px) {
+  main { padding-top: 45px; }
+  header { padding: 17px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">xlebush3k<span>_</span></div>
+  <div class="status">● SYSTEM ONLINE</div>
+</header>
+
+<main>
+  <div class="tag">WELCOME TO MY WORLD</div>
+
+  <h1>ACCESS <span>GRANTED.</span></h1>
+
+  <p class="subtitle">
+    Это мой уголок интернета. Код, технологии
+    и немного цифровой темноты.
+  </p>
+
+  <section class="terminal">
+    <div class="term-head">
+      TERMINAL — guest@xlebush3k
+    </div>
+
+    <div class="term-body">
+      <div><span class="dim">guest@system:~$</span> whoami</div>
+      <div>xlebush3k</div>
+      <div><span class="dim">guest@system:~$</span> cat about.txt</div>
+      <div>Learning. Building. Exploring.</div>
+      <div id="output">System ready.</div>
+      <div><span class="dim">guest@system:~$</span> <span class="cursor">█</span></div>
+
+      <button onclick="runTerminal()">RUN SYSTEM CHECK</button>
+      <button onclick="showSecret()">OPEN SECRET</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 XLEBUSH3K — BUILT WITH CODE
+</footer>
+
+<script>
+function runTerminal() {
+  const out = document.getElementById("output");
+  out.textContent = "Checking system... ONLINE ✓";
+}
+
+function showSecret() {
+  const out = document.getElementById("output");
+  out.textContent = "There is no secret. Or is there? ;)";
+}
+</script>
+</body>
+</html>
