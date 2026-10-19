@@ -1,221 +1,229 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SHADOW QUEST.exe</title>
+<title>SHADOW QUEST.exe — XLEBUSH3K ARCADE</title>
 <style>
-:root{--g:#00ff88;--bg:#020604;--panel:#03160c;--line:#087a49;--red:#ff4d6d;--gold:#ffd166;--blue:#65d9ff}
+:root{--green:#00ff88;--dark:#030806;--panel:rgba(0,20,12,.92);--line:#087a49;--red:#ff4d6d;--gold:#ffd166;--blue:#65d9ff}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#d9ffe9;font-family:Consolas,monospace}
-header{text-align:center;padding:22px 12px;border-bottom:1px solid var(--line);background:#020a06}
-h1{color:var(--g);font-size:clamp(24px,5vw,42px);text-shadow:0 0 15px #00ff8877}
-h2{font-size:18px;color:var(--g);margin-top:0}
-h3{color:var(--gold)}
-a{color:var(--g)}
-.wrap{max-width:1000px;margin:auto;padding:12px}
-nav,.actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px}
-button{font:inherit;color:var(--g);background:var(--panel);border:1px solid var(--line);padding:11px;border-radius:5px;cursor:pointer}
-button:hover{background:#064022}
-.primary{border-color:var(--g);background:#064022}
-.gold{color:var(--gold);border-color:#8a6d20}
-.danger{color:#ff91a4;border-color:#963449}
-.blue{color:var(--blue);border-color:#247b91}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.panel{background:rgba(0,20,12,.95);border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0}
-.full{grid-column:1/-1}
+body{margin:0;background:#020604;color:#d9ffe9;font-family:Consolas,Monaco,monospace;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;background:repeating-linear-gradient(0deg,transparent 0 3px,#00ff88 4px);z-index:-1}
+header{padding:22px 14px 12px;text-align:center;border-bottom:1px solid var(--line);background:#020a06}
+h1{color:var(--green);font-size:clamp(24px,5vw,42px);text-shadow:0 0 15px #00ff8877;margin:5px}
+header p{color:#8bbda0;margin:8px 0}
+a{color:var(--green)}
+.wrap{max-width:1050px;margin:auto;padding:14px}
+.topnav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+button{font:inherit;cursor:pointer;color:var(--green);background:#03160c;border:1px solid var(--line);padding:11px 13px;border-radius:5px;transition:.15s}
+button:hover{background:#06351d;box-shadow:0 0 12px #00ff8844}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.primary{background:#064022;border-color:var(--green)}
+button.danger{color:#ff91a4;border-color:#963449}
+button.gold{color:var(--gold);border-color:#8a6d20}
+button.blue{color:var(--blue);border-color:#247b91}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+.panel{grid-column:span 12;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:15px;box-shadow:0 0 18px #00ff880a}
+.half{grid-column:span 6}.third{grid-column:span 4}
+h2{font-size:18px;color:var(--green);margin:0 0 12px}
+h3{margin:5px 0 10px;color:var(--gold)}
 .small{font-size:12px;color:#86b99b;line-height:1.5}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
-.stat{background:#04190e;border:1px solid #164d31;padding:8px;border-radius:5px;overflow-wrap:anywhere}
-.stat b{display:block;color:var(--g);margin-top:5px}
-.bar{height:9px;background:#18251c;border-radius:10px;overflow:hidden;margin:7px 0 12px}
-.bar span{display:block;height:100%;width:0;background:var(--g);transition:width .2s}
-#hpbar{background:var(--red)}#xpbar{background:var(--blue)}
-.log{height:200px;overflow:auto;background:#010402;border:1px solid #17442a;padding:10px;line-height:1.5}
-.log p{margin:0 0 7px}.good{color:var(--g)}.bad{color:var(--red)}.loot{color:var(--gold)}.info{color:var(--blue)}
-.shopitem{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #16432a}
-.art{text-align:center;font-size:36px;padding:8px}
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{padding:10px;background:#04190e;border:1px solid #164d31;border-radius:5px}
+.stat b{display:block;color:var(--green);font-size:18px;margin-top:4px}
+.bar{height:9px;background:#18251c;border-radius:20px;overflow:hidden;margin:6px 0 12px}
+.bar span{display:block;height:100%;width:50%;background:var(--green);transition:width .2s}
+#hpbar{background:var(--red)} #xpbar{background:var(--blue)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.log{min-height:170px;max-height:300px;overflow:auto;background:#010402;border:1px solid #17442a;padding:12px;border-radius:5px;line-height:1.55;white-space:pre-wrap}
+.log p{margin:0 0 7px}.good{color:var(--green)}.bad{color:var(--red)}.loot{color:var(--gold)}.info{color:var(--blue)}
+.shopitem{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #16432a;padding:10px 0}
+.shopitem:last-child{border:0}
+.cardart{font-size:36px;text-align:center;padding:10px}
 .hidden{display:none!important}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#07361e;border:1px solid var(--green);padding:10px 15px;border-radius:6px;display:none;max-width:90%;z-index:5}
 footer{text-align:center;color:#527d61;padding:20px;font-size:12px}
-@media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:11px}button{padding:10px}}
+/* Always-visible compact health HUD */
+.sticky-hud{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:8px 12px;background:rgba(1,10,5,.97);border-bottom:1px solid var(--line);box-shadow:0 4px 14px #0009}
+.sticky-hud .hud-label{font-size:12px;white-space:nowrap;color:#ffd9e0}
+.sticky-hud .bar{flex:1;margin:0;height:12px;min-width:50px}
+.sticky-hud .hp-number{font-weight:bold;color:#ff8297;font-size:13px;white-space:nowrap;min-width:70px;text-align:right}
+.sticky-hud .hud-level{font-size:11px;color:var(--green);white-space:nowrap}
+.skill-card{border:1px solid #257c91;background:#04151b;padding:10px;border-radius:6px;margin:10px 0}
+.skill-card b{color:var(--blue)}
+@media(max-width:650px){.sticky-hud{gap:7px;padding:8px}.sticky-hud .hud-label{font-size:10px}.sticky-hud .hp-number{font-size:11px;min-width:58px}.sticky-hud .hud-level{font-size:10px}.half,.third{grid-column:span 12}.statgrid{grid-template-columns:repeat(2,1fr)}button{padding:10px}.wrap{padding:9px}.panel{padding:12px}}
+@media(max-width:650px){.half,.third{grid-column:span 12}.statgrid{grid-template-columns:repeat(2,1fr)}button{padding:10px}.wrap{padding:9px}.panel{padding:12px}}
 </style>
 </head>
 <body>
 <header>
-<div class="small">XLEBUSH3K ARCADE // RPG BUILD 1.0</div>
-<h1>⚔ SHADOW QUEST.exe</h1>
-<p>Тёмный лес. Древние руины. Бог, которого нельзя разбудить.</p>
+  <div class="small">XLEBUSH3K ARCADE // RPG BUILD 1.0</div>
+  <h1>⚔ SHADOW QUEST.exe</h1>
+  <p>Тёмный лес. Древние руины. Бог, которого нельзя разбудить.</p>
 </header>
+<div class="sticky-hud" aria-label="Постоянный индикатор здоровья">
+  <span class="hud-label">❤️ HP</span>
+  <div class="bar"><span id="stickyHpBar"></span></div>
+  <span class="hp-number" id="stickyHpText">100/100</span>
+  <span class="hud-level">LVL <b id="stickyLevel">1</b></span>
+</div>
 <div class="wrap">
-<nav>
-<a href="index.html"><button>← HOME</button></a>
-<a href="games.html"><button>← ARCADE</button></a>
-<button class="gold" onclick="toggleHelp()">📜 КАК ИГРАТЬ</button>
-<button class="danger" onclick="resetAsk()">♻ НОВАЯ ИГРА</button>
-</nav>
-<section id="help" class="panel hidden full">
-<h2>📜 ПАМЯТКА ГЕРОЯ</h2>
-<p>Побеждай монстров, получай золото и опыт, покупай снаряжение. После трёх побед в лесу откроются руины. Собери три магических осколка, пройди Башню Тьмы и победи Тёмного бога.</p>
-<p class="small">Прогресс автоматически сохраняется в этом браузере. Очистка данных браузера может удалить сохранение.</p>
-</section>
-<div class="grid">
-<section class="panel full">
-<h2>🧙 ТВОЙ ГЕРОЙ</h2>
-<div id="heroName">Загрузка...</div>
-<div class="stats">
-<div class="stat">Уровень<b id="level">1</b></div>
-<div class="stat">Золото<b id="gold">30</b></div>
-<div class="stat">Оружие<b id="weapon">Кулаки</b></div>
-<div class="stat">Броня<b id="armor">Нет</b></div>
+  <div class="topnav">
+    <a href="index.html"><button>← HOME</button></a>
+    <a href="games.html"><button>← ARCADE</button></a>
+    <button class="gold" onclick="toggleHelp()">📜 КАК ИГРАТЬ</button>
+    <button class="danger" onclick="resetAsk()">♻ НОВАЯ ИГРА</button>
+  </div>
+  <section id="help" class="panel hidden">
+    <h2>📜 ПАМЯТКА ГЕРОЯ</h2>
+    <p>Побеждай монстров, получай золото и опыт, покупай снаряжение. После трёх побед в лесу откроются руины. Затем собери три магических осколка, пройди Башню Тьмы и победи финального босса.</p>
+    <p>Сохранение работает автоматически в этом браузере на этом устройстве. Очистка данных браузера может удалить сохранение.</p>
+  </section>
+  <div class="grid">
+    <section class="panel">
+      <h2>🧙 ТВОЙ ГЕРОЙ</h2>
+      <div id="heroName">Загрузка героя...</div>
+      <div class="statgrid">
+        <div class="stat">Уровень<b id="level">1</b></div>
+        <div class="stat">Золото<b id="gold">30</b></div>
+        <div class="stat">Оружие<b id="weapon">Кулаки</b></div>
+        <div class="stat">Броня<b id="armor">Нет</b></div>
+      </div>
+      <p class="small">ЗДОРОВЬЕ <span id="hpText"></span></p><div class="bar"><span id="hpbar"></span></div>
+      <p class="small">ОПЫТ <span id="xpText"></span></p><div class="bar"><span id="xpbar"></span></div>
+      <div class="statgrid">
+        <div class="stat">Урон<b id="damage">15</b></div>
+        <div class="stat">Защита<b id="defense">0</b></div>
+        <div class="stat">🧪 Зелья<b id="potions">2</b></div>
+        <div class="stat">✨ Большие<b id="bigPotions">0</b></div>
+      </div>
+    </section>
+    <section class="panel half">
+      <h2>🗺 СЮЖЕТ</h2>
+      <h3 id="chapter">Глава 1: Тёмный лес</h3>
+      <p id="storyText">Победи 3 обычных монстров.</p>
+      <div class="bar"><span id="storybar"></span></div>
+      <p id="storyProgress" class="small">Прогресс: 0/3</p>
+      <div class="cardart" id="storyArt">🌲🌲🌲</div>
+      <p class="small">Собранные осколки: <b id="shards">0/3</b></p>
+    </section>
+    <section class="panel half">
+      <h2>⚡ ДЕЙСТВИЯ</h2>
+      <div class="actions">
+        <button class="primary" onclick="explore()">🌲 Идти в лес</button>
+        <button class="gold" onclick="storyBattle()">☠ Сюжет / Босс</button>
+        <button onclick="rest()">🔥 Отдохнуть</button>
+        <button class="blue" onclick="showStats()">📊 Статистика</button>
+      </div>
+      <p class="small">Совет: броня снижает входящий урон. Зелья можно использовать в бою. Если здоровье закончилось — восстанови его у костра.</p>
+      <div id="extraStats" class="small"></div>
+    </section>
+    <section class="panel half">
+      <h2>⚔ БОЕВОЙ ЭКРАН</h2>
+      <div id="enemyBox">
+        <div class="cardart">👁️‍🗨️</div>
+        <p>Пока рядом нет врагов. Отправляйся в лес или продолжай сюжет.</p>
+      </div>
+      <div id="skillCard" class="skill-card hidden"><b id="skillName">✨ Способность</b><div id="skillDescription" class="small"></div></div>
+      <div id="battleActions" class="actions hidden">
+        <button class="primary" onclick="attack()">⚔ Атаковать</button>
+        <button class="blue" id="skillButton" onclick="useSkill()">✨ Способность</button>
+        <button onclick="usePotion(false)">🧪 Малое зелье</button>
+        <button onclick="usePotion(true)">✨ Большое зелье</button>
+        <button class="danger" onclick="flee()">🏃 Сбежать</button>
+      </div>
+    </section>
+    <section class="panel half">
+      <h2>🛒 ЧЁРНЫЙ РЫНОК</h2>
+      <div id="shop">
+        <div class="shopitem"><span>Малое зелье <span class="small">(+20 HP)</span></span><button onclick="buy('potion')">10 🪙</button></div>
+        <div class="shopitem"><span>Большое зелье <span class="small">(+50 HP)</span></span><button onclick="buy('big')">25 🪙</button></div>
+        <div class="shopitem"><span>Железный меч <span class="small">(+5 урона)</span></span><button onclick="buy('iron')">40 🪙</button></div>
+        <div class="shopitem"><span>Стальной меч <span class="small">(+12 урона)</span></span><button onclick="buy('steel')">90 🪙</button></div>
+        <div class="shopitem"><span>Кожаная броня <span class="small">(+3 защиты)</span></span><button onclick="buy('leather')">35 🪙</button></div>
+        <div class="shopitem"><span>Железная броня <span class="small">(+7 защиты)</span></span><button onclick="buy('ironarmor')">80 🪙</button></div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>📟 ЖУРНАЛ СОБЫТИЙ</h2>
+      <div class="log" id="log" aria-live="polite"></div>
+      <div class="actions" style="margin-top:10px">
+        <button onclick="saveGame()">💾 Сохранить</button>
+        <button onclick="clearLog()">🧹 Очистить журнал</button>
+      </div>
+    </section>
+  </div>
 </div>
-<p class="small">ЗДОРОВЬЕ <span id="hpText"></span></p>
-<div class="bar"><span id="hpbar"></span></div>
-<p class="small">ОПЫТ <span id="xpText"></span></p>
-<div class="bar"><span id="xpbar"></span></div>
-<div class="stats">
-<div class="stat">Урон<b id="damage">15</b></div>
-<div class="stat">Защита<b id="defense">0</b></div>
-<div class="stat">🧪 Зелья<b id="potions">2</b></div>
-<div class="stat">✨ Большие<b id="bigPotions">0</b></div>
-</div>
-</section>
-<section class="panel">
-<h2>🗺 СЮЖЕТ</h2>
-<h3 id="chapter">Глава 1: Тёмный лес</h3>
-<p id="storyText">Победи 3 обычных монстров.</p>
-<div class="bar"><span id="storybar"></span></div>
-<p id="storyProgress" class="small">Прогресс: 0/3</p>
-<div class="art" id="storyArt">🌲🌲🌲</div>
-<p class="small">Осколки: <b id="shards">0/3</b></p>
-</section>
-<section class="panel">
-<h2>⚡ ДЕЙСТВИЯ</h2>
-<div class="actions">
-<button class="primary" onclick="explore()">🌲 Идти в лес</button>
-<button class="gold" onclick="storyBattle()">☠ Сюжет / Босс</button>
-<button onclick="rest()">🔥 Отдохнуть</button>
-<button class="blue" onclick="showStats()">📊 Статистика</button>
-</div>
-<p class="small">Броня снижает входящий урон. Используй зелья во время боя. Если здоровье закончилось, восстанови его у костра.</p>
-<div id="extraStats" class="small"></div>
-</section>
-<section class="panel">
-<h2>⚔ БОЕВОЙ ЭКРАН</h2>
-<div id="enemyBox"><div class="art">👁️‍🗨️</div><p>Врагов рядом нет. Отправляйся в лес!</p></div>
-<div id="battleActions" class="actions hidden">
-<button class="primary" onclick="attack()">⚔ Атаковать</button>
-<button onclick="usePotion(false)">🧪 Малое зелье</button>
-<button onclick="usePotion(true)">✨ Большое зелье</button>
-<button class="danger" onclick="flee()">🏃 Сбежать</button>
-</div>
-</section>
-<section class="panel">
-<h2>🛒 ЧЁРНЫЙ РЫНОК</h2>
-<div class="shopitem"><span>Малое зелье <span class="small">(+20 HP)</span></span><button onclick="buy('potion')">10 🪙</button></div>
-<div class="shopitem"><span>Большое зелье <span class="small">(+50 HP)</span></span><button onclick="buy('big')">25 🪙</button></div>
-<div class="shopitem"><span>Железный меч <span class="small">(+5 урона)</span></span><button onclick="buy('iron')">40 🪙</button></div>
-<div class="shopitem"><span>Стальной меч <span class="small">(+12 урона)</span></span><button onclick="buy('steel')">90 🪙</button></div>
-<div class="shopitem"><span>Кожаная броня <span class="small">(+3 защиты)</span></span><button onclick="buy('leather')">35 🪙</button></div>
-<div class="shopitem"><span>Железная броня <span class="small">(+7 защиты)</span></span><button onclick="buy('ironarmor')">80 🪙</button></div>
-</section>
-<section class="panel full">
-<h2>📟 ЖУРНАЛ СОБЫТИЙ</h2>
-<div class="log" id="log" aria-live="polite"></div>
-<div class="actions" style="margin-top:10px">
-<button onclick="saveGame()">💾 Сохранить</button>
-<button onclick="clearLog()">🧹 Очистить журнал</button>
-</div>
-</section>
-</div>
-</div>
-<footer>SHADOW QUEST.exe // XLEBUSH3K ARCADE</footer>
+<footer>SHADOW QUEST.exe // XLEBUSH3K ARCADE // сделано для браузера</footer>
+<div id="toast"></div>
 <script>
 const SAVE_KEY='shadowQuestSave_v1';
 const initial=()=>({name:'Странник',hp:100,max_hp:100,damage:15,gold:30,level:1,xp:0,potions:2,big_potions:0,weapon:'Кулаки',weapon_bonus:0,armor:'Нет',armor_defense:0,story_stage:0,forest_kills:0,shards:0,wins:0,bestLevel:1});
-let g=initial(),enemy=null,enemySource='forest';
+let g=initial(), enemy=null, enemySource='forest', busy=false, activeSkill=null, skillUsed=false, earthGuard=false;
 const $=id=>document.getElementById(id);
-function log(msg,cls=''){const p=document.createElement('p');if(cls)p.className=cls;p.textContent=msg;$('log').appendChild(p);$('log').scrollTop=$('log').scrollHeight}
-function toast(msg){const t=document.createElement('p');t.textContent=msg;t.className='info';$('log').appendChild(t);$('log').scrollTop=$('log').scrollHeight}
-function saveGame(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(g));log('Игра сохранена в этом браузере.','good')}catch(e){log('Не удалось сохранить игру в браузере.','bad')}}
-function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY));if(d&&typeof d==='object')g={...initial(),...d}}catch(e){g=initial()}}
-function toggleHelp(){$('help').classList.toggle('hidden')}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function log(msg,cls=''){const p=document.createElement('p');if(cls)p.className=cls;p.textContent=msg;$('log').appendChild(p);$('log').scrollTop=$('log').scrollHeight;}
+function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',1900)}
+function saveGame(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(g));log('Игра сохранена в этом браузере.','good');toast('Сохранение готово!')}catch(e){log('Браузер не разрешил сохранить игру.','bad')}}
+function loadGame(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY));if(d&&typeof d==='object')g={...initial(),...d};}catch(e){g=initial()}}
 function render(){
-$('heroName').textContent='Герой: '+g.name;$('level').textContent=g.level;$('gold').textContent=g.gold;$('weapon').textContent=g.weapon;$('armor').textContent=g.armor;
-$('hpText').textContent=`${g.hp}/${g.max_hp}`;$('hpbar').style.width=Math.max(0,g.hp/g.max_hp*100)+'%';
-$('xpText').textContent=`${g.xp}/${g.level*50}`;$('xpbar').style.width=Math.min(100,g.xp/(g.level*50)*100)+'%';
-$('damage').textContent=g.damage+g.weapon_bonus;$('defense').textContent=g.armor_defense;$('potions').textContent=g.potions;$('bigPotions').textContent=g.big_potions;$('shards').textContent=g.shards+'/3';
-const chapters=[
-['Глава 1: Тёмный лес','Победи 3 обычных монстров.','Прогресс: '+g.forest_kills+'/3',g.forest_kills/3*100,'🌲🌲🌲'],
-['Глава 2: Заброшенные руины','Победи Стража руин.','Страж ждёт в древних руинах.',0,'🏚️🛡️'],
-['Глава 3: Магические осколки','Победи трёх хранителей.','Осколки: '+g.shards+'/3',g.shards/3*100,'🔥❄️🌑'],
-['Глава 4: Башня Тьмы','Победи Хранителя башни.','Вершина башни близко.',0,'🗼🌩️'],
-['Финал: Тёмный бог','Войди в портал и победи главного босса!','Последняя битва!',0,'🌀👑'],
-['ИСТОРИЯ ЗАВЕРШЕНА!','Ты победил Тёмного бога и спас мир.','Ты спас мир!',100,'🏆✨']];
-const c=chapters[Math.min(g.story_stage,5)];
-$('chapter').textContent=c[0];$('storyText').textContent=c[1];$('storyProgress').textContent=c[2];$('storybar').style.width=c[3]+'%';$('storyArt').textContent=c[4];
-if(enemy){$('enemyBox').innerHTML=`<div class="art">${enemy.art||'👹'}</div><h3>${escapeHtml(enemy.name)}</h3><p>Здоровье врага: <b>${enemy.hp}</b></p><div class="bar"><span style="width:${Math.max(0,enemy.hp/enemy.maxHp*100)}%;background:var(--red)"></span></div><p class="small">Урон: ${enemy.damage} · Награда: ${enemy.gold} золота / ${enemy.xp} опыта</p>`;$('battleActions').classList.remove('hidden')}
-else{$('enemyBox').innerHTML='<div class="art">👁️‍🗨️</div><p>Врагов рядом нет. Отправляйся в лес!</p>';$('battleActions').classList.add('hidden')}
+ $('heroName').textContent='Герой: '+g.name;$('level').textContent=g.level;$('gold').textContent=g.gold;
+ $('weapon').textContent=g.weapon;$('armor').textContent=g.armor;$('hpText').textContent=`${g.hp}/${g.max_hp}`;
+ $('hpbar').style.width=Math.max(0,g.hp/g.max_hp*100)+'%';$('stickyHpText').textContent=`${g.hp}/${g.max_hp}`;$('stickyHpBar').style.width=Math.max(0,g.hp/g.max_hp*100)+'%';$('stickyLevel').textContent=g.level;$('xpText').textContent=`${g.xp}/${g.level*50}`;
+ $('xpbar').style.width=Math.min(100,g.xp/(g.level*50)*100)+'%';$('damage').textContent=g.damage+g.weapon_bonus;
+ $('defense').textContent=g.armor_defense;$('potions').textContent=g.potions;$('bigPotions').textContent=g.big_potions;
+ $('shards').textContent=g.shards+'/3';const chapters=[
+ ['Глава 1: Тёмный лес','Победи 3 обычных монстров.','Прогресс: '+g.forest_kills+'/3',g.forest_kills/3*100,'🌲🌲🌲'],
+ ['Глава 2: Заброшенные руины','Победи Стража руин.','Страж ждёт в древних руинах.',0,'🏚️🛡️'],
+ ['Глава 3: Магические осколки','Победи трёх хранителей и собери осколки.','Осколки: '+g.shards+'/3',g.shards/3*100,'🔥❄️🌑'],
+ ['Глава 4: Башня Тьмы','Победи Хранителя башни.','Вершина башни близко.',0,'🗼🌩️'],
+ ['Финал: Тёмный бог','Войди в портал и победи главного босса!','Портал открыт. Последняя битва!',0,'🌀👑'],
+ ['ИСТОРИЯ ЗАВЕРШЕНА!','Ты победил Тёмного бога и спас мир.','Победа! Ты спас мир.',100,'🏆✨']];
+ const c=chapters[Math.min(g.story_stage,5)];$('chapter').textContent=c[0];$('storyText').textContent=c[1];$('storyProgress').textContent=c[2];$('storybar').style.width=c[3]+'%';$('storyArt').textContent=c[4];
+ if(enemy){$('skillCard').classList.remove('hidden');$('skillName').textContent=activeSkill?activeSkill.icon+' '+activeSkill.name:'✨ Способность';$('skillDescription').textContent=activeSkill?(skillUsed?'Уже использована в этом бою.':activeSkill.description):'';$('skillButton').disabled=skillUsed;$('enemyBox').innerHTML=`<div class="cardart">${enemy.art||'👹'}</div><h3>${escapeHtml(enemy.name)}</h3><p>Здоровье врага: <b>${enemy.hp}</b></p><div class="bar"><span style="width:${Math.max(0,enemy.hp/enemy.maxHp*100)}%;background:var(--red)"></span></div><p class="small">Урон: ${enemy.damage} · Награда: ${enemy.gold} золота / ${enemy.xp} опыта</p>`;$('battleActions').classList.remove('hidden')}else{$('skillCard').classList.add('hidden');$('enemyBox').innerHTML='<div class="cardart">👁️‍🗨️</div><p>Пока рядом нет врагов. Отправляйся в лес или продолжай сюжет.</p>';$('battleActions').classList.add('hidden')}
 }
-function newGame(){g=initial();const n=prompt('Имя героя:','Странник');g.name=(n||'Странник').trim().slice(0,24)||'Странник';enemy=null;$('log').innerHTML='';log('Добро пожаловать, '+g.name+'!','good');log('Тёмная сила пробуждается в глубине леса...');saveGame();render()}
-function resetAsk(){if(confirm('Начать заново? Старое сохранение будет заменено.'))newGame()}
-function showStats(){$('extraStats').textContent=`Побед: ${g.wins} · Лучший уровень: ${g.bestLevel} · Глава: ${g.story_stage+1}/6 · Общий урон: ${g.damage+g.weapon_bonus}`;log(`Статистика: уровень ${g.level}, ${g.hp}/${g.max_hp} HP, ${g.gold} золота, побед ${g.wins}.`,'info')}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toggleHelp(){$('help').classList.toggle('hidden')}
+function newGame(){g=initial();activeSkill=null;skillUsed=false;earthGuard=false;const n=prompt('Имя героя:','Странник');g.name=(n||'Странник').trim().slice(0,24)||'Странник';enemy=null;$('log').innerHTML='';log(`Добро пожаловать, ${g.name}!`,'good');log('Тёмная сила пробуждается в глубине леса...');saveGame();render()}
+function resetAsk(){if(confirm('Начать заново? Текущее сохранение будет заменено.'))newGame()}
+function showStats(){$('extraStats').textContent=`Побед: ${g.wins} · Лучший достигнутый уровень: ${g.bestLevel} · Глава: ${g.story_stage+1}/6 · Общий урон: ${g.damage+g.weapon_bonus}`;log(`СТАТИСТИКА — ${g.name}: уровень ${g.level}, ${g.hp}/${g.max_hp} HP, ${g.gold} золота, побед ${g.wins}.`,'info')}
 function levelUp(){while(g.xp>=g.level*50){g.xp-=g.level*50;g.level++;g.max_hp+=20;g.damage+=5;g.hp=g.max_hp;g.bestLevel=Math.max(g.bestLevel,g.level);log(`НОВЫЙ УРОВЕНЬ ${g.level}! +20 максимального HP, +5 урона. Здоровье восстановлено!`,'loot')}}
-const monsters=[
-{name:'Гоблин',hp:40,damage:8,gold:10,xp:20,art:'👺'},
-{name:'Волк',hp:30,damage:10,gold:12,xp:25,art:'🐺'},
-{name:'Орк',hp:65,damage:12,gold:20,xp:40,art:'👹'}];
-function startFight(m,source='forest'){if(enemy){toast('Сначала закончи текущий бой!');return}if(g.hp<=0){toast('Сначала отдохни у костра.');return}enemy={...m,maxHp:m.hp};enemySource=source;log('Ты встретил: '+enemy.name+'!','bad');render()}
-function explore(){if(g.hp<=0){log('Ты слишком ослаблен. Отдохни у костра.','bad');return}if(enemy){toast('Ты уже в бою!');return}if(g.story_stage===5){log('История завершена! Начни новую игру.','info');return}startFight(monsters[Math.floor(Math.random()*monsters.length)])}
-function enemyTurn(){if(!enemy)return;const incoming=Math.max(1,enemy.damage-g.armor_defense);g.hp=Math.max(0,g.hp-incoming);log(enemy.name+' нанёс тебе '+incoming+' урона.','bad');if(g.hp<=0){log('Ты проиграл бой. Отдохни у костра.','bad');enemy=null;saveGame()}}
-function attack(){if(!enemy)return;const hit=Math.floor(Math.random()*7)+Math.max(1,g.damage+g.weapon_bonus-3);enemy.hp-=hit;log('Ты нанёс '+hit+' урона врагу '+enemy.name+'.','good');if(enemy.hp<=0){winFight();return}enemyTurn();render()}
-function usePotion(big){if(!enemy)return;const key=big?'big_potions':'potions',amount=big?50:20;if(g[key]<=0){log('Нет такого зелья!','bad');return}if(g.hp>=g.max_hp){log('Здоровье уже полное!','info');return}const old=g.hp;g.hp=Math.min(g.max_hp,g.hp+amount);g[key]--;log('Ты восстановил '+(g.hp-old)+' HP.','good');enemyTurn();render();saveGame()}
+const monsters=[{name:'Гоблин',hp:40,damage:8,gold:10,xp:20,art:'👺'},{name:'Волк',hp:30,damage:10,gold:12,xp:25,art:'🐺'},{name:'Орк',hp:65,damage:12,gold:20,xp:40,art:'👹'}];
+const skills=[
+ {name:'Огненный шар',icon:'🔥',description:'Наносит врагу большой магический урон.',use:()=>{const n=22+g.level*4;enemy.hp-=n;log(`Огненный шар обжёг врага на ${n} урона!`,'loot')}},
+ {name:'Водное исцеление',icon:'💧',description:'Восстанавливает 30 HP и ослабляет удар врага.',use:()=>{const old=g.hp;g.hp=Math.min(g.max_hp,g.hp+30);log(`Вода восстановила ${g.hp-old} HP.`,'good');earthGuard=true}},
+ {name:'Молния',icon:'⚡',description:'Быстрый удар молнией наносит двойной урон.',use:()=>{const n=(g.damage+g.weapon_bonus+Math.floor(Math.random()*8))*2;enemy.hp-=n;log(`Молния ударила на ${n} урона!`,'loot')}},
+ {name:'Каменная броня',icon:'🪨',description:'Защищает от следующего удара врага.',use:()=>{earthGuard=true;log('Каменная броня поглотит следующий удар!','info')}},
+ {name:'Теневая кража',icon:'🌑',description:'Наносит урон и крадёт часть здоровья врага.',use:()=>{const n=15+g.level*3;enemy.hp-=n;const old=g.hp;g.hp=Math.min(g.max_hp,g.hp+Math.ceil(n/2));log(`Тень нанесла ${n} урона и вернула ${g.hp-old} HP.`,'loot')}}
+];
+function startFight(m,source='forest'){if(enemy){toast('Сначала закончи текущий бой!');return}if(g.hp<=0){toast('Сначала отдохни у костра.');return}enemy={...m,maxHp:m.hp};enemySource=source;activeSkill=skills[Math.floor(Math.random()*skills.length)];skillUsed=false;earthGuard=false;log(`Ты встретил: ${enemy.name}!`,'bad');log(`Случайная способность на этот бой: ${activeSkill.icon} ${activeSkill.name}.`,'info');render()}
+function useSkill(){if(!enemy||skillUsed)return;skillUsed=true;activeSkill.use();if(enemy&&enemy.hp<=0){winFight();return}if(enemy)enemyTurn();render();saveGame()}
+function explore(){if(g.hp<=0){log('Ты слишком ослаблен. Отдохни у костра.','bad');return}if(enemy){toast('Ты уже в бою!');return}if(g.story_stage===5){log('История завершена! Начни новую игру, чтобы пройти её снова.','info');return}startFight(monsters[Math.floor(Math.random()*monsters.length)])}
+function attack(){if(!enemy||busy)return;const hit=Math.floor(Math.random()*(7))+Math.max(1,g.damage+g.weapon_bonus-3);enemy.hp-=hit;log(`Ты нанёс ${hit} урона врагу ${enemy.name}.`,'good');if(enemy.hp<=0){winFight();return}enemyTurn();render()}
+function enemyTurn(){if(!enemy)return;let incoming=Math.max(1,enemy.damage-g.armor_defense);if(earthGuard){incoming=Math.ceil(incoming/2);earthGuard=false;log('Магическая защита ослабила удар!','info')}g.hp=Math.max(0,g.hp-incoming);log(`${enemy.name} нанёс тебе ${incoming} урона.`,'bad');if(g.hp<=0){log('Ты проиграл бой. Отдохни у костра, чтобы восстановить 15 HP.','bad');enemy=null;saveGame()}}
+function usePotion(big){if(!enemy)return;const key=big?'big_potions':'potions',amount=big?50:20;if(g[key]<=0){log(big?'У тебя нет больших зелий!':'У тебя нет малых зелий!','bad');return}if(g.hp>=g.max_hp){log('Здоровье уже полное!','info');return}const old=g.hp;g.hp=Math.min(g.max_hp,g.hp+amount);g[key]--;log(`Ты восстановил ${g.hp-old} HP.`,'good');enemyTurn();render();saveGame()}
 function flee(){if(!enemy)return;if(Math.random()<.5){log('Ты успешно сбежал!','info');enemy=null;render();saveGame()}else{log('Сбежать не удалось!','bad');enemyTurn();render()}}
-function winFight(){
-const defeated=enemy;enemy=null;g.gold+=defeated.gold;g.xp+=defeated.xp;g.wins++;
-log(`Победа! ${defeated.name} повержен. +${defeated.gold} золота, +${defeated.xp} опыта.`,'loot');levelUp();
-if(enemySource==='forest'&&g.story_stage===0){g.forest_kills++;log('Прогресс главы: '+g.forest_kills+'/3.','info');if(g.forest_kills>=3){g.story_stage=1;log('НОВАЯ ГЛАВА! Открыты Заброшенные руины!','loot')}}
-if(enemySource==='story'){
-if(g.story_stage===1){g.story_stage=2;g.shards=0;log('Ты получил древний ключ. Открыт путь к осколкам!','loot')}
-else if(g.story_stage===2){g.shards++;log('Магических осколков: '+g.shards+'/3.','loot');if(g.shards>=3){g.story_stage=3;log('Все осколки собраны! Открылась Башня Тьмы!','loot')}}
-else if(g.story_stage===3){g.story_stage=4;log('Хранитель повержен! Открылся портал к Тёмному богу.','loot')}
-else if(g.story_stage===4){g.story_stage=5;log('ИСТОРИЯ ПРОЙДЕНА! '+g.name+', ты победил Тёмного бога!','loot')}
-}
-render();saveGame()
-}
-function storyBattle(){
-if(enemy){toast('Сначала закончи текущий бой!');return}
-if(g.hp<=0){log('Сначала восстанови здоровье у костра.','bad');return}
-let boss,stage=g.story_stage;
-if(stage===0){log('Сначала победи 3 монстров в лесу. Прогресс: '+g.forest_kills+'/3.','info');return}
-if(stage===1)boss={name:'Страж руин',hp:120,damage:15,gold:60,xp:80,art:'🗿'};
-else if(stage===2){const a=[
-{name:'Огненный хранитель',hp:100,damage:16,gold:35,xp:50,art:'🔥'},
-{name:'Ледяной хранитель',hp:110,damage:14,gold:35,xp:50,art:'❄️'},
-{name:'Теневой хранитель',hp:90,damage:18,gold:35,xp:50,art:'🌑'}];boss=a[Math.min(g.shards,2)]}
-else if(stage===3)boss={name:'Хранитель башни',hp:200,damage:22,gold:100,xp:120,art:'🧙'};
-else if(stage===4)boss={name:'ТЁМНЫЙ БОГ',hp:350,damage:25,gold:300,xp:250,art:'👑'};
-else{log('История уже пройдена! Начни новую игру.','loot');return}
-log(stage===1?'Ты входишь в древние руины...':stage===3?'Ты поднимаешься на вершину Башни Тьмы...':stage===4?'ПОСЛЕДНЯЯ БИТВА! Судьба мира зависит от тебя!':'Ты нашёл нового хранителя!','info');
-startFight(boss,'story')
-}
-function rest(){if(enemy){toast('Нельзя отдыхать во время боя!');return}if(g.hp<=0){g.hp=Math.min(g.max_hp,15);log('Ты восстановил 15 HP у костра.','good')}else{const old=g.hp;g.hp=Math.min(g.max_hp,g.hp+15);log(old===g.hp?'У тебя уже полное здоровье!':'Ты восстановил '+(g.hp-old)+' HP у костра.','good')}render();saveGame()}
-function buy(item){
-const goods={
-potion:{cost:10,can:()=>true,apply:()=>g.potions++,label:'Малое зелье'},
-big:{cost:25,can:()=>true,apply:()=>g.big_potions++,label:'Большое зелье'},
-iron:{cost:40,can:()=>g.weapon_bonus<5,apply:()=>{g.weapon='Железный меч';g.weapon_bonus=5},label:'Железный меч'},
-steel:{cost:90,can:()=>g.weapon_bonus<12,apply:()=>{g.weapon='Стальной меч';g.weapon_bonus=12},label:'Стальной меч'},
-leather:{cost:35,can:()=>g.armor_defense<3,apply:()=>{g.armor='Кожаная броня';g.armor_defense=3},label:'Кожаная броня'},
-ironarmor:{cost:80,can:()=>g.armor_defense<7,apply:()=>{g.armor='Железная броня';g.armor_defense=7},label:'Железная броня'}};
-const x=goods[item];if(!x)return;
-if(!x.can()){log('У тебя уже есть такое или лучше снаряжение!','info');return}
-if(g.gold<x.cost){log('Недостаточно золота!','bad');return}
-g.gold-=x.cost;x.apply();log('Куплено: '+x.label+'!','loot');render();saveGame()
-}
+function winFight(){const defeated=enemy;enemy=null;g.gold+=defeated.gold;g.xp+=defeated.xp;g.wins++;log(`Победа! ${defeated.name} повержен. +${defeated.gold} золота, +${defeated.xp} опыта.`,'loot');levelUp();
+ if(enemySource==='forest'&&g.story_stage===0){g.forest_kills++;log(`Прогресс главы: ${g.forest_kills}/3.`,'info');if(g.forest_kills>=3){g.story_stage=1;log('НОВАЯ ГЛАВА! Открыты Заброшенные руины!','loot')}}
+ if(enemySource==='story'){
+  if(g.story_stage===1){g.story_stage=2;g.shards=0;log('Ты получил древний ключ. Открыт путь к магическим осколкам!','loot')}
+  else if(g.story_stage===2){g.shards++;log(`Магических осколков: ${g.shards}/3.`,'loot');if(g.shards>=3){g.story_stage=3;log('Все осколки собраны! Открылась Башня Тьмы!','loot')}}
+  else if(g.story_stage===3){g.story_stage=4;log('Хранитель повержен! Перед тобой открылся портал к Тёмному богу.','loot')}
+  else if(g.story_stage===4){g.story_stage=5;log(`ИСТОРИЯ ПРОЙДЕНА! ${g.name}, ты победил Тёмного бога и спас мир!`,'loot')}
+ }
+ render();saveGame()}
+function storyBattle(){if(enemy){toast('Сначала закончи текущий бой!');return}if(g.hp<=0){log('Сначала восстанови здоровье у костра.','bad');return}
+ let boss,stage=g.story_stage;
+ if(stage===0){log(`Сначала победи 3 монстров в лесу. Прогресс: ${g.forest_kills}/3.`,'info');return}
+ if(stage===1){boss={name:'Страж руин',hp:120,damage:15,gold:60,xp:80,art:'🗿'}}
+ else if(stage===2){const guardians=[{name:'Огненный хранитель',hp:100,damage:16,gold:35,xp:50,art:'🔥'},{name:'Ледяной хранитель',hp:110,damage:14,gold:35,xp:50,art:'❄️'},{name:'Теневой хранитель',hp:90,damage:18,gold:35,xp:50,art:'🌑'}];boss=guardians[Math.min(g.shards,2)]}
+ else if(stage===3){boss={name:'Хранитель башни',hp:200,damage:22,gold:100,xp:120,art:'🧙'}}
+ else if(stage===4){boss={name:'ТЁМНЫЙ БОГ',hp:350,damage:25,gold:300,xp:250,art:'👑'}}
+ else{log('История уже пройдена! Начни новую игру, чтобы сыграть снова.','loot');return}
+ log(stage===1?'Ты входишь в древние руины...':stage===3?'Ты поднимаешься на вершину Башни Тьмы...':stage===4?'ПОСЛЕДНЯЯ БИТВА! Судьба мира зависит от тебя!':'Ты нашёл нового хранителя!','info');startFight(boss,'story')}
+function rest(){if(enemy){toast('Нельзя отдыхать во время боя!');return}if(g.hp<=0){g.hp=Math.min(g.max_hp,15);log('Ты отдохнул у костра и восстановил 15 HP.','good')}else{const old=g.hp;g.hp=Math.min(g.max_hp,g.hp+15);log(old===g.hp?'У тебя уже полное здоровье!':`Ты восстановил ${g.hp-old} HP у костра.`,'good')}render();saveGame()}
+function buy(item){const goods={potion:{cost:10,can:()=>true,apply:()=>g.potions++,label:'Малое зелье'},big:{cost:25,can:()=>true,apply:()=>g.big_potions++,label:'Большое зелье'},iron:{cost:40,can:()=>g.weapon_bonus<5,apply:()=>{g.weapon='Железный меч';g.weapon_bonus=5},label:'Железный меч'},steel:{cost:90,can:()=>g.weapon_bonus<12,apply:()=>{g.weapon='Стальной меч';g.weapon_bonus=12},label:'Стальной меч'},leather:{cost:35,can:()=>g.armor_defense<3,apply:()=>{g.armor='Кожаная броня';g.armor_defense=3},label:'Кожаная броня'},ironarmor:{cost:80,can:()=>g.armor_defense<7,apply:()=>{g.armor='Железная броня';g.armor_defense=7},label:'Железная броня'}};const x=goods[item];if(!x)return;if(!x.can()){log('У тебя уже есть такое или лучше снаряжение!','info');return}if(g.gold<x.cost){log('Недостаточно золота!','bad');return}g.gold-=x.cost;x.apply();log(`Куплено: ${x.label}!`,'loot');render();saveGame()}
 function clearLog(){$('log').innerHTML='';log('Журнал очищен.')}
-loadGame();render();log('С возвращением, '+g.name+'. Твой прогресс загружен.','good');log('Подсказка: победи трёх монстров в лесу, чтобы открыть сюжет.','info');
+loadGame();render();log(`С возвращением, ${g.name}. Твой прогресс загружен.`,'good');log('Подсказка: сначала победи трёх монстров в лесу, чтобы открыть сюжет.','info');
 </script>
 </body>
 </html>
