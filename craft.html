@@ -3,57 +3,72 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Infinite Mix | xlebush3k</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#000900;color:#d8ffe0;font-family:Consolas,monospace}
-header{padding:20px;text-align:center;border-bottom:1px solid #07551c}
+body{margin:0;background:#000900;color:#d8ffe0;font-family:Consolas,Monaco,monospace}
+header{text-align:center;padding:22px 12px;border-bottom:1px solid #07551c}
 a{color:#00ff41}
 h1{color:#00ff41;text-shadow:0 0 15px #00ff4160}
-main{max-width:800px;margin:25px auto;padding:15px}
-.panel{background:#020e05;border:1px solid #07551c;border-radius:8px;padding:18px;margin-bottom:16px}
+main{max-width:850px;margin:24px auto;padding:12px}
+.panel{background:#020e05;border:1px solid #07551c;border-radius:7px;padding:17px;margin-bottom:16px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.small{font-size:12px;color:#8ba891;line-height:1.6}
 .elements{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px}
-button{font:inherit;cursor:pointer;border:1px solid #00ff41;background:#001b07;color:#00ff41;border-radius:6px;padding:12px}
+button{font:inherit;cursor:pointer;border:1px solid #00ff41;background:#001b07;color:#00ff41;border-radius:5px;padding:12px}
 button:hover{background:#00ff41;color:#001504}
 button:focus-visible{outline:2px solid white;outline-offset:3px}
-.element{min-height:65px;font-size:15px}
-.selected{background:#00ff41;color:#001504}
-#mix{width:100%;font-weight:bold;margin-top:14px}
-#result{font-size:20px;text-align:center;padding:18px;line-height:1.7}
-#message{color:#00ff41;text-align:center;min-height:22px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.small{font-size:12px;color:#8ba891}
-@media(max-width:450px){main{padding:10px}.panel{padding:13px}}
+.element{min-height:60px}
+.element.selected{background:#00ff41;color:#001504}
+#mix{width:100%;margin-top:14px;font-weight:bold}
+#result{text-align:center;font-size:19px;padding:18px 5px;overflow-wrap:anywhere}
+#message{color:#00ff41;text-align:center;min-height:22px;font-size:13px}
+#discoveries{line-height:2;overflow-wrap:anywhere}
+@media(max-width:450px){main{padding:8px}.panel{padding:12px}}
 </style>
 </head>
 <body>
 <header>
 <a href="index.html">← НАЗАД НА ГЛАВНУЮ</a>
 <h1>🧪 INFINITE MIX</h1>
-<div class="small">Выбирай два элемента и смешивай их!</div>
+<div class="small">Выбери два элемента и попробуй создать что-то новое!</div>
 </header>
+
 <main>
 <section class="panel">
-<div class="top"><strong>ТВОИ ЭЛЕМЕНТЫ</strong><span id="count" class="small"></span></div>
-<p class="small">Нажми на два разных элемента, затем на кнопку смешивания.</p>
+<div class="top">
+<strong>ТВОИ ЭЛЕМЕНТЫ</strong>
+<span id="count" class="small"></span>
+</div>
+<p class="small">Нажми на два элемента, а затем — «Смешать».</p>
 <div id="elements" class="elements"></div>
 <button id="mix" type="button">⚗️ СМЕШАТЬ ЭЛЕМЕНТЫ</button>
 <div id="result" aria-live="polite">Выбери два элемента!</div>
 <div id="message" aria-live="polite"></div>
 </section>
+
 <section class="panel">
-<div class="top"><strong>ОТКРЫТИЯ</strong><button id="reset" type="button">Сбросить прогресс</button></div>
-<div id="discoveries" class="small">Пока нет открытий.</div>
+<div class="top">
+<strong>🏆 ОТКРЫТИЯ</strong>
+<button id="reset" type="button">Сбросить прогресс</button>
+</div>
+<p class="small">Найденные элементы сохраняются в этом браузере.</p>
+<div id="discoveries">Пока нет открытий.</div>
 </section>
 </main>
+
 <script>
 (function(){
 "use strict";
+
 const initial=[
- {n:"Вода",e:"💧"},{n:"Огонь",e:"🔥"},
- {n:"Земля",e:"🌍"},{n:"Воздух",e:"💨"}
+ {n:"Вода",e:"💧"},
+ {n:"Огонь",e:"🔥"},
+ {n:"Земля",e:"🌍"},
+ {n:"Воздух",e:"💨"}
 ];
+
 const recipes={
  "Вода|Огонь":{n:"Пар",e:"♨️"},
  "Вода|Земля":{n:"Грязь",e:"🟤"},
@@ -70,82 +85,163 @@ const recipes={
  "Огонь|Пыль":{n:"Стекло",e:"🪟"},
  "Лава|Вода":{n:"Камень",e:"🪨"},
  "Камень|Воздух":{n:"Песок",e:"🏖️"},
- "Огонь|Песок":{n:"Стекло",e:"🪟"},
  "Земля|Растение":{n:"Дерево",e:"🌳"},
  "Дерево|Огонь":{n:"Уголь",e:"⚫"},
- "Вода|Облако":{n:"Дождь",e:"🌧️"},
  "Вода|Камень":{n:"Глина",e:"🏺"},
  "Глина|Огонь":{n:"Кирпич",e:"🧱"},
- "Воздух|Жизнь":{n:"Птица",e:"🐦"},
- "Вода|Жизнь":{n:"Рыба",e:"🐟"},
- "Земля|Жизнь":{n:"Жизнь",e:"🧬"},
- "Огонь|Вода":{n:"Пар",e:"♨️"},
- "Дерево|Вода":{n:"Лодка",e:"🛶"},
- "Камень|Огонь":{n:"Металл",e:"🔩"},
  "Металл|Огонь":{n:"Меч",e:"⚔️"},
+ "Камень|Огонь":{n:"Металл",e:"🔩"},
  "Песок|Вода":{n:"Пляж",e:"🏝️"},
  "Жизнь|Земля":{n:"Человек",e:"🧑"},
- "Человек|Огонь":{n:"Кузнец",e:"🧑‍🏭"},
- "Человек|Металл":{n:"Робот",e:"🤖"},
+ "Вода|Жизнь":{n:"Рыба",e:"🐟"},
+ "Воздух|Жизнь":{n:"Птица",e:"🐦"},
  "Облако|Воздух":{n:"Небо",e:"🌌"},
  "Небо|Огонь":{n:"Звезда",e:"⭐"},
  "Звезда|Небо":{n:"Космос",e:"🌠"},
  "Космос|Земля":{n:"Планета",e:"🪐"},
- "Человек|Растение":{n:"Ферма",e:"🚜"},
- "Рыба|Человек":{n:"Рыбак",e:"🎣"},
- "Птица|Воздух":{n:"Полёт",e:"🪽"},
- "Кирпич|Кирпич":{n:"Дом",e:"🏠"}
+ "Человек|Металл":{n:"Робот",e:"🤖"},
+ "Дерево|Вода":{n:"Лодка",e:"🛶"},
+ "Кирпич|Кирпич":{n:"Дом",e:"🏠"},
+ "Огонь|Вода":{n:"Пар",e:"♨️"},
+ "Огонь|Песок":{n:"Стекло",e:"🪟"},
+ "Вода|Облако":{n:"Дождь",e:"🌧️"},
+ "Вода|Воздух":{n:"Дождь",e:"🌧️"},
+ "Вода|Дождь":{n:"Река",e:"🏞️"},
+ "Земля|Дождь":{n:"Растение",e:"🌱"},
+ "Дерево|Земля":{n:"Лес",e:"🌲"},
+ "Лава|Воздух":{n:"Пепел",e:"🌋"},
+ "Растение|Солнце":{n:"Цветок",e:"🌻"}
 };
-const key=(a,b)=>[a,b].sort().join("|");
-let known,selected=[],discovered=[];
+
+function key(a,b){
+ return [a,b].sort((x,y)=>x.localeCompare(y)).join("|");
+}
+
+let known=initial.slice();
+let discovered=[];
+let selected=[];
+
 try{
  const saved=JSON.parse(localStorage.getItem("infiniteMixSave")||"null");
- known=Array.isArray(saved?.known)?saved.known.filter(x=>x&&typeof x.n==="string"&&typeof x.e==="string"):initial.slice();
- discovered=Array.isArray(saved?.discovered)?saved.discovered.filter(x=>x&&typeof x.n==="string"&&typeof x.e==="string"):[];
- initial.forEach(x=>{if(!known.some(y=>y.n===x.n))known.push(x)});
-}catch(e){known=initial.slice();discovered=[]}
-function save(){try{localStorage.setItem("infiniteMixSave",JSON.stringify({known,discovered}))}catch(e){}}
-function say(text){document.getElementById("message").textContent=text}
-function render(){
- const root=document.getElementById("elements");root.replaceChildren();
- known.forEach(item=>{
-  const b=document.createElement("button");
-  b.type="button";b.className="element"+(selected.includes(item.n)?" selected":"");
-  b.textContent=item.e+" "+item.n;
-  b.setAttribute("aria-pressed",String(selected.includes(item.n)));
-  b.addEventListener("click",()=>{
-   if(selected.includes(item.n)){selected=selected.filter(n=>n!==item.n)}
-   else if(selected.length<2){selected.push(item.n)}
-   else{say("Уже выбрано два элемента!");return}
-   say("");render();
+ if(saved && Array.isArray(saved.known)){
+  saved.known.forEach(x=>{
+   if(x && typeof x.n==="string" && typeof x.e==="string" &&
+      !known.some(y=>y.n===x.n)){
+    known.push(x);
+   }
   });
-  root.appendChild(b);
- });
- document.getElementById("count").textContent=known.length+" элементов";
- document.getElementById("discoveries").textContent=discovered.length?discovered.map(x=>x.e+" "+x.n).join(" · "):"Пока нет открытий.";
-}
-function mix(){
- if(selected.length!==2){say("Сначала выбери два элемента!");return}
- const [a,b]=selected;let out=recipes[key(a,b)];
- if(!out&&a===b){
-  const same={Вода:{n:"Лужа",e:"💦"},Огонь:{n:"Пламя",e:"🔥"},Земля:{n:"Гора",e:"⛰️"},Воздух:{n:"Ветер",e:"🌪️"},Камень:{n:"Гора",e:"⛰️"}};
-  out=same[a]||{n:"Двойной "+a,e:"✨"};
  }
- if(!out)out={n:a+" "+b,e:"✨"};
- const fresh=!known.some(x=>x.n===out.n);
- if(fresh)known.push(out);
- if(!discovered.some(x=>x.n===out.n))discovered.push(out);
- document.getElementById("result").textContent=a+" + "+b+" = "+out.e+" "+out.n;
- say(fresh?"🎉 Новое открытие!":"Комбинация получена!");
- selected=[];save();render();
+ if(saved && Array.isArray(saved.discovered)){
+  discovered=saved.discovered.filter(x=>
+   x && typeof x.n==="string" && typeof x.e==="string"
+  );
+ }
+}catch(e){}
+
+function save(){
+ try{
+  localStorage.setItem("infiniteMixSave",
+   JSON.stringify({known,discovered}));
+ }catch(e){}
 }
+
+function say(text){
+ document.getElementById("message").textContent=text;
+}
+
+function render(){
+ const root=document.getElementById("elements");
+ root.replaceChildren();
+
+ known.forEach(item=>{
+  const button=document.createElement("button");
+  button.type="button";
+  button.className="element"+
+   (selected.includes(item.n)?" selected":"");
+  button.textContent=item.e+" "+item.n;
+  button.setAttribute("aria-pressed",
+   String(selected.includes(item.n)));
+
+  button.addEventListener("click",()=>{
+   if(selected.includes(item.n)){
+    selected=selected.filter(n=>n!==item.n);
+   }else if(selected.length<2){
+    selected.push(item.n);
+   }else{
+    say("Сначала убери один из выбранных элементов.");
+    return;
+   }
+   say("");
+   render();
+  });
+
+  root.appendChild(button);
+ });
+
+ document.getElementById("count").textContent=
+  known.length+" элементов";
+
+ document.getElementById("discoveries").textContent=
+  discovered.length
+   ?discovered.map(x=>x.e+" "+x.n).join(" · ")
+   :"Пока нет открытий.";
+}
+
+function mix(){
+ if(selected.length!==2){
+  say("❗ Сначала выбери два элемента!");
+  return;
+ }
+
+ const a=selected[0];
+ const b=selected[1];
+ const out=recipes[key(a,b)];
+
+ if(!out){
+  document.getElementById("result").textContent=
+   a+" + "+b+" — комбинация не найдена.";
+  say("Попробуй другую пару элементов.");
+  selected=[];
+  render();
+  return;
+ }
+
+ const fresh=!known.some(x=>x.n===out.n);
+
+ if(fresh){
+  known.push(out);
+ }
+
+ if(!discovered.some(x=>x.n===out.n)){
+  discovered.push(out);
+ }
+
+ document.getElementById("result").textContent=
+  a+" + "+b+" = "+out.e+" "+out.n;
+
+ say(fresh?"🎉 Новое открытие!":"Ты уже открывал этот элемент.");
+
+ selected=[];
+ save();
+ render();
+}
+
 document.getElementById("mix").addEventListener("click",mix);
+
 document.getElementById("reset").addEventListener("click",()=>{
  if(!confirm("Точно сбросить все открытия?"))return;
- known=initial.slice();selected=[];discovered=[];save();
- document.getElementById("result").textContent="Выбери два элемента!";
- say("Прогресс сброшен.");render();
+
+ known=initial.slice();
+ discovered=[];
+ selected=[];
+ save();
+
+ document.getElementById("result").textContent=
+  "Выбери два элемента!";
+ say("Прогресс сброшен.");
+ render();
 });
+
 render();
 })();
 </script>
