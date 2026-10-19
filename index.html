@@ -1,468 +1,380 @@
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#020805">
-  <title>xlebush3k | Matrix</title>
-  <style>
-    :root {
-      --green: #00ff66;
-      --bg: #020805;
-      --panel: rgba(0, 20, 9, .88);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xlebush3k // MATRIX</title>
 
-    * { box-sizing: border-box; }
+<style>
+:root {
+  --green: #00ff66;
+  --dark: #020805;
+  --dim: #8affad;
+}
 
-    html { scroll-behavior: smooth; }
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--green);
-      font-family: Consolas, "Courier New", monospace;
-      overflow-x: hidden;
-    }
+html {
+  scroll-behavior: smooth;
+}
 
-    #matrix {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      opacity: .22;
-    }
+body {
+  margin: 0;
+  background: var(--dark);
+  color: var(--green);
+  font-family: Consolas, "Courier New", monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      background: radial-gradient(ellipse at center,
-        transparent 15%, rgba(0,0,0,.7) 100%);
-    }
+#matrix {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.32;
+}
 
-    a { color: inherit; text-decoration: none; }
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px 7%;
+  border-bottom: 1px solid #00ff6644;
+  background: #020805dd;
+}
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 16px 5%;
-      background: rgba(0, 8, 3, .96);
-      border-bottom: 1px solid #00ff6644;
-      backdrop-filter: blur(12px);
-    }
+.logo {
+  color: var(--green);
+  font-size: 21px;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 0 0 12px var(--green);
+}
 
-    .logo {
-      font-size: 19px;
-      font-weight: bold;
-      text-shadow: 0 0 12px var(--green);
-      white-space: nowrap;
-    }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
 
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      font-size: 12px;
-    }
+nav a {
+  color: var(--dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: 0.2s;
+}
 
-    .nav a {
-      color: #b6ffc9;
-      transition: .2s;
-    }
+nav a:hover {
+  color: white;
+  text-shadow: 0 0 10px var(--green);
+}
 
-    .nav a:hover {
-      color: white;
-      text-shadow: 0 0 10px var(--green);
-    }
+.hero {
+  text-align: center;
+  padding: 100px 20px 55px;
+}
 
-    .status {
-      color: var(--green);
-      font-size: 11px;
-      white-space: nowrap;
-    }
+.status {
+  font-size: 11px;
+  color: #78bb8d;
+  letter-spacing: 2px;
+}
 
-    .dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      background: var(--green);
-      border-radius: 50%;
-      margin-right: 5px;
-      box-shadow: 0 0 9px var(--green);
-      animation: pulse 1.4s infinite;
-    }
+h1 {
+  font-size: clamp(36px, 8vw, 72px);
+  margin: 22px 0;
+  text-shadow: 0 0 12px #00ff66, 0 0 35px #00ff6655;
+  overflow-wrap: anywhere;
+}
 
-    main {
-      width: min(900px, 90%);
-      margin: auto;
-    }
+.hero p {
+  color: #a3dcb4;
+  font-size: 14px;
+  line-height: 1.8;
+}
 
-    .hero {
-      min-height: 76vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 70px 0;
-    }
+.container {
+  width: min(850px, 92%);
+  margin: auto;
+}
 
-    .tag {
-      color: #91ffb0;
-      font-size: 12px;
-      letter-spacing: 3px;
-      margin-bottom: 22px;
-    }
+.panel {
+  border: 1px solid #00ff6655;
+  background: #020805e8;
+  padding: 25px;
+  margin: 20px 0;
+  box-shadow: 0 0 20px #00ff660b;
+}
 
-    h1 {
-      margin: 0;
-      font-size: clamp(36px, 8vw, 76px);
-      letter-spacing: 3px;
-      text-shadow: 0 0 8px #00ff66, 0 0 30px #00ff6655;
-      overflow-wrap: anywhere;
-    }
+.panel h2 {
+  font-size: 17px;
+  margin-top: 0;
+}
 
-    .subtitle {
-      color: #b4eac3;
-      margin: 22px 0;
-      line-height: 1.8;
-    }
+.panel p {
+  color: #a3dcb4;
+  line-height: 1.8;
+  font-size: 13px;
+}
 
-    .cursor {
-      display: inline-block;
-      width: 9px;
-      height: 1em;
-      background: var(--green);
-      vertical-align: -2px;
-      animation: blink .8s steps(2) infinite;
-    }
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 25px 0;
+}
 
-    .buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 20px;
-    }
+.btn {
+  display: block;
+  padding: 17px 10px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--green);
+  background: #03150a;
+  border: 1px solid var(--green);
+  font-weight: bold;
+  font-size: 13px;
+  transition: 0.2s;
+}
 
-    .btn {
-      display: inline-block;
-      padding: 14px 20px;
-      border: 1px solid var(--green);
-      background: #00ff6610;
-      color: var(--green);
-      font: bold 13px Consolas, monospace;
-      transition: .2s;
-    }
+.btn:hover {
+  background: var(--green);
+  color: #001a08;
+  box-shadow: 0 0 20px #00ff6677;
+  transform: translateY(-2px);
+}
 
-    .btn:hover {
-      background: var(--green);
-      color: #001a08;
-      box-shadow: 0 0 24px #00ff6677;
-      transform: translateY(-2px);
-    }
+.featured {
+  border-color: #b8ff00;
+  color: #d5ff70;
+  background: #111800;
+}
 
-    section {
-      padding: 30px 0;
-      scroll-margin-top: 80px;
-    }
+.featured:hover {
+  background: #b8ff00;
+  color: #101500;
+  box-shadow: 0 0 22px #b8ff0077;
+}
 
-    .panel {
-      border: 1px solid #00ff6655;
-      background: var(--panel);
-      padding: 24px;
-      box-shadow: 0 0 25px #00ff6609;
-    }
+.social {
+  color: #ff6868;
+  border-color: #ff4444;
+}
 
-    h2 {
-      margin-top: 0;
-      font-size: 19px;
-      letter-spacing: 2px;
-    }
+.social:hover {
+  color: white;
+  background: #d90000;
+  box-shadow: 0 0 20px #ff000077;
+}
 
-    .line {
-      color: #b9eac8;
-      line-height: 1.9;
-      overflow-wrap: anywhere;
-    }
+footer {
+  text-align: center;
+  padding: 30px 15px;
+  margin-top: 50px;
+  border-top: 1px solid #00ff6633;
+  color: #578565;
+  font-size: 11px;
+  line-height: 2;
+}
 
-    .prompt { color: white; }
-    .ok { color: var(--green); }
+@media (max-width: 500px) {
+  header {
+    justify-content: center;
+  }
 
-    .arcade-panel {
-      text-align: center;
-      border-color: var(--green);
-      box-shadow: 0 0 22px #00ff6618;
-    }
+  nav {
+    justify-content: center;
+    gap: 13px;
+  }
 
-    .arcade-panel p {
-      color: #b9eac8;
-      line-height: 1.8;
-    }
+  .hero {
+    padding-top: 65px;
+  }
 
-    .social-card {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 18px;
-    }
+  .panel {
+    padding: 18px;
+  }
 
-    .social-card p {
-      color: #b9eac8;
-      line-height: 1.7;
-    }
-
-    footer {
-      margin-top: 50px;
-      border-top: 1px solid #00ff6633;
-      padding: 24px 12px;
-      text-align: center;
-      color: #6fa982;
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    @keyframes blink {
-      to { visibility: hidden; }
-    }
-
-    @keyframes pulse {
-      50% { opacity: .3; }
-    }
-
-    @media (max-width: 700px) {
-      .topbar {
-        padding: 13px 5%;
-        flex-wrap: wrap;
-      }
-
-      .nav {
-        gap: 13px;
-      }
-
-      .status { display: none; }
-
-      .panel { padding: 18px; }
-
-      .hero { min-height: 68vh; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+  .buttons {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
 <body>
-  <canvas id="matrix" aria-hidden="true"></canvas>
 
-  <header class="topbar">
-    <a class="logo" href="#home">[ xlebush3k ]</a>
+<canvas id="matrix"></canvas>
 
-    <nav class="nav" aria-label="Main menu">
-      <a href="#home">HOME</a>
-      <a href="#about">ABOUT</a>
-      <a href="#terminal">TERMINAL</a>
-      <a href="#socials">SOCIALS</a>
-      <a href="games.html">ARCADE 🎮</a>
-    </nav>
+<header>
+  <a class="logo" href="index.html">[ xlebush3k ]</a>
 
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="#about">ABOUT</a>
+    <a href="#terminal">TERMINAL</a>
+    <a href="#games">GAMES</a>
+    <a href="#socials">SOCIALS</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
     <div class="status">
-      <span class="dot"></span>SYSTEM ONLINE
+      /// SYSTEM ONLINE ///
     </div>
-  </header>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="tag">PERSONAL CYBER SPACE</div>
+    <h1>XLEBUSH3K</h1>
 
-      <h1>xlebush3k</h1>
+    <p>
+      Welcome to my digital world.<br>
+      Enter the system. Explore the unknown.
+    </p>
+  </section>
 
-      <p class="subtitle">
-        <span id="typing"></span><span class="cursor"></span>
-        <br>Welcome to my digital world.
+  <div class="container">
+
+    <section class="panel" id="about">
+      <h2>// ABOUT.exe</h2>
+      <p>
+        Welcome to my personal website.<br>
+        This is my corner of the Matrix.
+        Explore the games and enter the system.
+      </p>
+    </section>
+
+    <section class="panel" id="terminal">
+      <h2>// TERMINAL.log</h2>
+      <p>
+        > Initializing system...<br>
+        > Connection established.<br>
+        > User: xlebush3k<br>
+        > Status: ONLINE_
+      </p>
+    </section>
+
+    <section class="panel" id="games">
+      <h2>// GAME CENTER 🎮</h2>
+      <p>
+        Choose your game and start playing.
       </p>
 
       <div class="buttons">
-        <a class="btn" href="#about">[ EXPLORE ]</a>
-
         <a class="btn" href="games.html">
-          [ ENTER ARCADE 🎮 ]
+          🎮 ARCADE
         </a>
 
-        <a class="btn"
-           href="https://www.tiktok.com/@xlebush3k00"
-           target="_blank"
-           rel="noopener noreferrer">
-          [ MY TIKTOK ↗ ]
+        <a class="btn featured" href="rpg.html">
+          ⚔ SHADOW QUEST
         </a>
       </div>
+
+      <p>
+        ARCADE — mini-games and challenges.<br>
+        SHADOW QUEST — battles, monsters, equipment
+        and an epic adventure.
+      </p>
     </section>
 
-    <section id="about">
-      <div class="panel">
-        <h2>// ABOUT ME</h2>
+    <section class="panel" id="socials">
+      <h2>// SOCIALS.exe</h2>
+      <p>
+        Find me on TikTok.
+      </p>
 
-        <p class="line">
-          <span class="prompt">visitor@matrix:~$</span> whoami
-          <br>
-          <span class="ok">
-            → Welcome to xlebush3k's website.
-          </span>
-          <br>
-          <span class="prompt">visitor@matrix:~$</span> status
-          <br>
-          <span class="ok">→ Online. System ready.</span>
-        </p>
-      </div>
-    </section>
-
-    <section id="terminal">
-      <div class="panel">
-        <h2>// TERMINAL</h2>
-
-        <p class="line">
-          <span class="prompt">root@xlebush3k:~$</span> initialize
-          <br><span class="ok">[ OK ] Interface loaded</span>
-          <br><span class="ok">[ OK ] Matrix background active</span>
-          <br><span class="ok">[ OK ] Arcade module linked</span>
-          <br><span class="ok">[ OK ] Social link connected</span>
-          <br>
-          <span class="prompt">root@xlebush3k:~$</span>
-          <span class="cursor"></span>
-        </p>
-      </div>
-    </section>
-
-    <section id="arcade">
-      <div class="panel arcade-panel">
-        <h2>// MATRIX ARCADE</h2>
-
-        <p>
-          Four mini-games. One terminal.<br>
-          Can you beat your high score?
-        </p>
-
-        <div class="buttons">
-          <a class="btn" href="games.html">
-            [ LAUNCH ARCADE ↗ ]
-          </a>
-        </div>
-
-        <p class="ok">Snake.exe · Hack the Code · Reaction.exe · Cyber Shooter</p>
-      </div>
-    </section>
-
-    <section id="socials">
-      <div class="panel social-card">
-        <div>
-          <h2>// FIND ME ONLINE</h2>
-          <p>Follow me on TikTok and check out my profile.</p>
-          <p class="ok">@xlebush3k00</p>
-        </div>
-
-        <a class="btn"
-           href="https://www.tiktok.com/@xlebush3k00"
-           target="_blank"
-           rel="noopener noreferrer">
-          OPEN TIKTOK ↗
+      <div class="buttons">
+        <a
+          class="btn social"
+          href="https://www.tiktok.com/@xlebush3k00"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          ♥ MY TIKTOK
         </a>
       </div>
     </section>
-  </main>
 
-  <footer>
-    <div>© <span id="year"></span> xlebush3k</div>
-    <div>POWERED BY HTML · CSS · JAVASCRIPT</div>
-    <div><span class="dot"></span> ALL SYSTEMS OPERATIONAL</div>
-  </footer>
+  </div>
+</main>
 
-  <script>
-    // Matrix falling characters
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
-    const chars = "アイウエオカキクケコサシスセソ0123456789ABCDEF";
-    const fontSize = 15;
-    let columns = 0;
-    let drops = [];
+<footer>
+  XLEBUSH3K // MATRIX SYSTEM<br>
+  ACCESS GRANTED ✓<br>
+  © <span id="year"></span>
+</footer>
 
-    function resizeMatrix() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+<script>
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
 
-      canvas.width = Math.floor(window.innerWidth * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
+const chars = "アイウエオカキクケコサシスセソ0123456789ABCDEF";
+let drops = [];
+let columns = 0;
+let width = 0;
+let height = 0;
 
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      columns = Math.ceil(window.innerWidth / fontSize);
-      drops = Array.from(
-        { length: columns },
-        () => Math.random() * -80
-      );
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  columns = Math.ceil(width / 16);
+  drops = Array.from(
+    { length: columns },
+    () => Math.random() * -50
+  );
+}
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(2, 8, 5, 0.12)";
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.fillStyle = "#00ff66";
+  ctx.font = "15px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const char = chars[
+      Math.floor(Math.random() * chars.length)
+    ];
+
+    ctx.fillText(char, i * 16, drops[i] * 16);
+
+    if (
+      drops[i] * 16 > height &&
+      Math.random() > 0.975
+    ) {
+      drops[i] = 0;
     }
 
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(2, 8, 5, 0.09)";
-      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    drops[i] += 0.55;
+  }
 
-      ctx.fillStyle = "#00ff66";
-      ctx.font = fontSize + "px monospace";
+  requestAnimationFrame(drawMatrix);
+}
 
-      for (let i = 0; i < drops.length; i++) {
-        const char = chars[Math.floor(Math.random() * chars.length)];
+window.addEventListener("resize", resize);
 
-        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+resize();
+drawMatrix();
 
-        if (
-          drops[i] * fontSize > window.innerHeight &&
-          Math.random() > 0.975
-        ) {
-          drops[i] = 0;
-        }
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+</script>
 
-        drops[i] += 0.55;
-      }
-
-      requestAnimationFrame(drawMatrix);
-    }
-
-    resizeMatrix();
-    window.addEventListener("resize", resizeMatrix);
-    drawMatrix();
-
-    // Typing animation
-    const message = "Initializing system...";
-    const typing = document.getElementById("typing");
-    let index = 0;
-
-    function typeText() {
-      if (index < message.length) {
-        typing.textContent += message.charAt(index);
-        index++;
-        setTimeout(typeText, 85);
-      }
-    }
-
-    typeText();
-
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
-  </script>
 </body>
 </html>
