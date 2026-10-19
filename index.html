@@ -2,196 +2,394 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>xlebush3k | Terminal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020805">
+  <title>xlebush3k | Matrix</title>
+  <meta name="description" content="xlebush3k — personal cyber terminal">
+  <style>
+    :root {
+      --green: #00ff66;
+      --dark-green: #00a844;
+      --bg: #020805;
+      --panel: rgba(0, 20, 9, .88);
+    }
 
-<style>
-* {
-  box-sizing: border-box;
-}
+    * { box-sizing: border-box; }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: #050807;
-  color: #00ff88;
-  font-family: monospace;
-  overflow-x: hidden;
-}
+    html { scroll-behavior: smooth; }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    transparent 0px,
-    transparent 3px,
-    #00ff8808 4px
-  );
-  pointer-events: none;
-}
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--green);
+      font-family: Consolas, "Courier New", monospace;
+      overflow-x: hidden;
+    }
 
-header {
-  padding: 22px;
-  border-bottom: 1px solid #00ff8844;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+    #matrix {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: .22;
+    }
 
-.logo {
-  font-size: 20px;
-  font-weight: bold;
-  text-shadow: 0 0 12px #00ff88;
-}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(ellipse at center,
+        transparent 15%, rgba(0,0,0,.7) 100%);
+    }
 
-.status {
-  color: #00ff88;
-  font-size: 12px;
-}
+    a { color: inherit; text-decoration: none; }
 
-main {
-  max-width: 850px;
-  margin: auto;
-  padding: 65px 22px;
-}
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 7%;
+      background: rgba(0, 8, 3, .94);
+      border-bottom: 1px solid #00ff6644;
+      backdrop-filter: blur(12px);
+    }
 
-.tag {
-  color: #7a8c82;
-  letter-spacing: 3px;
-  font-size: 12px;
-}
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      text-shadow: 0 0 12px var(--green);
+      white-space: nowrap;
+    }
 
-h1 {
-  font-size: clamp(35px, 9vw, 68px);
-  margin: 18px 0;
-  text-shadow: 0 0 25px #00ff8844;
-  overflow-wrap: anywhere;
-}
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+    }
 
-h1 span {
-  color: white;
-}
+    .nav a { color: #b6ffc9; transition: .2s; }
+    .nav a:hover { color: white; text-shadow: 0 0 10px var(--green); }
 
-.subtitle {
-  color: #8da69a;
-  line-height: 1.8;
-  max-width: 530px;
-}
+    .status {
+      color: var(--green);
+      font-size: 11px;
+      white-space: nowrap;
+    }
 
-.terminal {
-  margin-top: 38px;
-  border: 1px solid #00ff8855;
-  background: #07100c;
-  box-shadow: 0 0 30px #00ff880b;
-}
+    .dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      margin-right: 5px;
+      box-shadow: 0 0 9px var(--green);
+      animation: pulse 1.4s infinite;
+    }
 
-.term-head {
-  padding: 13px;
-  border-bottom: 1px solid #00ff8833;
-  color: #8da69a;
-  font-size: 12px;
-}
+    main {
+      width: min(900px, 90%);
+      margin: auto;
+    }
 
-.term-body {
-  padding: 20px;
-  min-height: 150px;
-  line-height: 1.9;
-  overflow-wrap: anywhere;
-}
+    .hero {
+      min-height: 76vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 70px 0;
+    }
 
-.dim {
-  color: #71877b;
-}
+    .tag {
+      color: #91ffb0;
+      font-size: 12px;
+      letter-spacing: 3px;
+      margin-bottom: 22px;
+    }
 
-button {
-  background: transparent;
-  border: 1px solid #00ff88;
-  color: #00ff88;
-  padding: 12px 16px;
-  font: inherit;
-  cursor: pointer;
-  margin-top: 12px;
-}
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 8vw, 76px);
+      letter-spacing: 3px;
+      text-shadow: 0 0 8px #00ff66, 0 0 30px #00ff6655;
+      overflow-wrap: anywhere;
+    }
 
-button:hover {
-  background: #00ff8818;
-}
+    .subtitle {
+      color: #b4eac3;
+      margin: 22px 0;
+      line-height: 1.8;
+    }
 
-footer {
-  padding: 25px;
-  border-top: 1px solid #00ff8833;
-  color: #71877b;
-  text-align: center;
-  font-size: 12px;
-}
+    .cursor {
+      display: inline-block;
+      width: 9px;
+      height: 1em;
+      background: var(--green);
+      vertical-align: -2px;
+      animation: blink .8s steps(2) infinite;
+    }
 
-.cursor {
-  animation: blink 1s steps(2) infinite;
-}
+    .buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 20px;
+    }
 
-@keyframes blink {
-  50% { opacity: 0; }
-}
+    .btn {
+      display: inline-block;
+      padding: 13px 20px;
+      border: 1px solid var(--green);
+      background: #00ff6610;
+      color: var(--green);
+      font: bold 13px Consolas, monospace;
+      transition: .2s;
+    }
 
-@media (max-width: 480px) {
-  main { padding-top: 45px; }
-  header { padding: 17px; }
-}
-</style>
+    .btn:hover {
+      background: var(--green);
+      color: #001a08;
+      box-shadow: 0 0 24px #00ff6677;
+      transform: translateY(-2px);
+    }
+
+    section { padding: 38px 0; scroll-margin-top: 75px; }
+
+    .panel {
+      border: 1px solid #00ff6655;
+      background: var(--panel);
+      padding: 24px;
+      box-shadow: 0 0 25px #00ff6609;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 19px;
+      letter-spacing: 2px;
+    }
+
+    .line {
+      color: #b9eac8;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    .prompt { color: white; }
+    .ok { color: var(--green); }
+
+    .social-card {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .social-card p {
+      color: #b9eac8;
+      line-height: 1.7;
+    }
+
+    footer {
+      margin-top: 50px;
+      border-top: 1px solid #00ff6633;
+      padding: 24px 12px;
+      text-align: center;
+      color: #6fa982;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    @keyframes blink {
+      to { visibility: hidden; }
+    }
+
+    @keyframes pulse {
+      50% { opacity: .3; }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 13px 5%;
+        flex-wrap: wrap;
+      }
+      .nav { gap: 13px; }
+      .status { display: none; }
+      .panel { padding: 18px; }
+      .hero { min-height: 68vh; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
-
 <body>
-<header>
-  <div class="logo">xlebush3k<span>_</span></div>
-  <div class="status">● SYSTEM ONLINE</div>
-</header>
+  <canvas id="matrix" aria-hidden="true"></canvas>
 
-<main>
-  <div class="tag">WELCOME TO MY WORLD</div>
+  <header class="topbar">
+    <a class="logo" href="#home">[ xlebush3k ]</a>
 
-  <h1>ACCESS <span>GRANTED.</span></h1>
+    <nav class="nav" aria-label="Main menu">
+      <a href="#home">HOME</a>
+      <a href="#about">ABOUT</a>
+      <a href="#terminal">TERMINAL</a>
+      <a href="#socials">SOCIALS</a>
+    </nav>
 
-  <p class="subtitle">
-    Это мой уголок интернета. Код, технологии
-    и немного цифровой темноты.
-  </p>
+    <div class="status"><span class="dot"></span>SYSTEM ONLINE</div>
+  </header>
 
-  <section class="terminal">
-    <div class="term-head">
-      TERMINAL — guest@xlebush3k
-    </div>
+  <main>
+    <section class="hero" id="home">
+      <div class="tag">PERSONAL CYBER SPACE</div>
+      <h1>xlebush3k</h1>
+      <p class="subtitle">
+        <span id="typing"></span><span class="cursor"></span>
+        <br>Welcome to my digital world.
+      </p>
 
-    <div class="term-body">
-      <div><span class="dim">guest@system:~$</span> whoami</div>
-      <div>xlebush3k</div>
-      <div><span class="dim">guest@system:~$</span> cat about.txt</div>
-      <div>Learning. Building. Exploring.</div>
-      <div id="output">System ready.</div>
-      <div><span class="dim">guest@system:~$</span> <span class="cursor">█</span></div>
+      <div class="buttons">
+        <a class="btn" href="#about">[ EXPLORE ]</a>
+        <a class="btn"
+           href="https://www.tiktok.com/@xlebush3k00"
+           target="_blank"
+           rel="noopener noreferrer">[ MY TIKTOK ↗ ]</a>
+      </div>
+    </section>
 
-      <button onclick="runTerminal()">RUN SYSTEM CHECK</button>
-      <button onclick="showSecret()">OPEN SECRET</button>
-    </div>
-  </section>
-</main>
+    <section id="about">
+      <div class="panel">
+        <h2>// ABOUT ME</h2>
+        <p class="line">
+          <span class="prompt">visitor@matrix:~$</span> whoami
+          <br><span class="ok">→ Welcome to xlebush3k's website.</span>
+          <br><span class="prompt">visitor@matrix:~$</span> status
+          <br><span class="ok">→ Online. System ready.</span>
+        </p>
+      </div>
+    </section>
 
-<footer>
-  © 2026 XLEBUSH3K — BUILT WITH CODE
-</footer>
+    <section id="terminal">
+      <div class="panel">
+        <h2>// TERMINAL</h2>
+        <p class="line">
+          <span class="prompt">root@xlebush3k:~$</span> initialize
+          <br><span class="ok">[ OK ] Interface loaded</span>
+          <br><span class="ok">[ OK ] Matrix background active</span>
+          <br><span class="ok">[ OK ] Social link connected</span>
+          <br><span class="prompt">root@xlebush3k:~$</span>
+          <span class="cursor"></span>
+        </p>
+      </div>
+    </section>
 
-<script>
-function runTerminal() {
-  const out = document.getElementById("output");
-  out.textContent = "Checking system... ONLINE ✓";
-}
+    <section id="socials">
+      <div class="panel social-card">
+        <div>
+          <h2>// FIND ME ONLINE</h2>
+          <p>Follow me on TikTok and check out my profile.</p>
+          <p class="ok">@xlebush3k00</p>
+        </div>
 
-function showSecret() {
-  const out = document.getElementById("output");
-  out.textContent = "There is no secret. Or is there? ;)";
-}
-</script>
+        <a class="btn"
+           href="https://www.tiktok.com/@xlebush3k00"
+           target="_blank"
+           rel="noopener noreferrer">OPEN TIKTOK ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© <span id="year"></span> xlebush3k</div>
+    <div>POWERED BY HTML · CSS · JAVASCRIPT</div>
+    <div><span class="dot"></span> ALL SYSTEMS OPERATIONAL</div>
+  </footer>
+
+  <script>
+    // Matrix falling characters
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+    const chars = "アイウエオカキクケコサシスセソタチツテト0123456789ABCDEF";
+    const fontSize = 15;
+    let columns = 0;
+    let drops = [];
+
+    function resizeMatrix() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      columns = Math.ceil(window.innerWidth / fontSize);
+      drops = Array.from(
+        { length: columns },
+        () => Math.random() * -80
+      );
+    }
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(2, 8, 5, 0.09)";
+      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+      ctx.fillStyle = "#00ff66";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+        if (
+          drops[i] * fontSize > window.innerHeight &&
+          Math.random() > 0.975
+        ) {
+          drops[i] = 0;
+        }
+
+        drops[i] += 0.55;
+      }
+
+      requestAnimationFrame(drawMatrix);
+    }
+
+    resizeMatrix();
+    window.addEventListener("resize", resizeMatrix);
+    drawMatrix();
+
+    // Typing animation
+    const message = "Initializing system...";
+    const typing = document.getElementById("typing");
+    let index = 0;
+
+    function typeText() {
+      if (index < message.length) {
+        typing.textContent += message.charAt(index);
+        index++;
+        setTimeout(typeText, 85);
+      }
+    }
+
+    typeText();
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
 </body>
 </html>
