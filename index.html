@@ -6,11 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#020805">
   <title>xlebush3k | Matrix</title>
-  <meta name="description" content="xlebush3k — personal cyber terminal">
   <style>
     :root {
       --green: #00ff66;
-      --dark-green: #00a844;
       --bg: #020805;
       --panel: rgba(0, 20, 9, .88);
     }
@@ -56,14 +54,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      padding: 16px 7%;
-      background: rgba(0, 8, 3, .94);
+      padding: 16px 5%;
+      background: rgba(0, 8, 3, .96);
       border-bottom: 1px solid #00ff6644;
       backdrop-filter: blur(12px);
     }
 
     .logo {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: bold;
       text-shadow: 0 0 12px var(--green);
       white-space: nowrap;
@@ -72,12 +70,19 @@
     .nav {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
-      font-size: 13px;
+      gap: 16px;
+      font-size: 12px;
     }
 
-    .nav a { color: #b6ffc9; transition: .2s; }
-    .nav a:hover { color: white; text-shadow: 0 0 10px var(--green); }
+    .nav a {
+      color: #b6ffc9;
+      transition: .2s;
+    }
+
+    .nav a:hover {
+      color: white;
+      text-shadow: 0 0 10px var(--green);
+    }
 
     .status {
       color: var(--green);
@@ -151,7 +156,7 @@
 
     .btn {
       display: inline-block;
-      padding: 13px 20px;
+      padding: 14px 20px;
       border: 1px solid var(--green);
       background: #00ff6610;
       color: var(--green);
@@ -166,7 +171,10 @@
       transform: translateY(-2px);
     }
 
-    section { padding: 38px 0; scroll-margin-top: 75px; }
+    section {
+      padding: 30px 0;
+      scroll-margin-top: 80px;
+    }
 
     .panel {
       border: 1px solid #00ff6655;
@@ -189,6 +197,17 @@
 
     .prompt { color: white; }
     .ok { color: var(--green); }
+
+    .arcade-panel {
+      text-align: center;
+      border-color: var(--green);
+      box-shadow: 0 0 22px #00ff6618;
+    }
+
+    .arcade-panel p {
+      color: #b9eac8;
+      line-height: 1.8;
+    }
 
     .social-card {
       display: flex;
@@ -221,14 +240,20 @@
       50% { opacity: .3; }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       .topbar {
         padding: 13px 5%;
         flex-wrap: wrap;
       }
-      .nav { gap: 13px; }
+
+      .nav {
+        gap: 13px;
+      }
+
       .status { display: none; }
+
       .panel { padding: 18px; }
+
       .hero { min-height: 68vh; }
     }
 
@@ -241,6 +266,7 @@
     }
   </style>
 </head>
+
 <body>
   <canvas id="matrix" aria-hidden="true"></canvas>
 
@@ -252,15 +278,20 @@
       <a href="#about">ABOUT</a>
       <a href="#terminal">TERMINAL</a>
       <a href="#socials">SOCIALS</a>
+      <a href="games.html">ARCADE 🎮</a>
     </nav>
 
-    <div class="status"><span class="dot"></span>SYSTEM ONLINE</div>
+    <div class="status">
+      <span class="dot"></span>SYSTEM ONLINE
+    </div>
   </header>
 
   <main>
     <section class="hero" id="home">
       <div class="tag">PERSONAL CYBER SPACE</div>
+
       <h1>xlebush3k</h1>
+
       <p class="subtitle">
         <span id="typing"></span><span class="cursor"></span>
         <br>Welcome to my digital world.
@@ -268,21 +299,34 @@
 
       <div class="buttons">
         <a class="btn" href="#about">[ EXPLORE ]</a>
+
+        <a class="btn" href="games.html">
+          [ ENTER ARCADE 🎮 ]
+        </a>
+
         <a class="btn"
            href="https://www.tiktok.com/@xlebush3k00"
            target="_blank"
-           rel="noopener noreferrer">[ MY TIKTOK ↗ ]</a>
+           rel="noopener noreferrer">
+          [ MY TIKTOK ↗ ]
+        </a>
       </div>
     </section>
 
     <section id="about">
       <div class="panel">
         <h2>// ABOUT ME</h2>
+
         <p class="line">
           <span class="prompt">visitor@matrix:~$</span> whoami
-          <br><span class="ok">→ Welcome to xlebush3k's website.</span>
-          <br><span class="prompt">visitor@matrix:~$</span> status
-          <br><span class="ok">→ Online. System ready.</span>
+          <br>
+          <span class="ok">
+            → Welcome to xlebush3k's website.
+          </span>
+          <br>
+          <span class="prompt">visitor@matrix:~$</span> status
+          <br>
+          <span class="ok">→ Online. System ready.</span>
         </p>
       </div>
     </section>
@@ -290,14 +334,36 @@
     <section id="terminal">
       <div class="panel">
         <h2>// TERMINAL</h2>
+
         <p class="line">
           <span class="prompt">root@xlebush3k:~$</span> initialize
           <br><span class="ok">[ OK ] Interface loaded</span>
           <br><span class="ok">[ OK ] Matrix background active</span>
+          <br><span class="ok">[ OK ] Arcade module linked</span>
           <br><span class="ok">[ OK ] Social link connected</span>
-          <br><span class="prompt">root@xlebush3k:~$</span>
+          <br>
+          <span class="prompt">root@xlebush3k:~$</span>
           <span class="cursor"></span>
         </p>
+      </div>
+    </section>
+
+    <section id="arcade">
+      <div class="panel arcade-panel">
+        <h2>// MATRIX ARCADE</h2>
+
+        <p>
+          Four mini-games. One terminal.<br>
+          Can you beat your high score?
+        </p>
+
+        <div class="buttons">
+          <a class="btn" href="games.html">
+            [ LAUNCH ARCADE ↗ ]
+          </a>
+        </div>
+
+        <p class="ok">Snake.exe · Hack the Code · Reaction.exe · Cyber Shooter</p>
       </div>
     </section>
 
@@ -312,7 +378,9 @@
         <a class="btn"
            href="https://www.tiktok.com/@xlebush3k00"
            target="_blank"
-           rel="noopener noreferrer">OPEN TIKTOK ↗</a>
+           rel="noopener noreferrer">
+          OPEN TIKTOK ↗
+        </a>
       </div>
     </section>
   </main>
@@ -327,17 +395,19 @@
     // Matrix falling characters
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
-    const chars = "アイウエオカキクケコサシスセソタチツテト0123456789ABCDEF";
+    const chars = "アイウエオカキクケコサシスセソ0123456789ABCDEF";
     const fontSize = 15;
     let columns = 0;
     let drops = [];
 
     function resizeMatrix() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
       canvas.width = Math.floor(window.innerWidth * dpr);
       canvas.height = Math.floor(window.innerHeight * dpr);
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
+
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       columns = Math.ceil(window.innerWidth / fontSize);
@@ -350,11 +420,13 @@
     function drawMatrix() {
       ctx.fillStyle = "rgba(2, 8, 5, 0.09)";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
       ctx.fillStyle = "#00ff66";
       ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
         const char = chars[Math.floor(Math.random() * chars.length)];
+
         ctx.fillText(char, i * fontSize, drops[i] * fontSize);
 
         if (
@@ -388,6 +460,7 @@
     }
 
     typeText();
+
     document.getElementById("year").textContent =
       new Date().getFullYear();
   </script>
