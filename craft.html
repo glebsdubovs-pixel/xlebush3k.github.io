@@ -3,90 +3,151 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080b12">
-<title>xlebush3k — интерактивная вселенная</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Infinite Mix | xlebush3k</title>
 <style>
-:root{--bg:#080b12;--line:#253044;--text:#edf4ff;--muted:#9aa8bd;--green:#b6ff5c}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(ellipse at 15% 0%,#152337,transparent 42%),radial-gradient(ellipse at 90% 20%,#261536,transparent 35%),var(--bg);color:var(--text);font-family:system-ui,sans-serif}
-a{color:inherit;text-decoration:none}
-.wrap{width:min(1100px,calc(100% - 32px));margin:auto}
-nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid #ffffff12}
-.logo{font-weight:900;font-size:20px}
-.logo span{color:var(--green)}
-.navlinks{display:flex;gap:18px;color:var(--muted);font-size:14px}
-.hero{padding:74px 0 42px;text-align:center}
-.eyebrow{color:var(--green);font-size:12px;letter-spacing:3px;font-weight:800}
-.hero h1{font-size:clamp(42px,8vw,82px);line-height:.98;letter-spacing:-4px;margin:18px auto}
-.hero h1 em{font-style:normal;color:var(--green);text-shadow:0 0 32px #b6ff5c36}
-.hero p{max-width:600px;margin:auto;color:var(--muted);font-size:17px;line-height:1.7}
-.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:27px}
-.btn{display:inline-flex;padding:12px 18px;border-radius:12px;font-weight:800;border:1px solid var(--line);background:#111a27}
-.btn.primary{background:var(--green);color:#11170a}
-.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:36px 0 16px}
-.section-head h2{margin:0;font-size:25px}
-.section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.card{display:flex;flex-direction:column;min-height:235px;padding:20px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#121b2aee,#0c111bee);transition:.2s;position:relative;overflow:hidden}
-.card:hover{transform:translateY(-4px);border-color:#536780}
-.emoji{font-size:34px;margin-bottom:18px}
-.tag{color:var(--glow,var(--green));font-size:11px;font-weight:900;letter-spacing:2px}
-.card h3{font-size:21px;margin:8px 0}
-.card p{color:var(--muted);line-height:1.55;font-size:14px;margin:0 0 20px}
-.open{margin-top:auto;font-weight:800;font-size:13px}
-.open span{color:var(--glow,var(--green))}
-.small-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0 50px}
-.small-card{padding:19px;border:1px solid var(--line);border-radius:15px;background:#0e1420;display:flex;align-items:center;gap:15px}
-.small-card .emoji{margin:0;font-size:27px}
-.small-card p{margin:4px 0 0;color:var(--muted);font-size:13px}
-footer{border-top:1px solid #ffffff12;padding:24px 0 35px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-@media(max-width:750px){.grid{grid-template-columns:repeat(2,1fr)}.hero{padding-top:54px}.hero h1{letter-spacing:-2px}.navlinks{gap:10px;font-size:12px}}
-@media(max-width:500px){.grid,.small-grid{grid-template-columns:1fr}.card{min-height:205px}.hero p{font-size:15px}}
+body{margin:0;background:#000900;color:#d8ffe0;font-family:Consolas,monospace}
+header{padding:20px;text-align:center;border-bottom:1px solid #07551c}
+a{color:#00ff41}
+h1{color:#00ff41;text-shadow:0 0 15px #00ff4160}
+main{max-width:800px;margin:25px auto;padding:15px}
+.panel{background:#020e05;border:1px solid #07551c;border-radius:8px;padding:18px;margin-bottom:16px}
+.elements{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px}
+button{font:inherit;cursor:pointer;border:1px solid #00ff41;background:#001b07;color:#00ff41;border-radius:6px;padding:12px}
+button:hover{background:#00ff41;color:#001504}
+button:focus-visible{outline:2px solid white;outline-offset:3px}
+.element{min-height:65px;font-size:15px}
+.selected{background:#00ff41;color:#001504}
+#mix{width:100%;font-weight:bold;margin-top:14px}
+#result{font-size:20px;text-align:center;padding:18px;line-height:1.7}
+#message{color:#00ff41;text-align:center;min-height:22px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.small{font-size:12px;color:#8ba891}
+@media(max-width:450px){main{padding:10px}.panel{padding:13px}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<nav>
-<a class="logo" href="index.html">xlebush3k<span>.</span></a>
-<div class="navlinks">
-<a href="#projects">Эксперименты</a>
-<a href="#games">Игры</a>
-<a href="https://www.tiktok.com/@xlebush3k00" target="_blank" rel="noopener">TikTok ↗</a>
-</div>
-</nav>
-
-<header class="hero">
-<div class="eyebrow">МАЛЕНЬКАЯ ВСЕЛЕННАЯ В ИНТЕРНЕТЕ</div>
-<h1>Нажимай. <em>Пробуй.</em><br>Открывай.</h1>
-<p>Коллекция странных идей, мини-игр и интерактивных экспериментов. Потрать миллиард, смешай стихии или отправляйся в космос.</p>
-<div class="hero-actions">
-<a class="btn primary" href="#projects">Исследовать проекты ↓</a>
-<a class="btn" href="games.html">Открыть аркаду ↗</a>
-</div>
+<header>
+<a href="index.html">← НАЗАД НА ГЛАВНУЮ</a>
+<h1>🧪 INFINITE MIX</h1>
+<div class="small">Выбирай два элемента и смешивай их!</div>
 </header>
-
-<section id="projects">
-<div class="section-head"><div><h2>Лаборатория идей</h2><p>Выбери эксперимент и начни играть.</p></div><span class="tag">01 / EXPLORE</span></div>
-<div class="grid">
-<a class="card" href="craft.html" style="--glow:#b6ff5c"><div class="emoji">🧪</div><div class="tag">КОМБИНАЦИИ</div><h3>Infinite Mix</h3><p>Соединяй стихии и открывай новые элементы.</p><div class="open">Запустить эксперимент <span>↗</span></div></a>
-<a class="card" href="space.html" style="--glow:#65f3ff"><div class="emoji">🌌</div><div class="tag">ПУТЕШЕСТВИЕ</div><h3>Выше облаков</h3><p>Путешествуй от Земли к Луне и далёким мирам.</p><div class="open">Взлететь <span>↗</span></div></a>
-<a class="card" href="billion.html" style="--glow:#ffcf6b"><div class="emoji">💸</div><div class="tag">СИМУЛЯТОР</div><h3>Потрать миллиард</h3><p>Покупай машины, острова и другие вещи за виртуальные деньги.</p><div class="open">Начать тратить <span>↗</span></div></a>
-<a class="card" href="password.html" style="--glow:#ff6be8"><div class="emoji">🔐</div><div class="tag">ГОЛОВОЛОМКА</div><h3>Пароль безумия</h3><p>Собери пароль, выполняющий необычные правила.</p><div class="open">Принять вызов <span>↗</span></div></a>
-<a class="card" href="games.html" style="--glow:#ff785c"><div class="emoji">🕹️</div><div class="tag">АРКАДА</div><h3>Мини-игры</h3><p>Быстрые игры и попытки побить рекорд.</p><div class="open">Играть <span>↗</span></div></a>
-<a class="card" href="rpg.html" style="--glow:#ad8bff"><div class="emoji">⚔️</div><div class="tag">ПРИКЛЮЧЕНИЕ</div><h3>SHADOW QUEST</h3><p>Монстры, боссы, зелья и случайные способности.</p><div class="open">Начать квест <span>↗</span></div></a>
-</div>
+<main>
+<section class="panel">
+<div class="top"><strong>ТВОИ ЭЛЕМЕНТЫ</strong><span id="count" class="small"></span></div>
+<p class="small">Нажми на два разных элемента, затем на кнопку смешивания.</p>
+<div id="elements" class="elements"></div>
+<button id="mix" type="button">⚗️ СМЕШАТЬ ЭЛЕМЕНТЫ</button>
+<div id="result" aria-live="polite">Выбери два элемента!</div>
+<div id="message" aria-live="polite"></div>
 </section>
-
-<section id="games">
-<div class="section-head"><div><h2>Твоя территория</h2><p>Сайт продолжает расти.</p></div></div>
-<div class="small-grid">
-<a class="small-card" href="games.html"><div class="emoji">🎮</div><div><strong>Аркада xlebush3k</strong><p>Все мини-игры в одном месте</p></div></a>
-<a class="small-card" href="rpg.html"><div class="emoji">🗡️</div><div><strong>SHADOW QUEST</strong><p>Сохраняй прогресс и возвращайся</p></div></a>
-</div>
+<section class="panel">
+<div class="top"><strong>ОТКРЫТИЯ</strong><button id="reset" type="button">Сбросить прогресс</button></div>
+<div id="discoveries" class="small">Пока нет открытий.</div>
 </section>
-<footer><span>© xlebush3k · создано для любопытных</span><span>Необычное начинается с одного клика.</span></footer>
-</div>
+</main>
+<script>
+(function(){
+"use strict";
+const initial=[
+ {n:"Вода",e:"💧"},{n:"Огонь",e:"🔥"},
+ {n:"Земля",e:"🌍"},{n:"Воздух",e:"💨"}
+];
+const recipes={
+ "Вода|Огонь":{n:"Пар",e:"♨️"},
+ "Вода|Земля":{n:"Грязь",e:"🟤"},
+ "Воздух|Вода":{n:"Дождь",e:"🌧️"},
+ "Воздух|Огонь":{n:"Дым",e:"💨"},
+ "Воздух|Земля":{n:"Пыль",e:"🌫️"},
+ "Земля|Огонь":{n:"Лава",e:"🌋"},
+ "Дождь|Земля":{n:"Растение",e:"🌱"},
+ "Вода|Растение":{n:"Водоросли",e:"🌿"},
+ "Огонь|Растение":{n:"Пепел",e:"🪵"},
+ "Вода|Грязь":{n:"Болото",e:"🐸"},
+ "Воздух|Пар":{n:"Облако",e:"☁️"},
+ "Облако|Вода":{n:"Снег",e:"❄️"},
+ "Огонь|Пыль":{n:"Стекло",e:"🪟"},
+ "Лава|Вода":{n:"Камень",e:"🪨"},
+ "Камень|Воздух":{n:"Песок",e:"🏖️"},
+ "Огонь|Песок":{n:"Стекло",e:"🪟"},
+ "Земля|Растение":{n:"Дерево",e:"🌳"},
+ "Дерево|Огонь":{n:"Уголь",e:"⚫"},
+ "Вода|Облако":{n:"Дождь",e:"🌧️"},
+ "Вода|Камень":{n:"Глина",e:"🏺"},
+ "Глина|Огонь":{n:"Кирпич",e:"🧱"},
+ "Воздух|Жизнь":{n:"Птица",e:"🐦"},
+ "Вода|Жизнь":{n:"Рыба",e:"🐟"},
+ "Земля|Жизнь":{n:"Жизнь",e:"🧬"},
+ "Огонь|Вода":{n:"Пар",e:"♨️"},
+ "Дерево|Вода":{n:"Лодка",e:"🛶"},
+ "Камень|Огонь":{n:"Металл",e:"🔩"},
+ "Металл|Огонь":{n:"Меч",e:"⚔️"},
+ "Песок|Вода":{n:"Пляж",e:"🏝️"},
+ "Жизнь|Земля":{n:"Человек",e:"🧑"},
+ "Человек|Огонь":{n:"Кузнец",e:"🧑‍🏭"},
+ "Человек|Металл":{n:"Робот",e:"🤖"},
+ "Облако|Воздух":{n:"Небо",e:"🌌"},
+ "Небо|Огонь":{n:"Звезда",e:"⭐"},
+ "Звезда|Небо":{n:"Космос",e:"🌠"},
+ "Космос|Земля":{n:"Планета",e:"🪐"},
+ "Человек|Растение":{n:"Ферма",e:"🚜"},
+ "Рыба|Человек":{n:"Рыбак",e:"🎣"},
+ "Птица|Воздух":{n:"Полёт",e:"🪽"},
+ "Кирпич|Кирпич":{n:"Дом",e:"🏠"}
+};
+const key=(a,b)=>[a,b].sort().join("|");
+let known,selected=[],discovered=[];
+try{
+ const saved=JSON.parse(localStorage.getItem("infiniteMixSave")||"null");
+ known=Array.isArray(saved?.known)?saved.known.filter(x=>x&&typeof x.n==="string"&&typeof x.e==="string"):initial.slice();
+ discovered=Array.isArray(saved?.discovered)?saved.discovered.filter(x=>x&&typeof x.n==="string"&&typeof x.e==="string"):[];
+ initial.forEach(x=>{if(!known.some(y=>y.n===x.n))known.push(x)});
+}catch(e){known=initial.slice();discovered=[]}
+function save(){try{localStorage.setItem("infiniteMixSave",JSON.stringify({known,discovered}))}catch(e){}}
+function say(text){document.getElementById("message").textContent=text}
+function render(){
+ const root=document.getElementById("elements");root.replaceChildren();
+ known.forEach(item=>{
+  const b=document.createElement("button");
+  b.type="button";b.className="element"+(selected.includes(item.n)?" selected":"");
+  b.textContent=item.e+" "+item.n;
+  b.setAttribute("aria-pressed",String(selected.includes(item.n)));
+  b.addEventListener("click",()=>{
+   if(selected.includes(item.n)){selected=selected.filter(n=>n!==item.n)}
+   else if(selected.length<2){selected.push(item.n)}
+   else{say("Уже выбрано два элемента!");return}
+   say("");render();
+  });
+  root.appendChild(b);
+ });
+ document.getElementById("count").textContent=known.length+" элементов";
+ document.getElementById("discoveries").textContent=discovered.length?discovered.map(x=>x.e+" "+x.n).join(" · "):"Пока нет открытий.";
+}
+function mix(){
+ if(selected.length!==2){say("Сначала выбери два элемента!");return}
+ const [a,b]=selected;let out=recipes[key(a,b)];
+ if(!out&&a===b){
+  const same={Вода:{n:"Лужа",e:"💦"},Огонь:{n:"Пламя",e:"🔥"},Земля:{n:"Гора",e:"⛰️"},Воздух:{n:"Ветер",e:"🌪️"},Камень:{n:"Гора",e:"⛰️"}};
+  out=same[a]||{n:"Двойной "+a,e:"✨"};
+ }
+ if(!out)out={n:a+" "+b,e:"✨"};
+ const fresh=!known.some(x=>x.n===out.n);
+ if(fresh)known.push(out);
+ if(!discovered.some(x=>x.n===out.n))discovered.push(out);
+ document.getElementById("result").textContent=a+" + "+b+" = "+out.e+" "+out.n;
+ say(fresh?"🎉 Новое открытие!":"Комбинация получена!");
+ selected=[];save();render();
+}
+document.getElementById("mix").addEventListener("click",mix);
+document.getElementById("reset").addEventListener("click",()=>{
+ if(!confirm("Точно сбросить все открытия?"))return;
+ known=initial.slice();selected=[];discovered=[];save();
+ document.getElementById("result").textContent="Выбери два элемента!";
+ say("Прогресс сброшен.");render();
+});
+render();
+})();
+</script>
 </body>
 </html>
