@@ -195,7 +195,7 @@ for(let i=0;i<28;i++){const bar=document.createElement('i');bar.style.animationD
 // SUPABASE AUTH + GLOBAL LEADERBOARDS
 // Публичный ключ можно использовать в браузере; секретный/service_role сюда НИКОГДА не вставляй.
 const SUPABASE_URL = 'https://jakeqoauoaodutfrwzpr.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'PASTE_YOUR_sb_publishable_KEY_HERE';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_tZFJDgueICH_QvvbLARN8A_byaKDMaR';
 let arcadeDb = null, arcadeUser = null, arcadeLastSubmitted = {};
 const arcadeConfigured = () => Boolean(window.supabase && SUPABASE_URL.startsWith('https://') && SUPABASE_PUBLISHABLE_KEY.startsWith('sb_publishable_') && SUPABASE_PUBLISHABLE_KEY.length > 25 && !SUPABASE_PUBLISHABLE_KEY.includes('PASTE_'));
 function arcadeMessage(message, status){const el=document.getElementById('authMessage');if(el)el.textContent=message;const badge=document.getElementById('authStatus');if(badge)badge.textContent=status||'OFFLINE';}
@@ -208,7 +208,7 @@ async function arcadeEnsureProfile(){
 }
 async function arcadeInit(){
   if(!arcadeConfigured()){
-    arcadeMessage('Вставь полный sb_publishable_ ключ в SUPABASE_PUBLISHABLE_KEY внизу файла.','SETUP REQUIRED');
+    arcadeMessage('Добавь полный публичный sb_publishable_ ключ в настройки Supabase внизу файла.','SETUP REQUIRED');
     const st=document.getElementById('leaderStatus');if(st)st.textContent='Supabase пока не настроен.';return;
   }
   try{
@@ -262,7 +262,7 @@ async function arcadeSubmitScore(game,score){
 async function arcadeLoadLeaderboard(){
   const rows=document.getElementById('leaderRows'),status=document.getElementById('leaderStatus');if(!rows||!status)return;
   if(!arcadeDb){status.textContent='Вставь публичный ключ Supabase, чтобы включить онлайн-рейтинг.';return;}
-  if(!arcadeUser){status.textContent='Войди в аккаунт, чтобы просматривать общий рейтинг.';rows.innerHTML='<tr><td colspan="3" class="muted" style="padding:10px">Войди или создай аккаунт для просмотра рейтинга.</td></tr>';return;}
+  // Общий рейтинг доступен и без входа; отправка результатов всё равно требует аккаунт.
   const game=document.getElementById('leaderGame')?.value||'snake';status.textContent='Загружаю рейтинг…';
   const {data,error}=await arcadeDb.from('scores').select('user_id,score,created_at').eq('game_name',game).order('score',{ascending:false}).order('created_at',{ascending:true}).limit(100);
   if(error){status.textContent='Ошибка рейтинга: '+error.message+' — проверь таблицы и RLS.';return;}
