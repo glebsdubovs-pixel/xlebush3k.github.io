@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -85,6 +84,30 @@ header {
   overflow-wrap:anywhere;
 }
 .subtitle { color:var(--muted); font-size:13px; }
+
+/* TIKTOK — MR. ROBOT STYLE */
+.tiktok-link {
+  display:inline-block;
+  margin-top:18px;
+  padding:11px 16px;
+  color:#ff304f;
+  background:#100808;
+  border:1px solid #ff304f;
+  border-radius:3px;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:bold;
+  letter-spacing:1px;
+  box-shadow:3px 3px 0 #6d1426;
+  transition:.2s;
+}
+.tiktok-link:hover {
+  color:#080808;
+  background:#ff304f;
+  box-shadow:0 0 18px #ff304f66;
+  transform:translateY(-2px);
+}
+
 nav {
   display:flex;
   flex-wrap:wrap;
@@ -100,13 +123,20 @@ nav a {
   border:1px solid var(--border);
   border-radius:4px;
 }
-nav a:hover { border-color:var(--green); background:#06200e; }
+nav a:hover {
+  border-color:var(--green);
+  background:#06200e;
+}
 main {
   width:min(1050px,100%);
   margin:auto;
   padding:20px 14px 50px;
 }
-.section-title { color:var(--green); font-size:18px; margin:24px 0 14px; }
+.section-title {
+  color:var(--green);
+  font-size:18px;
+  margin:24px 0 14px;
+}
 .games {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -120,12 +150,37 @@ main {
   min-width:0;
   box-shadow:0 5px 20px #0005;
 }
-.card h2 { color:var(--green); font-size:17px; margin:0 0 10px; }
-.desc { color:var(--muted); font-size:12px; line-height:1.6; min-height:35px; }
-.row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.card h2 {
+  color:var(--green);
+  font-size:17px;
+  margin:0 0 10px;
+}
+.desc {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+  min-height:35px;
+}
+.row {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
 .status { color:var(--lime); font-size:12px; }
-.output { min-height:20px; color:var(--muted); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
-.big-number { color:var(--lime); font-size:32px; margin:12px 0; text-shadow:0 0 12px #baff0040; }
+.output {
+  min-height:20px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+.big-number {
+  color:var(--lime);
+  font-size:32px;
+  margin:12px 0;
+  text-shadow:0 0 12px #baff0040;
+}
 .game-canvas {
   display:block;
   width:100%;
@@ -145,7 +200,11 @@ main {
   gap:6px;
   margin:12px auto 0;
 }
-.snake-controls button { padding:8px; min-height:46px; font-size:20px; }
+.snake-controls button {
+  padding:8px;
+  min-height:46px;
+  font-size:20px;
+}
 .snake-controls .empty { visibility:hidden; }
 .terminal {
   background:#020502;
@@ -175,14 +234,23 @@ footer {
 </style>
 </head>
 <body>
+
 <header>
   <canvas id="matrix"></canvas>
   <div class="header-content">
     <div class="subtitle">[ SYSTEM ONLINE ]</div>
     <h1 class="logo">xlebush3k</h1>
     <div class="subtitle">ARCADE // GAMES // TERMINAL</div>
+
+    <a class="tiktok-link"
+       href="https://www.tiktok.com/@xlebush3k00"
+       target="_blank"
+       rel="noopener noreferrer">
+      ♪ TIKTOK @xlebush3k00 ↗
+    </a>
   </div>
 </header>
+
 <nav>
   <a href="#games">GAMES</a>
   <a href="#snake">SNAKE.EXE</a>
@@ -192,11 +260,10 @@ footer {
   <a href="billion.html">BILLION</a>
   <a href="password.html">PASSWORD</a>
 </nav>
+
 <main>
   <h2 class="section-title" id="games">// MINI GAMES</h2>
   <div class="games">
-    <!-- В следующей части идут все 8 старых игр и 4 новые карточки -->
-
     <!-- 01 — SNAKE -->
     <section class="card" id="snake">
       <h2>// 01 — Snake.exe</h2>
@@ -335,7 +402,6 @@ footer {
   <div>xlebush3k // ARCADE</div>
   <p>STAY CURIOUS. KEEP PLAYING.</p>
 </footer>
-
 <script>
 "use strict";
 
@@ -480,7 +546,6 @@ document.addEventListener("keydown", event => {
   }
 });
 
-// Управление змейкой свайпами на телефоне.
 let touchStartX = 0;
 let touchStartY = 0;
 
@@ -608,6 +673,7 @@ reactionButton.addEventListener("click", () => {
     clearTimeout(reactionTimeout);
     reactionState = "idle";
     reactionButton.textContent = "START TEST";
+    reactionButton.style.background = "";
     reactionMsg.textContent = "Слишком рано! Попробуй снова.";
     return;
   }
@@ -616,6 +682,7 @@ reactionButton.addEventListener("click", () => {
     const elapsed = Math.round(performance.now() - reactionStart);
     reactionState = "idle";
     reactionButton.textContent = "START TEST";
+    reactionButton.style.background = "";
     reactionMsg.textContent = `Твоя реакция: ${elapsed} мс`;
 
     if (elapsed < reactionBest) {
@@ -629,6 +696,7 @@ reactionButton.addEventListener("click", () => {
   reactionButton.textContent = "ЖДИ ЗЕЛЁНЫЙ...";
   reactionButton.style.background = "#493000";
   reactionMsg.textContent = "Жди сигнала...";
+
   reactionTimeout = setTimeout(() => {
     reactionState = "ready";
     reactionStart = performance.now();
@@ -651,7 +719,6 @@ document.getElementById("diceButton").addEventListener("click", () => {
   document.getElementById("diceResult").textContent = diceFaces[n];
   document.getElementById("diceMsg").textContent = `Выпало число ${n}.`;
 });
-
 // ===== CYBER PONG =====
 const pongCanvas = document.getElementById("pongCanvas");
 const pongCtx = pongCanvas.getContext("2d");
@@ -726,7 +793,10 @@ function movePaddle(event) {
   if (clientX == null) return;
 
   const scaleX = 300 / rect.width;
-  paddle.x = Math.max(0, Math.min(300 - paddle.w, (clientX - rect.left) * scaleX - paddle.w / 2));
+  paddle.x = Math.max(
+    0,
+    Math.min(300 - paddle.w, (clientX - rect.left) * scaleX - paddle.w / 2)
+  );
   drawPong();
 }
 
