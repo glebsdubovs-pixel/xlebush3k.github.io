@@ -4,263 +4,587 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Infinite Mix | xlebush3k</title>
+<meta name="theme-color" content="#000900">
+<meta name="description" content="XLEBUSH3K — игровой портал с мини-играми, секретами и неоновым Matrix-дизайном.">
+<title>XLEBUSH3K | Game Portal</title>
+
 <style>
+:root{
+  --green:#00ff41;
+  --dark:#000900;
+  --panel:#031108;
+  --border:#07551c;
+  --text:#d8ffe0;
+  --muted:#8ba891;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#000900;color:#d8ffe0;font-family:Consolas,Monaco,monospace}
-header{text-align:center;padding:22px 12px;border-bottom:1px solid #07551c}
-a{color:#00ff41}
-h1{color:#00ff41;text-shadow:0 0 15px #00ff4160}
-main{max-width:850px;margin:24px auto;padding:12px}
-.panel{background:#020e05;border:1px solid #07551c;border-radius:7px;padding:17px;margin-bottom:16px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.small{font-size:12px;color:#8ba891;line-height:1.6}
-.elements{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px}
-button{font:inherit;cursor:pointer;border:1px solid #00ff41;background:#001b07;color:#00ff41;border-radius:5px;padding:12px}
-button:hover{background:#00ff41;color:#001504}
-button:focus-visible{outline:2px solid white;outline-offset:3px}
-.element{min-height:60px}
-.element.selected{background:#00ff41;color:#001504}
-#mix{width:100%;margin-top:14px;font-weight:bold}
-#result{text-align:center;font-size:19px;padding:18px 5px;overflow-wrap:anywhere}
-#message{color:#00ff41;text-align:center;min-height:22px;font-size:13px}
-#discoveries{line-height:2;overflow-wrap:anywhere}
-@media(max-width:450px){main{padding:8px}.panel{padding:12px}}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  background:var(--dark);
+  color:var(--text);
+  font-family:Consolas,Monaco,"Courier New",monospace;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+#matrix{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:-2;
+  opacity:.19;
+  pointer-events:none;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:radial-gradient(ellipse at 50% 15%,#00380d35,transparent 65%);
+}
+header{
+  padding:15px 6%;
+  border-bottom:1px solid var(--border);
+  background:#000900d9;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  position:relative;
+}
+.brand{
+  color:var(--green);
+  font-size:20px;
+  font-weight:bold;
+  letter-spacing:2px;
+  cursor:pointer;
+  text-shadow:0 0 12px #00ff4170;
+}
+nav{display:flex;gap:18px;flex-wrap:wrap}
+nav a,.text-link{
+  color:var(--muted);
+  font-size:13px;
+  transition:.2s;
+}
+nav a:hover,.text-link:hover{color:var(--green)}
+.hero{
+  min-height:440px;
+  padding:85px 20px 65px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+.tag{
+  color:var(--green);
+  font-size:12px;
+  letter-spacing:4px;
+  border:1px solid var(--border);
+  padding:9px 13px;
+  background:#001706b8;
+}
+h1{
+  color:var(--green);
+  font-size:clamp(38px,9vw,82px);
+  margin:23px 0 12px;
+  letter-spacing:clamp(2px,1vw,9px);
+  text-shadow:0 0 12px #00ff4170,0 0 35px #00ff4130;
+  overflow-wrap:anywhere;
+}
+.cursor{
+  display:inline-block;
+  width:3px;
+  height:.85em;
+  background:var(--green);
+  margin-left:5px;
+  animation:blink .8s steps(2,start) infinite;
+}
+@keyframes blink{to{visibility:hidden}}
+.subtitle{
+  color:var(--muted);
+  max-width:600px;
+  line-height:1.8;
+  font-size:14px;
+}
+.actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:25px;
+}
+.btn{
+  display:inline-block;
+  padding:13px 19px;
+  background:#001b07;
+  color:var(--green);
+  border:1px solid var(--green);
+  border-radius:5px;
+  cursor:pointer;
+  transition:transform .2s,box-shadow .2s,background .2s;
+}
+.btn:hover{
+  background:var(--green);
+  color:#001504;
+  box-shadow:0 0 22px #00ff4145;
+  transform:translateY(-3px);
+}
+.btn.secondary{border-color:var(--border);color:var(--text)}
+main{max-width:1100px;margin:auto;padding:0 18px 60px}
+.section-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:25px 0 18px;
+}
+h2{
+  color:var(--green);
+  font-size:21px;
+  margin:0;
+}
+.section-note{color:var(--muted);font-size:12px;margin-top:8px}
+.games{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));
+  gap:15px;
+}
+.game{
+  position:relative;
+  min-height:190px;
+  padding:21px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:linear-gradient(145deg,#04170a,#010702);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.game::after{
+  content:"";
+  position:absolute;
+  height:2px;
+  bottom:0;
+  left:0;
+  width:0;
+  background:var(--green);
+  transition:width .3s;
+}
+.game:hover{
+  transform:translateY(-5px);
+  border-color:var(--green);
+  box-shadow:0 8px 30px #00ff4110;
+}
+.game:hover::after{width:100%}
+.game-icon{font-size:34px;margin-bottom:15px}
+.game h3{font-size:17px;color:var(--green);margin:0 0 9px}
+.game p{font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 18px}
+.open{margin-top:auto;color:var(--green);font-size:12px}
+.status{
+  display:inline-block;
+  font-size:10px;
+  border:1px solid var(--border);
+  color:var(--green);
+  padding:4px 7px;
+  margin-bottom:12px;
+  align-self:flex-start;
+}
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+.info{
+  padding:18px;
+  border:1px solid var(--border);
+  background:#020e05;
+  border-radius:6px;
+}
+.info strong{display:block;color:var(--green);font-size:20px;margin-bottom:7px}
+.info span{font-size:11px;color:var(--muted)}
+.terminal{
+  border:1px solid var(--border);
+  background:#010602;
+  padding:18px;
+  margin-top:24px;
+  border-radius:7px;
+}
+.terminal-title{color:var(--green);font-size:12px;margin-bottom:12px}
+.terminal p{font-size:12px;color:var(--muted);line-height:1.8;margin:6px 0}
+.terminal input{
+  width:100%;
+  margin-top:12px;
+  background:#000900;
+  border:1px solid var(--border);
+  color:var(--green);
+  padding:12px;
+  font:inherit;
+  outline:none;
+}
+.terminal input:focus{border-color:var(--green)}
+#terminal-output{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--green)}
+footer{
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:25px 15px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:2;
+}
+#toast{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translate(-50%,20px);
+  width:max-content;
+  max-width:calc(100% - 30px);
+  padding:14px 18px;
+  background:#001b07;
+  color:var(--green);
+  border:1px solid var(--green);
+  border-radius:7px;
+  font-size:13px;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  z-index:10;
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.secret{
+  display:none;
+  border:1px dashed var(--green);
+  padding:17px;
+  margin-top:20px;
+  color:var(--green);
+  background:#001406;
+  line-height:1.8;
+  overflow-wrap:anywhere;
+}
+.secret.show{display:block;animation:appear .4s}
+@keyframes appear{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+body.secret-mode{--green:#39ffb6;--border:#08775a}
+@media(max-width:550px){
+  header{padding:15px 18px}
+  nav{gap:12px}
+  .hero{padding:65px 15px 50px;min-height:380px}
+  .subtitle{font-size:13px}
+  .game{min-height:170px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
 </style>
 </head>
+
 <body>
+<canvas id="matrix" aria-hidden="true"></canvas>
+
 <header>
-<a href="index.html">← НАЗАД НА ГЛАВНУЮ</a>
-<h1>🧪 INFINITE MIX</h1>
-<div class="small">Выбирай два элемента и открывай новые комбинации!</div>
+  <a class="brand" href="index.html" id="logo">[ XLEBUSH3K ]</a>
+  <nav>
+    <a href="#games">ИГРЫ</a>
+    <a href="#about">О САЙТЕ</a>
+    <a href="#terminal">ТЕРМИНАЛ</a>
+  </nav>
 </header>
 
-<main>
-<section class="panel">
-<div class="top">
-<strong>ТВОИ ЭЛЕМЕНТЫ</strong>
-<span id="count" class="small"></span>
-</div>
-<p class="small">Можно выбирать даже два одинаковых элемента!</p>
-<div id="elements" class="elements"></div>
-<button id="mix" type="button">⚗️ СМЕШАТЬ ЭЛЕМЕНТЫ</button>
-<div id="result" aria-live="polite">Выбери два элемента!</div>
-<div id="message" aria-live="polite"></div>
+<section class="hero">
+  <div class="tag">SYSTEM ONLINE // WELCOME</div>
+  <h1 id="hero-title">XLEBUSH3K<span class="cursor"></span></h1>
+  <p class="subtitle">
+    Добро пожаловать в мой цифровой мир.
+    Игры, эксперименты, секреты и немного хаоса.
+    Исследуй портал — здесь кое-что спрятано.
+  </p>
+  <div class="actions">
+    <a class="btn" href="#games">▶ ОТКРЫТЬ ИГРЫ</a>
+    <button class="btn secondary" id="secret-button" type="button">? СЕКРЕТ</button>
+  </div>
+  <div class="secret" id="hero-secret">
+    > SECRET FOUND<br>
+    Ты нашёл первую пасхалку.<br>
+    Но это только начало, агент.
+  </div>
 </section>
 
-<section class="panel">
-<div class="top">
-<strong>🏆 ОТКРЫТИЯ</strong>
-<button id="reset" type="button">Сбросить прогресс</button>
-</div>
-<p class="small">Найденные элементы сохраняются в браузере.</p>
-<div id="discoveries">Пока нет открытий.</div>
-</section>
+<main>
+  <section id="games">
+    <div class="section-head">
+      <div>
+        <h2>./ GAME_DIRECTORY</h2>
+        <div class="section-note">Выбирай игру и начинай исследование.</div>
+      </div>
+      <span class="small">ACCESS: GRANTED</span>
+    </div>
+
+    <div class="games">
+      <a class="game" href="craft.html">
+        <div class="game-icon">🧪</div>
+        <span class="status">DISCOVERY</span>
+        <h3>Infinite Mix</h3>
+        <p>Смешивай элементы, открывай новые комбинации и собирай коллекцию.</p>
+        <span class="open">ЗАПУСТИТЬ →</span>
+      </a>
+
+      <a class="game" href="games.html">
+        <div class="game-icon">🕹️</div>
+        <span class="status">ARCADE</span>
+        <h3>Arcade Zone</h3>
+        <p>Аркадные развлечения для проверки реакции и ловкости.</p>
+        <span class="open">ЗАПУСТИТЬ →</span>
+      </a>
+
+      <a class="game" href="rpg.html">
+        <div class="game-icon">⚔️</div>
+        <span class="status">RPG QUEST</span>
+        <h3>Shadow Quest</h3>
+        <p>Отправляйся в приключение, исследуй мир и проверь свои навыки.</p>
+        <span class="open">ЗАПУСТИТЬ →</span>
+      </a>
+
+      <a class="game" href="space.html">
+        <div class="game-icon">🚀</div>
+        <span class="status">SPACE</span>
+        <h3>Space Game</h3>
+        <p>Открой космическое приключение и исследуй звёздные просторы.</p>
+        <span class="open">ЗАПУСТИТЬ →</span>
+      </a>
+
+      <a class="game" href="billion.html">
+        <div class="game-icon">💰</div>
+        <span class="status">CLICKER</span>
+        <h3>Billionaire</h3>
+        <p>Начни с малого и попробуй построить собственную игровую империю.</p>
+        <span class="open">ЗАПУСТИТЬ →</span>
+      </a>
+
+      <a class="game" href="password.html">
+        <div class="game-icon">🔐</div>
+        <span class="status">CHALLENGE</span>
+        <h3>Password Challenge</h3>
+        <p>Проверь логику и попробуй справиться с испытанием паролей.</p>
+        <span class="open">ЗАПУСТИТЬ →</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="about" style="margin-top:48px">
+    <div class="section-head">
+      <div>
+        <h2>./ SYSTEM_STATUS</h2>
+        <div class="section-note">Информация о портале.</div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info">
+        <strong>ONLINE</strong>
+        <span>Статус портала</span>
+      </div>
+      <div class="info">
+        <strong>6</strong>
+        <span>Игровых разделов</span>
+      </div>
+      <div class="info">
+        <strong>???</strong>
+        <span>Количество секретов</span>
+      </div>
+    </div>
+
+    <div class="terminal" id="terminal">
+      <div class="terminal-title">root@xlebush3k:~$ mini-terminal</div>
+      <p>Локальный игровой терминал.</p>
+      <p>Введи <span style="color:#00ff41">help</span>, чтобы увидеть команды.</p>
+      <form id="terminal-form">
+        <input id="terminal-input" type="text"
+          placeholder="Введите команду..."
+          autocomplete="off" maxlength="60"
+          aria-label="Команда терминала">
+      </form>
+      <p id="terminal-output" aria-live="polite"></p>
+    </div>
+
+    <div class="secret" id="konami-secret">
+      > KONAMI PROTOCOL ACTIVATED<br>
+      Секретный режим активирован!<br>
+      Ты знаешь больше, чем обычный посетитель.
+    </div>
+
+    <div class="secret" id="terminal-secret">
+      > ROOT ACCESS: EASTER EGG<br>
+      Хорошая работа, исследователь.<br>
+      Некоторые секреты открываются только внимательным.
+    </div>
+  </section>
 </main>
+
+<footer>
+  <div>© XLEBUSH3K // GAME PORTAL</div>
+  <div>BUILT WITH HTML, CSS & JAVASCRIPT</div>
+  <div>Keep exploring. There is always another secret.</div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
 "use strict";
 
-const initial=[
- {n:"Вода",e:"💧"},
- {n:"Огонь",e:"🔥"},
- {n:"Земля",e:"🌍"},
- {n:"Воздух",e:"💨"}
-];
+// Matrix background
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+const chars="アイウエオカキクケコサシスセソタチツテト012345789";
+let drops=[];
+let columns=0;
+let frame=0;
 
-function key(a,b){
- return [a,b].sort((x,y)=>x.localeCompare(y,"ru")).join("|");
+function resizeMatrix(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=Math.floor(window.innerWidth*dpr);
+  canvas.height=Math.floor(window.innerHeight*dpr);
+  canvas.style.width=window.innerWidth+"px";
+  canvas.style.height=window.innerHeight+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  columns=Math.ceil(window.innerWidth/16);
+  drops=Array.from({length:columns},()=>Math.random()*-60);
 }
+resizeMatrix();
+window.addEventListener("resize",resizeMatrix);
 
-const rawRecipes={
- "Вода|Вода":{n:"Лужа",e:"💦"},
- "Огонь|Огонь":{n:"Пламя",e:"🔥"},
- "Земля|Земля":{n:"Гора",e:"⛰️"},
- "Воздух|Воздух":{n:"Ветер",e:"🌪️"},
+const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
- "Вода|Огонь":{n:"Пар",e:"♨️"},
- "Вода|Земля":{n:"Грязь",e:"🟤"},
- "Воздух|Вода":{n:"Дождь",e:"🌧️"},
- "Воздух|Огонь":{n:"Дым",e:"💨"},
- "Воздух|Земля":{n:"Пыль",e:"🌫️"},
- "Земля|Огонь":{n:"Лава",e:"🌋"},
-
- "Дождь|Земля":{n:"Растение",e:"🌱"},
- "Вода|Растение":{n:"Водоросли",e:"🌿"},
- "Огонь|Растение":{n:"Пепел",e:"🪵"},
- "Вода|Грязь":{n:"Болото",e:"🐸"},
- "Воздух|Пар":{n:"Облако",e:"☁️"},
- "Облако|Вода":{n:"Снег",e:"❄️"},
- "Огонь|Пыль":{n:"Стекло",e:"🪟"},
- "Лава|Вода":{n:"Камень",e:"🪨"},
- "Камень|Воздух":{n:"Песок",e:"🏖️"},
- "Земля|Растение":{n:"Дерево",e:"🌳"},
- "Дерево|Огонь":{n:"Уголь",e:"⚫"},
- "Вода|Камень":{n:"Глина",e:"🏺"},
- "Глина|Огонь":{n:"Кирпич",e:"🧱"},
- "Камень|Огонь":{n:"Металл",e:"🔩"},
- "Металл|Огонь":{n:"Меч",e:"⚔️"},
- "Песок|Вода":{n:"Пляж",e:"🏝️"},
- "Вода|Жизнь":{n:"Рыба",e:"🐟"},
- "Воздух|Жизнь":{n:"Птица",e:"🐦"},
- "Облако|Воздух":{n:"Небо",e:"🌌"},
- "Небо|Огонь":{n:"Звезда",e:"⭐"},
- "Звезда|Небо":{n:"Космос",e:"🌠"},
- "Космос|Земля":{n:"Планета",e:"🪐"},
- "Человек|Металл":{n:"Робот",e:"🤖"},
- "Дерево|Вода":{n:"Лодка",e:"🛶"},
- "Кирпич|Кирпич":{n:"Дом",e:"🏠"},
- "Вода|Дождь":{n:"Река",e:"🏞️"},
- "Дерево|Земля":{n:"Лес",e:"🌲"},
- "Лава|Воздух":{n:"Пепел",e:"🌋"},
- "Вода|Песок":{n:"Пляж",e:"🏝️"},
- "Дерево|Кирпич":{n:"Дом",e:"🏠"},
- "Металл|Камень":{n:"Инструмент",e:"🛠️"},
- "Пар|Воздух":{n:"Облако",e:"☁️"},
- "Пыль|Вода":{n:"Грязь",e:"🟤"},
- "Растение|Солнце":{n:"Цветок",e:"🌻"},
- "Вода|Лужа":{n:"Озеро",e:"🏞️"},
- "Пламя|Воздух":{n:"Пожар",e:"🔥"},
- "Гора|Вода":{n:"Река",e:"🏞️"},
- "Ветер|Вода":{n:"Волна",e:"🌊"},
- "Волна|Земля":{n:"Берег",e:"🏖️"},
- "Песок|Огонь":{n:"Стекло",e:"🪟"},
- "Камень|Камень":{n:"Гора",e:"⛰️"},
- "Лес|Огонь":{n:"Пожар",e:"🔥"},
- "Растение|Вода":{n:"Водоросли",e:"🌿"},
- "Дождь|Ветер":{n:"Шторм",e:"🌩️"},
- "Снег|Солнце":{n:"Вода",e:"💧"}
-};
-
-// Нормализуем ключи, чтобы рецепты работали в любом порядке.
-const recipes={};
-Object.entries(rawRecipes).forEach(([pair,result])=>{
- const parts=pair.split("|");
- recipes[key(parts[0],parts[1])]=result;
-});
-
-let known=initial.slice();
-let discovered=[];
-let selected=[];
-
-try{
- const saved=JSON.parse(localStorage.getItem("infiniteMixSave")||"null");
- if(saved&&Array.isArray(saved.known)){
-  saved.known.forEach(x=>{
-   if(x&&typeof x.n==="string"&&typeof x.e==="string"&&
-      !known.some(y=>y.n===x.n)){
-    known.push(x);
-   }
-  });
- }
- if(saved&&Array.isArray(saved.discovered)){
-  discovered=saved.discovered.filter(x=>
-   x&&typeof x.n==="string"&&typeof x.e==="string"
-  );
- }
-}catch(e){}
-
-function save(){
- try{
-  localStorage.setItem("infiniteMixSave",
-   JSON.stringify({known,discovered}));
- }catch(e){}
-}
-
-function say(text){
- document.getElementById("message").textContent=text;
-}
-
-function render(){
- const root=document.getElementById("elements");
- root.replaceChildren();
-
- known.forEach(item=>{
-  const button=document.createElement("button");
-  button.type="button";
-
-  const selectedCount=selected.filter(n=>n===item.n).length;
-  button.className="element"+(selectedCount>0?" selected":"");
-  button.textContent=item.e+" "+item.n+
-   (selectedCount>1?" ×"+selectedCount:"");
-  button.setAttribute("aria-pressed",String(selectedCount>0));
-
-  button.addEventListener("click",()=>{
-   if(selected.length>=2){
-    say("Сначала смешай выбранные элементы.");
+function drawMatrix(){
+  if(reduceMotion)return;
+  frame++;
+  if(frame%2!==0){
+    requestAnimationFrame(drawMatrix);
     return;
-   }
-   selected.push(item.n);
-   say("");
-   render();
-  });
+  }
+  ctx.fillStyle="rgba(0,9,0,0.09)";
+  ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
+  ctx.fillStyle="#00ff41";
+  ctx.font="14px monospace";
 
-  root.appendChild(button);
- });
+  for(let i=0;i<drops.length;i++){
+    const char=chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(char,i*16,drops[i]*16);
+    if(drops[i]*16>window.innerHeight&&Math.random()>.975){
+      drops[i]=0;
+    }
+    drops[i]+=.48;
+  }
+  requestAnimationFrame(drawMatrix);
+}
+if(!reduceMotion)drawMatrix();
 
- document.getElementById("count").textContent=
-  known.length+" элементов";
-
- document.getElementById("discoveries").textContent=
-  discovered.length
-   ?discovered.map(x=>x.e+" "+x.n).join(" · ")
-   :"Пока нет открытий.";
+// Toast notification
+let toastTimer;
+function toast(message){
+  const el=document.getElementById("toast");
+  el.textContent=message;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove("show"),2800);
 }
 
-function mix(){
- if(selected.length!==2){
-  say("❗ Сначала выбери два элемента!");
-  return;
- }
-
- const a=selected[0];
- const b=selected[1];
- const out=recipes[key(a,b)];
-
- if(!out){
-  document.getElementById("result").textContent=
-   a+" + "+b+" — комбинация не найдена.";
-  say("Попробуй другую пару элементов.");
-  selected=[];
-  render();
-  return;
- }
-
- const alreadyKnown=known.some(x=>x.n===out.n);
-
- if(!alreadyKnown){
-  known.push(out);
-  discovered.push(out);
-  say("🎉 Новое открытие!");
- }else{
-  say("Этот элемент уже открыт!");
- }
-
- document.getElementById("result").textContent=
-  a+" + "+b+" = "+out.e+" "+out.n;
-
- selected=[];
- save();
- render();
-}
-
-document.getElementById("mix").addEventListener("click",mix);
-
-document.getElementById("reset").addEventListener("click",()=>{
- if(!confirm("Точно сбросить все открытия?"))return;
-
- known=initial.slice();
- discovered=[];
- selected=[];
- save();
-
- document.getElementById("result").textContent="Выбери два элемента!";
- say("Прогресс сброшен.");
- render();
+// Logo easter egg: click 5 times
+let logoClicks=0;
+let logoTimer;
+document.getElementById("logo").addEventListener("click",function(event){
+  event.preventDefault();
+  logoClicks++;
+  clearTimeout(logoTimer);
+  if(logoClicks>=5){
+    logoClicks=0;
+    document.getElementById("hero-secret").classList.add("show");
+    toast("ПАСХАЛКА №1: LOGO MASTER!");
+  }else{
+    toast("Секретные клики: "+logoClicks+"/5");
+    logoTimer=setTimeout(()=>logoClicks=0,2500);
+  }
 });
 
-render();
+// Secret button
+document.getElementById("secret-button").addEventListener("click",()=>{
+  const secret=document.getElementById("hero-secret");
+  secret.classList.toggle("show");
+  toast(secret.classList.contains("show")
+    ?"Пасхалка найдена!"
+    :"Секрет скрыт.");
+});
+
+// Keyboard sequence: Up Up Down Down Left Right Left Right B A
+const sequence=["ArrowUp","ArrowUp","ArrowDown","ArrowDown",
+  "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+let keySequence=[];
+document.addEventListener("keydown",event=>{
+  if(event.target instanceof HTMLInputElement) return;
+  keySequence.push(event.key.length===1?event.key.toLowerCase():event.key);
+  keySequence=keySequence.slice(-sequence.length);
+  if(sequence.every((key,i)=>key===keySequence[i])){
+    document.body.classList.toggle("secret-mode");
+    document.getElementById("konami-secret").classList.add("show");
+    toast("KONAMI CODE ACTIVATED!");
+    keySequence=[];
+  }
+});
+
+// Mini terminal: commands are matched, never executed as code.
+const input=document.getElementById("terminal-input");
+const output=document.getElementById("terminal-output");
+const form=document.getElementById("terminal-form");
+
+form.addEventListener("submit",event=>{
+  event.preventDefault();
+  const command=input.value.trim().toLowerCase();
+  input.value="";
+
+  const commands={
+    "help":"Команды: help, games, about, matrix, secret, clear",
+    "games":"Игровые разделы: Infinite Mix, Arcade Zone, Shadow Quest и другие.",
+    "about":"XLEBUSH3K — личный игровой портал.",
+    "matrix":"MATRIX STATUS: ONLINE",
+    "secret":"Проверка доступа... Пасхалка обнаружена!",
+    "clear":""
+  };
+
+  if(command==="secret"){
+    document.getElementById("terminal-secret").classList.add("show");
+    toast("Пасхалка №3: ROOT ACCESS!");
+  }
+
+  if(command==="matrix"){
+    document.body.classList.toggle("secret-mode");
+  }
+
+  if(Object.prototype.hasOwnProperty.call(commands,command)){
+    output.textContent=commands[command];
+  }else{
+    output.textContent="Команда не найдена: "+command+
+      "\nВведи help, чтобы увидеть список команд.";
+  }
+});
+
+// Small entrance message
+setTimeout(()=>toast("SYSTEM ONLINE // Добро пожаловать!"),900);
 })();
 </script>
 </body>
