@@ -6,257 +6,174 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#050805">
 <title>xlebush3k // ARCADE</title>
-
 <style>
 :root {
-  --bg: #050805;
-  --panel: #0a100b;
-  --green: #00ff66;
-  --lime: #baff00;
-  --text: #d6ffe1;
-  --muted: #779b80;
-  --border: #164526;
+  --bg:#050805;
+  --panel:#0a100b;
+  --green:#00ff66;
+  --lime:#baff00;
+  --text:#d6ffe1;
+  --muted:#779b80;
+  --border:#164526;
 }
-
-* { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
-
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Consolas, Monaco, monospace;
-  min-height: 100vh;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Consolas,Monaco,monospace;
+  min-height:100vh;
 }
-
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background:
-    radial-gradient(ellipse at top, #063016 0%, transparent 55%),
-    linear-gradient(#050805, #020402);
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:radial-gradient(ellipse at top,#063016 0%,transparent 55%),linear-gradient(#050805,#020402);
 }
-
-a { color: var(--green); }
-
-button, input {
-  font: inherit;
-}
-
+a { color:var(--green); }
+button,input { font:inherit; }
 button {
-  background: #07170b;
-  color: var(--green);
-  border: 1px solid var(--green);
-  padding: 11px 15px;
-  cursor: pointer;
-  transition: .15s;
-  border-radius: 4px;
+  background:#07170b;
+  color:var(--green);
+  border:1px solid var(--green);
+  padding:11px 15px;
+  cursor:pointer;
+  transition:.15s;
+  border-radius:4px;
 }
-
 button:hover {
-  background: var(--green);
-  color: #001506;
-  box-shadow: 0 0 14px #00ff6644;
+  background:var(--green);
+  color:#001506;
+  box-shadow:0 0 14px #00ff6644;
 }
-
-button:active { transform: scale(.97); }
-
+button:active { transform:scale(.97); }
 input {
-  width: 100%;
-  padding: 12px;
-  background: #020502;
-  color: var(--green);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  outline: none;
-  margin: 8px 0;
+  width:100%;
+  padding:12px;
+  background:#020502;
+  color:var(--green);
+  border:1px solid var(--border);
+  border-radius:4px;
+  outline:none;
+  margin:8px 0;
 }
-
-input:focus { border-color: var(--green); }
-
+input:focus { border-color:var(--green); }
 header {
-  position: relative;
-  padding: 32px 18px 25px;
-  text-align: center;
-  border-bottom: 1px solid var(--border);
-  overflow: hidden;
+  position:relative;
+  padding:32px 18px 25px;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
 }
-
 #matrix {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: .17;
-  pointer-events: none;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:.17;
+  pointer-events:none;
 }
-
-.header-content { position: relative; }
-
+.header-content { position:relative; }
 .logo {
-  font-size: clamp(27px, 6vw, 48px);
-  color: var(--green);
-  text-shadow: 0 0 18px #00ff6670;
-  margin: 5px 0 10px;
-  overflow-wrap: anywhere;
+  font-size:clamp(27px,6vw,48px);
+  color:var(--green);
+  text-shadow:0 0 18px #00ff6670;
+  margin:5px 0 10px;
+  overflow-wrap:anywhere;
 }
-
-.subtitle {
-  color: var(--muted);
-  font-size: 13px;
-}
-
+.subtitle { color:var(--muted); font-size:13px; }
 nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 9px;
-  padding: 14px;
-  border-bottom: 1px solid var(--border);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:9px;
+  padding:14px;
+  border-bottom:1px solid var(--border);
 }
-
 nav a {
-  text-decoration: none;
-  font-size: 13px;
-  padding: 8px 11px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  text-decoration:none;
+  font-size:13px;
+  padding:8px 11px;
+  border:1px solid var(--border);
+  border-radius:4px;
 }
-
-nav a:hover {
-  border-color: var(--green);
-  background: #06200e;
-}
-
+nav a:hover { border-color:var(--green); background:#06200e; }
 main {
-  width: min(1050px, 100%);
-  margin: auto;
-  padding: 20px 14px 50px;
+  width:min(1050px,100%);
+  margin:auto;
+  padding:20px 14px 50px;
 }
-
-.section-title {
-  color: var(--green);
-  font-size: 18px;
-  margin: 24px 0 14px;
-}
-
+.section-title { color:var(--green); font-size:18px; margin:24px 0 14px; }
 .games {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
 }
-
 .card {
-  background: linear-gradient(145deg, #0b130d, #060906);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 16px;
-  min-width: 0;
-  box-shadow: 0 5px 20px #0005;
+  background:linear-gradient(145deg,#0b130d,#060906);
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:16px;
+  min-width:0;
+  box-shadow:0 5px 20px #0005;
 }
-
-.card h2 {
-  color: var(--green);
-  font-size: 17px;
-  margin: 0 0 10px;
-}
-
-.desc {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-  min-height: 35px;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.status {
-  color: var(--lime);
-  font-size: 12px;
-}
-
-.output {
-  min-height: 20px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-}
-
-.big-number {
-  color: var(--lime);
-  font-size: 32px;
-  margin: 12px 0;
-  text-shadow: 0 0 12px #baff0040;
-}
-
+.card h2 { color:var(--green); font-size:17px; margin:0 0 10px; }
+.desc { color:var(--muted); font-size:12px; line-height:1.6; min-height:35px; }
+.row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.status { color:var(--lime); font-size:12px; }
+.output { min-height:20px; color:var(--muted); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.big-number { color:var(--lime); font-size:32px; margin:12px 0; text-shadow:0 0 12px #baff0040; }
 .game-canvas {
-  display: block;
-  width: 100%;
-  max-width: 300px;
-  height: auto;
-  aspect-ratio: 1 / 1;
-  margin: 12px auto;
-  background: #000;
-  border: 1px solid #00ff6644;
-  image-rendering: pixelated;
-  touch-action: none;
+  display:block;
+  width:100%;
+  max-width:300px;
+  height:auto;
+  aspect-ratio:1/1;
+  margin:12px auto;
+  background:#000;
+  border:1px solid #00ff6644;
+  image-rendering:pixelated;
+  touch-action:none;
 }
-
 .snake-controls {
-  display: grid;
-  grid-template-columns: repeat(3, 52px);
-  justify-content: center;
-  gap: 6px;
-  margin: 12px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3,52px);
+  justify-content:center;
+  gap:6px;
+  margin:12px auto 0;
 }
-
-.snake-controls button {
-  padding: 8px;
-  min-height: 46px;
-  font-size: 20px;
-}
-
-.snake-controls .empty { visibility: hidden; }
-
+.snake-controls button { padding:8px; min-height:46px; font-size:20px; }
+.snake-controls .empty { visibility:hidden; }
 .terminal {
-  background: #020502;
-  border: 1px solid var(--border);
-  padding: 12px;
-  min-height: 95px;
-  color: var(--green);
-  font-size: 12px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  background:#020502;
+  border:1px solid var(--border);
+  padding:12px;
+  min-height:95px;
+  color:var(--green);
+  font-size:12px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
-
+.card a { text-decoration:none; }
 footer {
-  border-top: 1px solid var(--border);
-  text-align: center;
-  padding: 24px 12px;
-  color: var(--muted);
-  font-size: 12px;
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:24px 12px;
+  color:var(--muted);
+  font-size:12px;
 }
-
-@media (max-width: 650px) {
-  .games { grid-template-columns: 1fr; }
-  main { padding: 12px 10px 35px; }
-  .card { padding: 14px; }
-  .desc { min-height: auto; }
-  button { padding: 12px; }
+@media(max-width:650px) {
+  .games { grid-template-columns:1fr; }
+  main { padding:12px 10px 35px; }
+  .card { padding:14px; }
+  .desc { min-height:auto; }
+  button { padding:12px; }
 }
 </style>
 </head>
-
 <body>
 <header>
   <canvas id="matrix"></canvas>
@@ -266,50 +183,37 @@ footer {
     <div class="subtitle">ARCADE // GAMES // TERMINAL</div>
   </div>
 </header>
-
 <nav>
   <a href="#games">GAMES</a>
   <a href="#snake">SNAKE.EXE</a>
   <a href="#terminal">TERMINAL</a>
+  <a href="craft.html">CRAFT</a>
+  <a href="right.html">SHADOW QUEST</a>
+  <a href="billion.html">BILLION</a>
+  <a href="password.html">PASSWORD</a>
 </nav>
-
 <main>
   <h2 class="section-title" id="games">// MINI GAMES</h2>
-
   <div class="games">
+    <!-- В следующей части идут все 8 старых игр и 4 новые карточки -->
 
-    <!-- SNAKE -->
+    <!-- 01 — SNAKE -->
     <section class="card" id="snake">
       <h2>// 01 — Snake.exe</h2>
-      <p class="desc">
-        Собирай светящиеся блоки. Управление: свайпы по полю,
-        стрелки на экране или клавиши клавиатуры.
-      </p>
-
-      <canvas class="game-canvas" id="snakeCanvas"
-        width="300" height="300"
-        aria-label="Игровое поле змейки"></canvas>
-
+      <p class="desc">Собирай светящиеся блоки. Управление: свайпы, экранные стрелки или клавиатура.</p>
+      <canvas class="game-canvas" id="snakeCanvas" width="300" height="300"></canvas>
       <div class="row" style="margin-top:10px;justify-content:space-between">
         <span class="status">SCORE: <b id="snakeScore">0</b></span>
         <button id="snakeStart">START / RESTART</button>
       </div>
-
-      <div class="snake-controls" aria-label="Управление змейкой">
-        <span class="empty"></span>
-        <button data-dir="up" aria-label="Вверх">▲</button>
-        <span class="empty"></span>
-        <button data-dir="left" aria-label="Влево">◀</button>
-        <button data-dir="down" aria-label="Вниз">▼</button>
-        <button data-dir="right" aria-label="Вправо">▶</button>
+      <div class="snake-controls">
+        <span class="empty"></span><button data-dir="up">▲</button><span class="empty"></span>
+        <button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button>
       </div>
-
-      <p class="output" id="snakeMsg" aria-live="polite">
-        Нажми START, чтобы начать.
-      </p>
+      <p class="output" id="snakeMsg">Нажми START, чтобы начать.</p>
     </section>
 
-    <!-- CLICKER -->
+    <!-- 02 — CLICKER -->
     <section class="card">
       <h2>// 02 — Green Clicker</h2>
       <p class="desc">Нажимай и набирай очки.</p>
@@ -319,12 +223,11 @@ footer {
       <p class="output">Всего кликов: <span id="clickTotal">0</span></p>
     </section>
 
-    <!-- GUESS -->
+    <!-- 03 — GUESS -->
     <section class="card">
       <h2>// 03 — Guess the Code</h2>
       <p class="desc">Угадай число от 1 до 100.</p>
-      <input id="guessInput" type="number" min="1" max="100"
-        placeholder="Введи число..." />
+      <input id="guessInput" type="number" min="1" max="100" placeholder="Введи число...">
       <div class="row">
         <button id="guessButton">CHECK</button>
         <button id="guessReset">NEW GAME</button>
@@ -333,7 +236,7 @@ footer {
       <p class="status">Попытки: <span id="guessAttempts">0</span></p>
     </section>
 
-    <!-- RPS -->
+    <!-- 04 — ROCK PAPER SCISSORS -->
     <section class="card">
       <h2>// 04 — Rock / Paper / Scissors</h2>
       <p class="desc">Камень, ножницы, бумага против компьютера.</p>
@@ -346,7 +249,7 @@ footer {
       <p class="status">Победы: <span id="rpsWins">0</span></p>
     </section>
 
-    <!-- REACTION -->
+    <!-- 05 — REACTION -->
     <section class="card">
       <h2>// 05 — Reaction.exe</h2>
       <p class="desc">Проверь скорость реакции.</p>
@@ -357,7 +260,7 @@ footer {
       <p class="status">Лучшее время: <span id="reactionBest">—</span></p>
     </section>
 
-    <!-- COIN -->
+    <!-- 06 — COIN -->
     <section class="card">
       <h2>// 06 — Coin Flip</h2>
       <p class="desc">Орёл или решка?</p>
@@ -366,7 +269,7 @@ footer {
       <p class="output" id="coinMsg">Случайный результат.</p>
     </section>
 
-    <!-- DICE -->
+    <!-- 07 — DICE -->
     <section class="card">
       <h2>// 07 — Dice.exe</h2>
       <p class="desc">Брось виртуальный кубик.</p>
@@ -375,12 +278,11 @@ footer {
       <p class="output" id="diceMsg">Результат от 1 до 6.</p>
     </section>
 
-    <!-- PONG -->
+    <!-- 08 — PONG -->
     <section class="card">
       <h2>// 08 — Cyber Pong</h2>
       <p class="desc">Отбивай мяч мышкой или пальцем. Не дай ему пройти!</p>
-      <canvas id="pongCanvas" class="game-canvas"
-        width="300" height="300" aria-label="Pong"></canvas>
+      <canvas id="pongCanvas" class="game-canvas" width="300" height="300"></canvas>
       <div class="row">
         <button id="pongStart">START / RESTART</button>
         <span class="status">SCORE: <b id="pongScore">0</b></span>
@@ -388,6 +290,33 @@ footer {
       <p class="output" id="pongMsg">Нажми START.</p>
     </section>
 
+    <!-- 09 — BILLION -->
+    <section class="card">
+      <h2>// 09 — Spend a Billion</h2>
+      <p class="desc">У тебя миллиард евро. Сможешь потратить всё?</p>
+      <a href="billion.html"><button>PLAY NOW</button></a>
+    </section>
+
+    <!-- 10 — PASSWORD MADNESS -->
+    <section class="card">
+      <h2>// 10 — Password Madness</h2>
+      <p class="desc">Создай пароль, выполняя всё более сложные правила.</p>
+      <a href="password.html"><button>PLAY NOW</button></a>
+    </section>
+
+    <!-- 11 — SHADOW QUEST -->
+    <section class="card">
+      <h2>// 11 — Shadow Quest</h2>
+      <p class="desc">Исследуй мир, сражайся с врагами и прокачивай героя.</p>
+      <a href="right.html"><button>PLAY NOW</button></a>
+    </section>
+
+    <!-- 12 — CRAFT PORTAL -->
+    <section class="card">
+      <h2>// 12 — Craft Portal</h2>
+      <p class="desc">Открой страницу с дополнительными играми.</p>
+      <a href="craft.html"><button>OPEN PORTAL</button></a>
+    </section>
   </div>
 
   <!-- TERMINAL -->
@@ -396,8 +325,7 @@ footer {
     <p class="desc">Попробуй команды: help, about, date, clear.</p>
     <div class="terminal" id="terminalOutput">xlebush3k@arcade:~$ system online</div>
     <form id="terminalForm">
-      <input id="terminalInput" autocomplete="off"
-        placeholder="Введи команду..." aria-label="Команда терминала">
+      <input id="terminalInput" autocomplete="off" placeholder="Введи команду..." aria-label="Команда терминала">
       <button type="submit">EXECUTE</button>
     </form>
   </section>
@@ -409,191 +337,113 @@ footer {
 </footer>
 
 <script>
-// MATRIX BACKGROUND
-(() => {
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
-  const chars = "01アイウエオカキクケコ";
-  let columns = [];
+"use strict";
 
-  function resize() {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(1, Math.floor(rect.width * dpr));
-    canvas.height = Math.max(1, Math.floor(rect.height * dpr));
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    columns = Array.from(
-      { length: Math.ceil(rect.width / 14) },
-      () => Math.random() * rect.height / 14
-    );
-  }
+// ===== SNAKE.EXE =====
+const snakeCanvas = document.getElementById("snakeCanvas");
+const snakeCtx = snakeCanvas.getContext("2d");
+const snakeScoreEl = document.getElementById("snakeScore");
+const snakeMsg = document.getElementById("snakeMsg");
 
-  function draw() {
-    const w = canvas.clientWidth;
-    const h = canvas.clientHeight;
-    ctx.fillStyle = "rgba(0,5,2,0.12)";
-    ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = "#00ff66";
-    ctx.font = "12px monospace";
+const cell = 15;
+const gridSize = 20;
+let snake = [];
+let food = { x: 10, y: 10 };
+let snakeDir = { x: 1, y: 0 };
+let nextDir = { x: 1, y: 0 };
+let snakeScore = 0;
+let snakeTimer = null;
+let snakeRunning = false;
 
-    columns.forEach((y, i) => {
-      ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 14, y * 14);
-      if (y * 14 > h && Math.random() > .975) columns[i] = 0;
-      else columns[i] += .6;
-    });
-    requestAnimationFrame(draw);
-  }
-
-  resize();
-  window.addEventListener("resize", resize);
-  draw();
-})();
-
-// SNAKE — ORIGINAL MATRIX VERSION WITH SWIPE CONTROLS
-(() => {
-  const c = document.getElementById("snakeCanvas");
-  const ctx = c.getContext("2d");
-  const N = 20, CELL = 15;
-
-  let snake, food, dir, next, score, timer;
-  let running = false, over = true;
-
-  const scoreEl = document.getElementById("snakeScore");
-  const msg = document.getElementById("snakeMsg");
-
-  function foodSpot() {
-    let p;
-    do {
-      p = {
-        x: Math.floor(Math.random() * N),
-        y: Math.floor(Math.random() * N)
-      };
-    } while (snake.some(s => s.x === p.x && s.y === p.y));
-    return p;
-  }
-
-  function draw() {
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, 300, 300);
-
-    ctx.strokeStyle = "#003b19";
-    ctx.lineWidth = .5;
-
-    for (let i = 0; i <= N; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * CELL, 0);
-      ctx.lineTo(i * CELL, 300);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(0, i * CELL);
-      ctx.lineTo(300, i * CELL);
-      ctx.stroke();
-    }
-
-    if (food) {
-      ctx.fillStyle = "#baff00";
-      ctx.shadowColor = "#00ff66";
-      ctx.shadowBlur = 12;
-      ctx.fillRect(food.x * CELL + 3, food.y * CELL + 3, 9, 9);
-      ctx.shadowBlur = 0;
-    }
-
-    if (snake) {
-      snake.forEach((s, i) => {
-        ctx.fillStyle = i === 0 ? "#caffd8" : "#00ff66";
-        ctx.shadowColor = "#00ff66";
-        ctx.shadowBlur = i === 0 ? 10 : 3;
-        ctx.fillRect(
-          s.x * CELL + 1,
-          s.y * CELL + 1,
-          CELL - 2,
-          CELL - 2
-        );
-      });
-      ctx.shadowBlur = 0;
-    }
-
-    if (over) {
-      ctx.fillStyle = "#00ff66";
-      ctx.font = "bold 14px monospace";
-      ctx.textAlign = "center";
-      ctx.fillText(running ? "GAME OVER" : "SNAKE.EXE", 150, 145);
-      ctx.textAlign = "left";
-    }
-  }
-
-  function start() {
-    clearInterval(timer);
-    snake = [
-      { x: 9, y: 10 },
-      { x: 8, y: 10 },
-      { x: 7, y: 10 }
-    ];
-    dir = { x: 1, y: 0 };
-    next = { x: 1, y: 0 };
-    score = 0;
-    food = foodSpot();
-    running = true;
-    over = false;
-    scoreEl.textContent = "0";
-    msg.textContent = "Collect the glowing data.";
-    draw();
-    timer = setInterval(step, 125);
-  }
-
-  function step() {
-    dir = next;
-    const head = {
-      x: snake[0].x + dir.x,
-      y: snake[0].y + dir.y
+function randomFood() {
+  let pos;
+  do {
+    pos = {
+      x: Math.floor(Math.random() * gridSize),
+      y: Math.floor(Math.random() * gridSize)
     };
+  } while (snake.some(part => part.x === pos.x && part.y === pos.y));
+  return pos;
+}
 
-    const ate = head.x === food.x && head.y === food.y;
-    const body = snake.slice(0, ate ? snake.length : snake.length - 1);
+function drawSnake() {
+  snakeCtx.fillStyle = "#020802";
+  snakeCtx.fillRect(0, 0, 300, 300);
 
-    if (
-      head.x < 0 || head.x >= N ||
-      head.y < 0 || head.y >= N ||
-      body.some(s => s.x === head.x && s.y === head.y)
-    ) {
-      clearInterval(timer);
-      running = false;
-      over = true;
-      msg.textContent =
-        "GAME OVER — score: " + score + ". Press START / RESTART.";
-      draw();
-      return;
-    }
-
-    snake.unshift(head);
-
-    if (ate) {
-      score++;
-      scoreEl.textContent = score;
-      food = foodSpot();
-
-      if (snake.length === N * N) {
-        clearInterval(timer);
-        running = false;
-        over = true;
-        msg.textContent = "MAXIMUM DATA COLLECTED. YOU WIN!";
-        draw();
-        return;
-      }
-    } else {
-      snake.pop();
-    }
-
-    draw();
+  snakeCtx.strokeStyle = "#092009";
+  for (let i = 0; i <= 300; i += cell) {
+    snakeCtx.beginPath();
+    snakeCtx.moveTo(i, 0);
+    snakeCtx.lineTo(i, 300);
+    snakeCtx.stroke();
+    snakeCtx.beginPath();
+    snakeCtx.moveTo(0, i);
+    snakeCtx.lineTo(300, i);
+    snakeCtx.stroke();
   }
 
-  function turn(d) {
-    if (!running) return;
-    if (d.x === -dir.x && d.y === -dir.y) return;
-    next = d;
+  snakeCtx.fillStyle = "#ff4545";
+  snakeCtx.fillRect(food.x * cell + 2, food.y * cell + 2, cell - 4, cell - 4);
+
+  snake.forEach((part, i) => {
+    snakeCtx.fillStyle = i === 0 ? "#c4ffc4" : "#00ff41";
+    snakeCtx.shadowColor = "#00ff41";
+    snakeCtx.shadowBlur = 8;
+    snakeCtx.fillRect(part.x * cell + 1, part.y * cell + 1, cell - 2, cell - 2);
+  });
+
+  snakeCtx.shadowBlur = 0;
+}
+
+function startSnake() {
+  clearInterval(snakeTimer);
+  snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+  snakeDir = { x: 1, y: 0 };
+  nextDir = { x: 1, y: 0 };
+  snakeScore = 0;
+  snakeScoreEl.textContent = "0";
+  food = randomFood();
+  snakeRunning = true;
+  snakeMsg.textContent = "Игра началась!";
+  drawSnake();
+  snakeTimer = setInterval(tickSnake, 120);
+}
+
+function tickSnake() {
+  snakeDir = nextDir;
+  const head = {
+    x: snake[0].x + snakeDir.x,
+    y: snake[0].y + snakeDir.y
+  };
+
+  const eating = head.x === food.x && head.y === food.y;
+  const body = eating ? snake : snake.slice(0, -1);
+
+  if (
+    head.x < 0 || head.x >= gridSize ||
+    head.y < 0 || head.y >= gridSize ||
+    body.some(part => part.x === head.x && part.y === head.y)
+  ) {
+    clearInterval(snakeTimer);
+    snakeRunning = false;
+    snakeMsg.textContent = "GAME OVER — нажми START / RESTART.";
+    return;
   }
 
+  snake.unshift(head);
+
+  if (eating) {
+    snakeScore += 1;
+    snakeScoreEl.textContent = String(snakeScore);
+    food = randomFood();
+  } else {
+    snake.pop();
+  }
+
+  drawSnake();
+}
+
+function changeSnakeDir(dir) {
   const directions = {
     up: { x: 0, y: -1 },
     down: { x: 0, y: 1 },
@@ -601,329 +451,349 @@ footer {
     right: { x: 1, y: 0 }
   };
 
-  document.querySelectorAll("[data-dir]").forEach(button => {
-    button.addEventListener("click", () => {
-      turn(directions[button.dataset.dir]);
-    });
-  });
+  const d = directions[dir];
+  if (!d) return;
 
-  document.addEventListener("keydown", event => {
-    const map = {
-      ArrowUp: "up",
-      ArrowDown: "down",
-      ArrowLeft: "left",
-      ArrowRight: "right"
-    };
+  if (d.x === -snakeDir.x && d.y === -snakeDir.y) return;
+  nextDir = d;
 
-    if (map[event.key] && document.activeElement.tagName !== "INPUT") {
-      event.preventDefault();
-      turn(directions[map[event.key]]);
-    }
-  });
+  if (!snakeRunning && snake.length === 0) startSnake();
+}
 
-  let touch = null;
+document.getElementById("snakeStart").addEventListener("click", startSnake);
 
-  c.addEventListener("touchstart", event => {
-    const t = event.changedTouches[0];
-    touch = { x: t.clientX, y: t.clientY };
-  }, { passive: true });
-
-  c.addEventListener("touchend", event => {
-    if (!touch) return;
-    const t = event.changedTouches[0];
-    const dx = t.clientX - touch.x;
-    const dy = t.clientY - touch.y;
-
-    if (Math.max(Math.abs(dx), Math.abs(dy)) > 18) {
-      if (Math.abs(dx) > Math.abs(dy)) {
-        turn({ x: Math.sign(dx), y: 0 });
-      } else {
-        turn({ x: 0, y: Math.sign(dy) });
-      }
-    }
-    touch = null;
-  }, { passive: true });
-
-  document.getElementById("snakeStart").addEventListener("click", start);
-  draw();
-})();
-
-// CLICKER
-(() => {
-  let score = 0;
-  let total = 0;
-  const scoreEl = document.getElementById("clickScore");
-  const totalEl = document.getElementById("clickTotal");
-
-  document.getElementById("clickButton").addEventListener("click", () => {
-    score++;
-    total++;
-    scoreEl.textContent = score;
-    totalEl.textContent = total;
-  });
-
-  document.getElementById("clickReset").addEventListener("click", () => {
-    score = 0;
-    scoreEl.textContent = score;
-  });
-})();
-
-// GUESS THE NUMBER
-(() => {
-  let secret, attempts;
-  const input = document.getElementById("guessInput");
-  const msg = document.getElementById("guessMsg");
-  const attemptsEl = document.getElementById("guessAttempts");
-  const check = document.getElementById("guessButton");
-
-  function reset() {
-    secret = Math.floor(Math.random() * 100) + 1;
-    attempts = 0;
-    attemptsEl.textContent = "0";
-    input.value = "";
-    msg.textContent = "Новое число выбрано. Удачи!";
-    check.disabled = false;
-  }
-
-  check.addEventListener("click", () => {
-    const n = Number(input.value);
-    if (!Number.isInteger(n) || n < 1 || n > 100) {
-      msg.textContent = "Введи целое число от 1 до 100.";
-      return;
-    }
-
-    attempts++;
-    attemptsEl.textContent = attempts;
-
-    if (n === secret) {
-      msg.textContent = "ACCESS GRANTED! Ты угадал за " + attempts + " попыток.";
-      check.disabled = true;
-    } else {
-      msg.textContent = n < secret ? "Слишком мало. Попробуй выше." : "Слишком много. Попробуй ниже.";
-    }
-  });
-
-  document.getElementById("guessReset").addEventListener("click", reset);
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter") check.click();
-  });
-  reset();
-})();
-
-// ROCK PAPER SCISSORS
-(() => {
-  let wins = 0;
-  const options = ["Камень", "Бумага", "Ножницы"];
-  const msg = document.getElementById("rpsMsg");
-  const winsEl = document.getElementById("rpsWins");
-
-  document.querySelectorAll("[data-rps]").forEach(button => {
-    button.addEventListener("click", () => {
-      const player = button.dataset.rps;
-      const computer = options[Math.floor(Math.random() * 3)];
-      let result;
-
-      if (player === computer) {
-        result = "Ничья!";
-      } else if (
-        (player === "Камень" && computer === "Ножницы") ||
-        (player === "Бумага" && computer === "Камень") ||
-        (player === "Ножницы" && computer === "Бумага")
-      ) {
-        result = "Ты победил!";
-        wins++;
-        winsEl.textContent = wins;
-      } else {
-        result = "Компьютер победил.";
-      }
-
-      msg.textContent = "Ты: " + player + " | Компьютер: " + computer + ". " + result;
-    });
-  });
-})();
-
-// REACTION TEST
-(() => {
-  const button = document.getElementById("reactionButton");
-  const msg = document.getElementById("reactionMsg");
-  const bestEl = document.getElementById("reactionBest");
-  let timeout, startTime, best = Infinity, state = "idle";
-
-  button.addEventListener("click", () => {
-    if (state === "waiting") {
-      clearTimeout(timeout);
-      state = "idle";
-      button.textContent = "START TEST";
-      button.style.background = "";
-      msg.textContent = "Слишком рано! Попробуй снова.";
-      return;
-    }
-
-    if (state === "ready") {
-      const time = Math.round(performance.now() - startTime);
-      msg.textContent = "Твоя реакция: " + time + " мс.";
-      if (time < best) {
-        best = time;
-        bestEl.textContent = best + " мс";
-      }
-      state = "idle";
-      button.textContent = "TRY AGAIN";
-      button.style.background = "";
-      return;
-    }
-
-    state = "waiting";
-    button.textContent = "ЖДИ ЗЕЛЁНЫЙ...";
-    button.style.background = "#332900";
-    msg.textContent = "Жди сигнала...";
-
-    timeout = setTimeout(() => {
-      state = "ready";
-      startTime = performance.now();
-      button.textContent = "НАЖМИ!";
-      button.style.background = "#00ff66";
-      button.style.color = "#001506";
-    }, 1000 + Math.random() * 3000);
-  });
-})();
-
-// COIN FLIP
-document.getElementById("coinButton").addEventListener("click", () => {
-  const result = Math.random() < .5 ? "ОРЁЛ" : "РЕШКА";
-  document.getElementById("coinResult").textContent = result;
-  document.getElementById("coinMsg").textContent = "Выпало: " + result + ".";
+document.querySelectorAll("[data-dir]").forEach(button => {
+  button.addEventListener("click", () => changeSnakeDir(button.dataset.dir));
 });
 
-// DICE
+document.addEventListener("keydown", event => {
+  const keys = {
+    ArrowUp: "up",
+    ArrowDown: "down",
+    ArrowLeft: "left",
+    ArrowRight: "right"
+  };
+
+  if (keys[event.key] && document.activeElement.tagName !== "INPUT") {
+    event.preventDefault();
+    changeSnakeDir(keys[event.key]);
+  }
+});
+
+// Управление змейкой свайпами на телефоне.
+let touchStartX = 0;
+let touchStartY = 0;
+
+snakeCanvas.addEventListener("touchstart", event => {
+  const touch = event.changedTouches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+  event.preventDefault();
+}, { passive: false });
+
+snakeCanvas.addEventListener("touchend", event => {
+  const touch = event.changedTouches[0];
+  const dx = touch.clientX - touchStartX;
+  const dy = touch.clientY - touchStartY;
+
+  if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    changeSnakeDir(dx > 0 ? "right" : "left");
+  } else {
+    changeSnakeDir(dy > 0 ? "down" : "up");
+  }
+
+  event.preventDefault();
+}, { passive: false });
+
+snake = [];
+drawSnake();
+
+// ===== GREEN CLICKER =====
+let clicks = 0;
+const clickScore = document.getElementById("clickScore");
+const clickTotal = document.getElementById("clickTotal");
+
+document.getElementById("clickButton").addEventListener("click", () => {
+  clicks++;
+  clickScore.textContent = String(clicks);
+  clickTotal.textContent = String(clicks);
+});
+
+document.getElementById("clickReset").addEventListener("click", () => {
+  clicks = 0;
+  clickScore.textContent = "0";
+  clickTotal.textContent = "0";
+});
+
+// ===== GUESS THE CODE =====
+let secretNumber = Math.floor(Math.random() * 100) + 1;
+let guessCount = 0;
+
+function resetGuess() {
+  secretNumber = Math.floor(Math.random() * 100) + 1;
+  guessCount = 0;
+  document.getElementById("guessAttempts").textContent = "0";
+  document.getElementById("guessMsg").textContent = "Новое число загадано!";
+  document.getElementById("guessInput").value = "";
+}
+
+document.getElementById("guessButton").addEventListener("click", () => {
+  const input = document.getElementById("guessInput");
+  const value = Number(input.value);
+  const msg = document.getElementById("guessMsg");
+
+  if (!Number.isInteger(value) || value < 1 || value > 100) {
+    msg.textContent = "Введи целое число от 1 до 100.";
+    return;
+  }
+
+  guessCount++;
+  document.getElementById("guessAttempts").textContent = String(guessCount);
+
+  if (value === secretNumber) {
+    msg.textContent = `Угадал! Число: ${secretNumber}. Попыток: ${guessCount}.`;
+  } else if (value < secretNumber) {
+    msg.textContent = "Слишком мало. Попробуй больше!";
+  } else {
+    msg.textContent = "Слишком много. Попробуй меньше!";
+  }
+});
+
+document.getElementById("guessReset").addEventListener("click", resetGuess);
+document.getElementById("guessInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") document.getElementById("guessButton").click();
+});
+
+// ===== ROCK / PAPER / SCISSORS =====
+let rpsWins = 0;
+const rpsChoices = ["Камень", "Бумага", "Ножницы"];
+
+document.querySelectorAll("[data-rps]").forEach(button => {
+  button.addEventListener("click", () => {
+    const player = button.dataset.rps;
+    const computer = rpsChoices[Math.floor(Math.random() * 3)];
+    let result;
+
+    if (player === computer) {
+      result = "Ничья!";
+    } else if (
+      (player === "Камень" && computer === "Ножницы") ||
+      (player === "Бумага" && computer === "Камень") ||
+      (player === "Ножницы" && computer === "Бумага")
+    ) {
+      result = "Ты победил!";
+      rpsWins++;
+      document.getElementById("rpsWins").textContent = String(rpsWins);
+    } else {
+      result = "Компьютер победил!";
+    }
+
+    document.getElementById("rpsMsg").textContent =
+      `Ты: ${player} | Компьютер: ${computer} | ${result}`;
+  });
+});
+
+// ===== REACTION.EXE =====
+const reactionButton = document.getElementById("reactionButton");
+const reactionMsg = document.getElementById("reactionMsg");
+let reactionTimeout = null;
+let reactionStart = 0;
+let reactionState = "idle";
+let reactionBest = Infinity;
+
+reactionButton.addEventListener("click", () => {
+  if (reactionState === "waiting") {
+    clearTimeout(reactionTimeout);
+    reactionState = "idle";
+    reactionButton.textContent = "START TEST";
+    reactionMsg.textContent = "Слишком рано! Попробуй снова.";
+    return;
+  }
+
+  if (reactionState === "ready") {
+    const elapsed = Math.round(performance.now() - reactionStart);
+    reactionState = "idle";
+    reactionButton.textContent = "START TEST";
+    reactionMsg.textContent = `Твоя реакция: ${elapsed} мс`;
+
+    if (elapsed < reactionBest) {
+      reactionBest = elapsed;
+      document.getElementById("reactionBest").textContent = `${elapsed} мс`;
+    }
+    return;
+  }
+
+  reactionState = "waiting";
+  reactionButton.textContent = "ЖДИ ЗЕЛЁНЫЙ...";
+  reactionButton.style.background = "#493000";
+  reactionMsg.textContent = "Жди сигнала...";
+  reactionTimeout = setTimeout(() => {
+    reactionState = "ready";
+    reactionStart = performance.now();
+    reactionButton.textContent = "ЖМИ СЕЙЧАС!";
+    reactionButton.style.background = "#00ff41";
+  }, 1500 + Math.random() * 3000);
+});
+
+// ===== COIN FLIP =====
+document.getElementById("coinButton").addEventListener("click", () => {
+  const result = Math.random() < 0.5 ? "ОРЁЛ" : "РЕШКА";
+  document.getElementById("coinResult").textContent = result === "ОРЁЛ" ? "🪙" : "◉";
+  document.getElementById("coinMsg").textContent = `Выпало: ${result}!`;
+});
+
+// ===== DICE.EXE =====
 document.getElementById("diceButton").addEventListener("click", () => {
   const n = Math.floor(Math.random() * 6) + 1;
-  document.getElementById("diceResult").textContent = ["⚀","⚁","⚂","⚃","⚄","⚅"][n - 1];
-  document.getElementById("diceMsg").textContent = "Выпало число: " + n + ".";
+  const diceFaces = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+  document.getElementById("diceResult").textContent = diceFaces[n];
+  document.getElementById("diceMsg").textContent = `Выпало число ${n}.`;
 });
 
-// PONG
-(() => {
-  const c = document.getElementById("pongCanvas");
-  const ctx = c.getContext("2d");
-  const scoreEl = document.getElementById("pongScore");
-  const msg = document.getElementById("pongMsg");
+// ===== CYBER PONG =====
+const pongCanvas = document.getElementById("pongCanvas");
+const pongCtx = pongCanvas.getContext("2d");
+const pongScoreEl = document.getElementById("pongScore");
+const pongMsg = document.getElementById("pongMsg");
 
-  let paddleX = 110, ballX = 150, ballY = 150;
-  let vx = 2, vy = 2, score = 0, running = false, raf = 0;
+let pongRunning = false;
+let pongAnimation = null;
+let pongScore = 0;
+let paddle = { x: 120, y: 275, w: 60, h: 8 };
+let ball = { x: 150, y: 150, vx: 2.5, vy: 3, r: 6 };
 
-  function draw() {
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, 300, 300);
+function drawPong() {
+  pongCtx.fillStyle = "#020802";
+  pongCtx.fillRect(0, 0, 300, 300);
 
-    ctx.strokeStyle = "#003b19";
-    for (let y = 0; y < 300; y += 15) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(300, y);
-      ctx.stroke();
-    }
+  pongCtx.strokeStyle = "#0a3210";
+  pongCtx.setLineDash([5, 5]);
+  pongCtx.beginPath();
+  pongCtx.moveTo(0, 150);
+  pongCtx.lineTo(300, 150);
+  pongCtx.stroke();
+  pongCtx.setLineDash([]);
 
-    ctx.fillStyle = "#00ff66";
-    ctx.shadowColor = "#00ff66";
-    ctx.shadowBlur = 10;
-    ctx.fillRect(paddleX, 275, 80, 7);
+  pongCtx.shadowColor = "#00ff41";
+  pongCtx.shadowBlur = 10;
+  pongCtx.fillStyle = "#00ff41";
+  pongCtx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
 
-    ctx.fillStyle = "#baff00";
-    ctx.beginPath();
-    ctx.arc(ballX, ballY, 6, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.shadowBlur = 0;
+  pongCtx.beginPath();
+  pongCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+  pongCtx.fill();
+  pongCtx.shadowBlur = 0;
+}
+
+function pongFrame() {
+  if (!pongRunning) return;
+
+  ball.x += ball.vx;
+  ball.y += ball.vy;
+
+  if (ball.x < ball.r || ball.x > 300 - ball.r) ball.vx *= -1;
+  if (ball.y < ball.r) ball.vy *= -1;
+
+  if (
+    ball.vy > 0 &&
+    ball.y + ball.r >= paddle.y &&
+    ball.y - ball.r <= paddle.y + paddle.h &&
+    ball.x >= paddle.x &&
+    ball.x <= paddle.x + paddle.w
+  ) {
+    ball.vy = -Math.abs(ball.vy);
+    ball.vx += (ball.x - (paddle.x + paddle.w / 2)) * 0.04;
+    pongScore++;
+    pongScoreEl.textContent = String(pongScore);
   }
 
-  function loop() {
-    if (!running) return;
-
-    ballX += vx;
-    ballY += vy;
-
-    if (ballX < 6 || ballX > 294) vx *= -1;
-    if (ballY < 6) vy *= -1;
-
-    if (ballY >= 269 && ballY <= 283 &&
-        ballX >= paddleX - 4 && ballX <= paddleX + 84 && vy > 0) {
-      vy = -Math.abs(vy) - .03;
-      vx += (ballX - (paddleX + 40)) * .025;
-      score++;
-      scoreEl.textContent = score;
-    }
-
-    if (ballY > 300) {
-      running = false;
-      msg.textContent = "GAME OVER. Итоговый счёт: " + score;
-      draw();
-      return;
-    }
-
-    draw();
-    raf = requestAnimationFrame(loop);
+  if (ball.y > 300) {
+    pongRunning = false;
+    pongMsg.textContent = `GAME OVER! Твой счёт: ${pongScore}.`;
+    drawPong();
+    return;
   }
 
-  function move(event) {
-    const rect = c.getBoundingClientRect();
-    const clientX = event.clientX;
-    paddleX = Math.max(0, Math.min(220, (clientX - rect.left) * 300 / rect.width - 40));
-    if (!running) draw();
+  drawPong();
+  pongAnimation = requestAnimationFrame(pongFrame);
+}
+
+function movePaddle(event) {
+  const rect = pongCanvas.getBoundingClientRect();
+  const clientX = event.clientX ?? event.touches?.[0]?.clientX;
+  if (clientX == null) return;
+
+  const scaleX = 300 / rect.width;
+  paddle.x = Math.max(0, Math.min(300 - paddle.w, (clientX - rect.left) * scaleX - paddle.w / 2));
+  drawPong();
+}
+
+pongCanvas.addEventListener("pointermove", movePaddle);
+pongCanvas.addEventListener("pointerdown", movePaddle);
+
+document.getElementById("pongStart").addEventListener("click", () => {
+  if (pongAnimation) cancelAnimationFrame(pongAnimation);
+
+  pongRunning = true;
+  pongScore = 0;
+  pongScoreEl.textContent = "0";
+  paddle = { x: 120, y: 275, w: 60, h: 8 };
+  ball = {
+    x: 150,
+    y: 150,
+    vx: Math.random() < 0.5 ? -2.5 : 2.5,
+    vy: 3,
+    r: 6
+  };
+
+  pongMsg.textContent = "Игра началась!";
+  pongFrame();
+});
+
+drawPong();
+
+// ===== TERMINAL =====
+const terminalOutput = document.getElementById("terminalOutput");
+const terminalForm = document.getElementById("terminalForm");
+const terminalInput = document.getElementById("terminalInput");
+
+function terminalPrint(line) {
+  terminalOutput.textContent += "\n" + line;
+  terminalOutput.scrollTop = terminalOutput.scrollHeight;
+}
+
+terminalForm.addEventListener("submit", event => {
+  event.preventDefault();
+
+  const command = terminalInput.value.trim().toLowerCase();
+  terminalInput.value = "";
+
+  if (!command) return;
+
+  terminalPrint("xlebush3k@arcade:~$ " + command);
+
+  switch (command) {
+    case "help":
+      terminalPrint("Доступные команды: help, about, date, clear, secret");
+      break;
+    case "about":
+      terminalPrint("xlebush3k ARCADE — мини-игры и секреты.");
+      break;
+    case "date":
+      terminalPrint(new Date().toLocaleString("ru-RU"));
+      break;
+    case "secret":
+      terminalPrint("SECRET FOUND // Ты нашёл скрытую команду!");
+      break;
+    case "clear":
+      terminalOutput.textContent = "xlebush3k@arcade:~$ terminal cleared";
+      break;
+    default:
+      terminalPrint("Команда не найдена. Напиши help.");
   }
-
-  c.addEventListener("pointermove", move);
-
-  document.getElementById("pongStart").addEventListener("click", () => {
-    cancelAnimationFrame(raf);
-    paddleX = 110;
-    ballX = 150;
-    ballY = 150;
-    vx = Math.random() > .5 ? 2 : -2;
-    vy = 2;
-    score = 0;
-    scoreEl.textContent = "0";
-    running = true;
-    msg.textContent = "Двигай платформу пальцем или мышкой.";
-    draw();
-    loop();
-  });
-
-  draw();
-})();
-
-// TERMINAL
-(() => {
-  const form = document.getElementById("terminalForm");
-  const input = document.getElementById("terminalInput");
-  const output = document.getElementById("terminalOutput");
-
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-    const command = input.value.trim().toLowerCase();
-    let response;
-
-    switch (command) {
-      case "help":
-        response = "Available commands: help, about, date, clear";
-        break;
-      case "about":
-        response = "xlebush3k ARCADE — mini games in your browser.";
-        break;
-      case "date":
-        response = new Date().toLocaleString();
-        break;
-      case "clear":
-        output.textContent = "";
-        input.value = "";
-        return;
-      default:
-        response = command ? "Command not found: " + command : "Enter a command.";
-    }
-
-    output.textContent += "\n\nxlebush3k@arcade:~$ " + command + "\n" + response;
-    output.scrollTop = output.scrollHeight;
-    input.value = "";
-  });
-})();
+});
 </script>
 </body>
 </html>
