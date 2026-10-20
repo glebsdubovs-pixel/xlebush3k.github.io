@@ -4,382 +4,316 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#000900">
-<title>xlebush3k | MATRIX</title>
-
+<meta name="theme-color" content="#050505">
+<title>XLEBUSH3K // GAME SYSTEM</title>
 <style>
+:root{--green:#00ff41;--red:#ff3030;--bg:#050505;--panel:#101010;--muted:#888}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  margin:0;background:#000900;color:#d8ffe0;
-  font-family:Consolas,Monaco,monospace
-}
-body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;
-  z-index:-1;opacity:.12;
-  background:repeating-linear-gradient(0deg,transparent 0 3px,#00ff41 4px)
-}
-.wrap{width:min(1000px,92%);margin:auto}
-nav{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:22px 0;border-bottom:1px solid #07551c;gap:12px
-}
-.logo{color:#00ff41;font-size:22px;font-weight:bold;text-shadow:0 0 12px #00ff41}
+body{margin:0;background:var(--bg);color:#ddd;font-family:Consolas,Monaco,monospace}
 a{color:inherit;text-decoration:none}
-.navlinks{display:flex;gap:14px;font-size:12px;color:#00ff41}
-.navlinks a:hover{color:white}
-.hero{text-align:center;padding:65px 0 40px}
-.kicker{color:#00ff41;letter-spacing:4px;font-size:12px}
-h1{
-  font-size:clamp(38px,9vw,76px);line-height:1.05;
-  margin:20px 0;text-shadow:0 0 20px #00ff4150
-}
-h1 span,h2{color:#00ff41}
-.hero p{
-  color:#91b69a;line-height:1.7;max-width:600px;margin:auto
-}
-.btn,.play{
-  display:inline-flex;justify-content:center;align-items:center;gap:8px;
-  background:#00ff41;color:#001504;border:1px solid #00ff41;
-  padding:12px 17px;border-radius:5px;font-weight:900;
-  font-family:inherit;cursor:pointer
-}
-.btn{margin:22px 5px 0}
-.btn:hover,.play:hover{
-  background:#c2ffce;box-shadow:0 0 18px #00ff4160
-}
-.heading{
-  display:flex;justify-content:space-between;align-items:end;
-  margin:25px 0 15px;gap:10px
-}
-h2{font-size:22px;margin:0}
-.heading p{color:#91b69a;font-size:12px}
-.grid{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px
-}
-.card{
-  display:flex;flex-direction:column;background:#020e05;
-  border:1px solid #07551c;padding:18px;border-radius:6px;
-  min-height:255px;transition:.2s
-}
-.card:hover{
-  border-color:#00ff41;transform:translateY(-3px);
-  box-shadow:0 0 20px #00ff4120
-}
-.emoji{font-size:30px}
-.tag{font-size:10px;letter-spacing:2px;color:#00ff41;margin-top:12px}
-h3{font-size:20px;margin:9px 0}
-.card p{font-size:13px;line-height:1.6;color:#91b69a;margin:0 0 20px}
-.play{width:100%;margin-top:auto;padding:13px;font-size:12px}
-.smallgrid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;margin:15px 0 35px
-}
-.smallcard{
-  border:1px solid #07551c;background:#020e05;padding:17px;
-  display:flex;align-items:center;gap:14px;border-radius:5px
-}
-.smallcard:hover{border-color:#00ff41}
-.smallcard p{font-size:12px;color:#91b69a;margin:5px 0 0}
-#terminal{
-  margin:35px 0;background:#020e05;border:1px solid #07551c;
-  padding:20px;border-radius:6px
-}
-.terminal-title{color:#00ff41;font-size:17px}
-.terminal-help{color:#91b69a;font-size:12px;line-height:1.8}
-#terminalForm{display:flex;gap:8px}
-#terminalInput{
-  flex:1;min-width:0;padding:12px;background:#000900;
-  border:1px solid #07551c;color:#00ff41;font:inherit;border-radius:4px
-}
-#terminalInput:focus{outline:1px solid #00ff41}
-#terminalForm button{margin:0}
-#terminalOutput{
-  color:#00ff41;font-size:13px;line-height:1.7;
-  white-space:pre-wrap;overflow-wrap:anywhere;min-height:22px
-}
-.secret{
-  display:none;margin:20px auto 0;padding:16px;
-  max-width:600px;border:1px dashed #00ff41;
-  color:#00ff41;background:#001406;line-height:1.8
-}
-.secret.show{display:block}
-footer{
-  border-top:1px solid #07551c;padding:23px 0;color:#73917a;
-  font-size:11px;display:flex;justify-content:space-between;
-  gap:10px;flex-wrap:wrap
-}
-#toast{
-  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  max-width:90%;padding:12px 17px;background:#001b07;
-  color:#00ff41;border:1px solid #00ff41;border-radius:5px;
-  text-align:center;font-size:12px;display:none;z-index:10
-}
-#toast.show{display:block}
-body.secret-mode{background:#00110a}
-body.secret-mode .logo,body.secret-mode h1 span{color:#65ffd0}
-@media(max-width:700px){
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .hero{padding-top:45px}
-}
-@media(max-width:480px){
-  .grid,.smallgrid{grid-template-columns:1fr}
-  .navlinks{gap:8px;font-size:10px}
-  .card{min-height:220px}
-  nav{flex-wrap:wrap}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    scroll-behavior:auto!important;transition:none!important
-  }
-}
+button,input{font:inherit}
+.wrap{width:min(1050px,92%);margin:auto}
+header{border-bottom:1px solid #252525}
+nav{min-height:65px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-size:20px;font-weight:bold;letter-spacing:2px;color:var(--green)}
+.navlinks{display:flex;gap:16px;font-size:12px;color:#aaa}
+.navlinks a:hover{color:var(--green)}
+.hero{padding:65px 0 45px}
+.label{font-size:11px;letter-spacing:3px;color:var(--red)}
+h1{font-size:clamp(36px,8vw,70px);line-height:1.05;margin:18px 0}
+h1 span{color:var(--green)}
+.hero p{color:#999;line-height:1.7;max-width:600px}
+.btn{display:inline-block;padding:12px 17px;background:var(--green);color:#000;border:0;font-weight:bold;cursor:pointer}
+.btn:hover{background:#fff}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:28px 0 15px}
+h2{font-size:20px;margin:0;color:var(--green)}
+.section-title small{color:#777}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid #292929;padding:17px;min-height:215px;display:flex;flex-direction:column;transition:.15s}
+.card:hover{border-color:var(--green);transform:translateY(-2px)}
+.number{font-size:11px;color:var(--red);letter-spacing:2px}
+h3{font-size:18px;margin:12px 0 8px}
+.card p{font-size:12px;line-height:1.7;color:#999;margin:0 0 18px}
+.play{display:block;margin-top:auto;padding:10px;text-align:center;background:#1b1b1b;border:1px solid #333;color:var(--green);font-size:11px}
+.play:hover{background:var(--green);color:#000}
+.gamebox{margin:14px 0 30px;background:var(--panel);border:1px solid #292929;padding:18px}
+.gamebox h3{margin-top:0;color:var(--green)}
+.gamebox p{color:#aaa;font-size:13px;line-height:1.6}
+.game-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.game-controls button{padding:10px 13px;background:#181818;color:var(--green);border:1px solid #444;cursor:pointer}
+.game-controls button:hover{border-color:var(--green)}
+.game-controls input{width:130px;max-width:100%;padding:10px;background:#050505;color:var(--green);border:1px solid #444}
+.result{color:var(--green);font-size:13px;min-height:20px;white-space:pre-wrap;line-height:1.7}
+canvas{display:block;max-width:100%;background:#000;border:1px solid #333;margin:10px 0}
+#terminal{margin:30px 0;background:#080808;border:1px solid #333;padding:18px}
+#terminal h2{margin-bottom:10px}
+#terminalInput{width:100%;padding:12px;background:#000;color:var(--green);border:1px solid #333}
+#terminalOutput{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--green);font-size:13px;line-height:1.7}
+footer{border-top:1px solid #252525;padding:22px 0;color:#666;font-size:11px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-top:45px}}
+@media(max-width:480px){.grid{grid-template-columns:1fr}.navlinks{gap:9px;font-size:10px}nav{flex-wrap:wrap;padding:15px 0}.card{min-height:180px}}
 </style>
 </head>
-
 <body>
+<header>
 <div class="wrap">
-
 <nav>
-  <a class="logo" href="index.html" id="logo">xlebush3k_</a>
-  <div class="navlinks">
-    <a href="#projects">[ ПРОЕКТЫ ]</a>
-    <a href="#games">[ ИГРЫ ]</a>
-    <a href="#terminal">[ ТЕРМИНАЛ ]</a>
-  </div>
+<a class="logo" href="index.html">XLEBUSH3K</a>
+<div class="navlinks">
+<a href="#projects">PROJECTS</a>
+<a href="#arcade">ARCADE</a>
+<a href="#terminal">TERMINAL</a>
+</div>
 </nav>
-
-<header class="hero">
-  <div class="kicker">/// SYSTEM ONLINE ///</div>
-  <h1>WELCOME TO<br><span>THE MATRIX</span></h1>
-  <p>Твоя личная зона экспериментов. Выбирай игру, нажимай кнопку и начинай приключение.</p>
-
-  <a class="btn" href="#projects">▼ ВЫБРАТЬ ИГРУ</a>
-  <button class="btn" id="secretBtn" type="button">? СЕКРЕТ</button>
-
-  <div class="secret" id="secretMessage">
-    &gt; ACCESS GRANTED<br>
-    Бро, ты нашёл секретную комнату! 👾<br>
-    Но не все секреты так легко найти...
-  </div>
+</div>
 </header>
 
-<section id="projects">
-  <div class="heading">
-    <div>
-      <h2>&gt; ПРОЕКТЫ</h2>
-      <p>Выбери модуль и нажми кнопку.</p>
-    </div>
-  </div>
-
-  <div class="grid">
-
-    <a class="card" href="craft.html">
-      <div class="emoji">🧪</div>
-      <div class="tag">MODULE 01</div>
-      <h3>Infinite Mix</h3>
-      <p>Смешивай элементы, открывай новые комбинации и собирай коллекцию.</p>
-      <span class="play">▶ ИГРАТЬ В INFINITE MIX ↗</span>
-    </a>
-
-    <a class="card" href="space.html">
-      <div class="emoji">🌌</div>
-      <div class="tag">MODULE 02</div>
-      <h3>Космос</h3>
-      <p>Отправляйся от Земли к планетам и далёким уголкам Вселенной.</p>
-      <span class="play">▶ ИГРАТЬ ↗</span>
-    </a>
-
-    <a class="card" href="billion.html">
-      <div class="emoji">💸</div>
-      <div class="tag">MODULE 03</div>
-      <h3>Потрать миллиард</h3>
-      <p>У тебя миллиард евро. Сможешь потратить всё до последнего цента?</p>
-      <span class="play">▶ ИГРАТЬ ↗</span>
-    </a>
-
-    <a class="card" href="password.html">
-      <div class="emoji">🔐</div>
-      <div class="tag">MODULE 04</div>
-      <h3>Пароль безумия</h3>
-      <p>Придумай пароль, который должен выполнять всё больше правил.</p>
-      <span class="play">▶ НАЧАТЬ ↗</span>
-    </a>
-
-    <a class="card" href="games.html">
-      <div class="emoji">🕹️</div>
-      <div class="tag">MODULE 05</div>
-      <h3>Мини-игры</h3>
-      <p>Открой свою аркаду с мини-играми.</p>
-      <span class="play">▶ ОТКРЫТЬ АРКАДУ ↗</span>
-    </a>
-
-    <a class="card" href="rpg.html">
-      <div class="emoji">⚔️</div>
-      <div class="tag">MODULE 06</div>
-      <h3>SHADOW QUEST</h3>
-      <p>Сражайся с монстрами и проходи приключение.</p>
-      <span class="play">▶ ПРОДОЛЖИТЬ КВЕСТ ↗</span>
-    </a>
-
-  </div>
+<main class="wrap">
+<section class="hero">
+<div class="label">SYSTEM STATUS: ONLINE</div>
+<h1>WELCOME TO<br><span>THE GAME SYSTEM</span></h1>
+<p>Игровой портал XLEBUSH3K. Выбирай игру, запускай и проверяй свои навыки. Система готова к работе.</p>
+<a class="btn" href="#projects">ОТКРЫТЬ ПРОЕКТЫ</a>
 </section>
 
-<section id="games">
-  <div class="heading">
-    <div>
-      <h2>&gt; БЫСТРЫЙ ДОСТУП</h2>
-      <p>Войти в игру одним нажатием.</p>
-    </div>
-  </div>
+<section id="projects">
+<div class="section-title"><h2>01 // МОИ ПРОЕКТЫ</h2><small>EXTERNAL MODULES</small></div>
+<div class="grid">
+<a class="card" href="craft.html"><div class="number">MODULE 01</div><h3>Infinite Mix</h3><p>Смешивай элементы и открывай новые комбинации.</p><span class="play">ЗАПУСТИТЬ →</span></a>
+<a class="card" href="space.html"><div class="number">MODULE 02</div><h3>Космос</h3><p>Исследуй планеты и отправляйся в космическое путешествие.</p><span class="play">ЗАПУСТИТЬ →</span></a>
+<a class="card" href="billion.html"><div class="number">MODULE 03</div><h3>Потрать миллиард</h3><p>Попробуй потратить миллиард евро на разные покупки.</p><span class="play">ЗАПУСТИТЬ →</span></a>
+<a class="card" href="password.html"><div class="number">MODULE 04</div><h3>Пароль безумия</h3><p>Выполняй правила и создай необычный пароль.</p><span class="play">ЗАПУСТИТЬ →</span></a>
+<a class="card" href="games.html"><div class="number">MODULE 05</div><h3>Мини-игры</h3><p>Открой коллекцию игр и выбери испытание.</p><span class="play">ЗАПУСТИТЬ →</span></a>
+<a class="card" href="rpg.html"><div class="number">MODULE 06</div><h3>Shadow Quest</h3><p>Приключение с монстрами, боями и заданиями.</p><span class="play">ЗАПУСТИТЬ →</span></a>
+</div>
+</section>
 
-  <div class="smallgrid">
-    <a class="smallcard" href="games.html">
-      <div class="emoji">🎮</div>
-      <div><strong>АРКАДА</strong><p>Открыть мини-игры →</p></div>
-    </a>
+<section id="arcade">
+<div class="section-title"><h2>02 // ARCADE</h2><small>GAMES BUILT IN</small></div>
+<div class="grid">
+<div class="card"><div class="number">GAME 07</div><h3>Кликер</h3><p>Нажимай кнопку, зарабатывай очки и побей свой рекорд.</p><div class="result" id="clickScore">Счёт: 0</div><div class="game-controls"><button id="clickBtn">КЛИК</button><button id="clickReset">СБРОС</button></div></div>
+<div class="card"><div class="number">GAME 08</div><h3>Угадай число</h3><p>Я загадал число от 1 до 100. Попробуй найти его.</p><div class="game-controls"><input id="guessInput" type="number" min="1" max="100" placeholder="1–100"><button id="guessBtn">ПРОВЕРИТЬ</button></div><div class="result" id="guessResult">Попыток: 0</div></div>
+<div class="card"><div class="number">GAME 09</div><h3>Камень, ножницы, бумага</h3><p>Сыграй против компьютера. Кто победит?</p><div class="game-controls"><button data-rps="Камень">КАМЕНЬ</button><button data-rps="Ножницы">НОЖНИЦЫ</button><button data-rps="Бумага">БУМАГА</button></div><div class="result" id="rpsResult">Ожидание выбора...</div></div>
+<div class="card"><div class="number">GAME 10</div><h3>Тест реакции</h3><p>Нажми старт и дождись зелёного сигнала. Не торопись.</p><div class="game-controls"><button id="reactionBtn">СТАРТ</button></div><div class="result" id="reactionResult">Готов?</div></div>
+<div class="card"><div class="number">GAME 11</div><h3>Монетка</h3><p>Выбери сторону случайности.</p><div class="game-controls"><button id="coinBtn">БРОСИТЬ</button></div><div class="result" id="coinResult">Ожидание...</div></div>
+<div class="card"><div class="number">GAME 12</div><h3>Случайный кубик</h3><p>Брось кубик и получи результат от одного до шести.</p><div class="game-controls"><button id="diceBtn">БРОСИТЬ КУБИК</button></div><div class="result" id="diceResult">Результат: —</div></div>
+</div>
 
-    <a class="smallcard" href="rpg.html">
-      <div class="emoji">🗡️</div>
-      <div><strong>SHADOW QUEST</strong><p>Продолжить квест →</p></div>
-    </a>
-  </div>
+<div class="gamebox">
+<h3>GAME 13 // ЗМЕЙКА</h3>
+<p>Собирай точки и не врезайся в стены или собственный хвост. Управление: стрелки на клавиатуре или кнопки ниже.</p>
+<canvas id="snakeCanvas" width="300" height="300"></canvas>
+<div class="game-controls">
+<button id="snakeStart">СТАРТ / ЗАНОВО</button>
+<button data-dir="up">ВВЕРХ</button>
+<button data-dir="left">ВЛЕВО</button>
+<button data-dir="down">ВНИЗ</button>
+<button data-dir="right">ВПРАВО</button>
+</div>
+<div class="result" id="snakeResult">Счёт: 0</div>
+</div>
+
+<div class="gamebox">
+<h3>GAME 14 // ПОНГ</h3>
+<p>Отбивай мяч платформой. Управление: мышь над игровым полем или кнопки ниже.</p>
+<canvas id="pongCanvas" width="320" height="220"></canvas>
+<div class="game-controls">
+<button id="pongStart">СТАРТ</button>
+<button id="pongLeft">← ВЛЕВО</button>
+<button id="pongRight">ВПРАВО →</button>
+</div>
+<div class="result" id="pongResult">Счёт: 0</div>
+</div>
 </section>
 
 <section id="terminal">
-  <div class="terminal-title">&gt; SECRET TERMINAL</div>
-  <p class="terminal-help">
-    Локальный игровой терминал.<br>
-    Введи <strong style="color:#00ff41">help</strong>, чтобы увидеть команды.
-  </p>
-
-  <form id="terminalForm">
-    <input id="terminalInput" type="text"
-      placeholder="Введите команду..."
-      autocomplete="off" maxlength="60"
-      aria-label="Команда терминала">
-    <button class="btn" type="submit">RUN</button>
-  </form>
-
-  <pre id="terminalOutput" aria-live="polite"></pre>
-
-  <div class="secret" id="terminalSecret">
-    &gt; ROOT ACCESS GRANTED<br>
-    Ты нашёл секрет терминала!<br>
-    Хорошая работа, агент. 💚
-  </div>
-
-  <div class="secret" id="konamiSecret">
-    &gt; KONAMI PROTOCOL ACTIVATED<br>
-    Ты знаешь секретную комбинацию! 🎮
-  </div>
+<h2>03 // TERMINAL</h2>
+<p style="color:#888;font-size:12px">Введи help, чтобы посмотреть доступные команды.</p>
+<form id="terminalForm">
+<input id="terminalInput" placeholder="Введите команду..." autocomplete="off" maxlength="60">
+</form>
+<pre id="terminalOutput"></pre>
 </section>
 
-<footer>
-  <span>© XLEBUSH3K</span>
-  <span>/// SYSTEM ONLINE ///</span>
-</footer>
-
-</div>
-
-<div id="toast" role="status" aria-live="polite"></div>
+<footer><span>XLEBUSH3K // GAME SYSTEM</span><span>ALL SYSTEMS OPERATIONAL</span></footer>
+</main>
 
 <script>
-(function(){
 "use strict";
 
-const $=id=>document.getElementById(id);
-
-// Уведомления
-let toastTimer;
-function toast(message){
-  const box=$("toast");
-  box.textContent=message;
-  box.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>box.classList.remove("show"),2600);
-}
-
-// Пасхалка на кнопке
-$("secretBtn").addEventListener("click",()=>{
-  $("secretMessage").classList.toggle("show");
-  toast("Секретная комната обнаружена!");
-});
-
-// Пасхалка: пять нажатий на логотип
-let logoClicks=0;
-let logoTimer;
-
-$("logo").addEventListener("click",event=>{
-  event.preventDefault();
-  logoClicks++;
-  clearTimeout(logoTimer);
-
-  if(logoClicks>=5){
-    logoClicks=0;
-    $("secretMessage").classList.add("show");
-    toast("ПАСХАЛКА: LOGO MASTER!");
-  }else{
-    toast("Секретные клики: "+logoClicks+"/5");
-    logoTimer=setTimeout(()=>logoClicks=0,2500);
-  }
-});
-
-// Терминал: команды безопасно сопоставляются со списком.
-const commands={
-  help:"КОМАНДЫ:\nhelp — список команд\ngames — список игр\nmatrix — статус системы\nsecret — секретная пасхалка\nabout — информация о сайте\nclear — очистить экран",
-  games:"ДОСТУПНЫЕ МОДУЛИ:\n01 Infinite Mix\n02 Космос\n03 Потрать миллиард\n04 Пароль безумия\n05 Мини-игры\n06 Shadow Quest",
-  matrix:"MATRIX STATUS: ONLINE\nSYSTEM: XLEBUSH3K\nACCESS: GRANTED",
-  secret:"ПАСХАЛКА НАЙДЕНА! 💚\nПопробуй комбинацию клавиш ↑ ↑ ↓ ↓ ← → ← → B A",
-  about:"XLEBUSH3K — личный игровой портал.\nСоздан для игр, экспериментов и веселья.",
-  clear:""
+// Кликер
+let clicks=0;
+const clickScore=document.getElementById("clickScore");
+document.getElementById("clickBtn").onclick=()=>{
+ clicks++;
+ clickScore.textContent="Счёт: "+clicks;
+};
+document.getElementById("clickReset").onclick=()=>{
+ clicks=0;
+ clickScore.textContent="Счёт: 0";
 };
 
-$("terminalForm").addEventListener("submit",event=>{
-  event.preventDefault();
+// Угадай число
+let target=Math.floor(Math.random()*100)+1,tries=0,guessDone=false;
+document.getElementById("guessBtn").onclick=()=>{
+ const input=document.getElementById("guessInput");
+ const value=Number(input.value);
+ const out=document.getElementById("guessResult");
+ if(guessDone){target=Math.floor(Math.random()*100)+1;tries=0;guessDone=false;out.textContent="Новая игра!";input.value="";return;}
+ if(!input.value||value<1||value>100){out.textContent="Введи число от 1 до 100.";return;}
+ tries++;
+ if(value===target){out.textContent="Верно! Попыток: "+tries+". Нажми ПРОВЕРИТЬ для новой игры.";guessDone=true;}
+ else out.textContent=(value<target?"Загаданное число больше.":"Загаданное число меньше.")+" Попыток: "+tries;
+};
 
-  const command=$("terminalInput").value.trim().toLowerCase();
-  $("terminalInput").value="";
-
-  if(Object.prototype.hasOwnProperty.call(commands,command)){
-    $("terminalOutput").textContent=commands[command];
-
-    if(command==="secret"){
-      $("terminalSecret").classList.add("show");
-      toast("ROOT ACCESS GRANTED!");
-    }
-
-    if(command==="matrix"){
-      document.body.classList.toggle("secret-mode");
-    }
-  }else{
-    $("terminalOutput").textContent=
-      "Команда не найдена: "+command+"\nВведи help, чтобы увидеть команды.";
-  }
+// Камень, ножницы, бумага
+document.querySelectorAll("[data-rps]").forEach(button=>{
+ button.onclick=()=>{
+  const choices=["Камень","Ножницы","Бумага"];
+  const player=button.dataset.rps;
+  const computer=choices[Math.floor(Math.random()*3)];
+  let result;
+  if(player===computer)result="Ничья.";
+  else if((player==="Камень"&&computer==="Ножницы")||(player==="Ножницы"&&computer==="Бумага")||(player==="Бумага"&&computer==="Камень"))result="Ты выиграл!";
+  else result="Компьютер выиграл.";
+  document.getElementById("rpsResult").textContent="Ты: "+player+"\nКомпьютер: "+computer+"\n"+result;
+ };
 });
 
-// Секретная клавиатурная комбинация
-const secretSequence=[
-  "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
-  "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"
-];
-let typedKeys=[];
+// Тест реакции
+let reactionTimer=null,reactionStart=0,reactionState="idle";
+const reactionBtn=document.getElementById("reactionBtn");
+const reactionResult=document.getElementById("reactionResult");
+reactionBtn.onclick=()=>{
+ if(reactionState==="waiting")return;
+ if(reactionState==="ready"){
+  clearTimeout(reactionTimer);reactionState="idle";
+  reactionResult.textContent="Слишком рано! Нажми СТАРТ ещё раз.";
+  reactionBtn.textContent="СТАРТ";return;
+ }
+ if(reactionState==="go"){
+  const ms=Date.now()-reactionStart;
+  reactionState="idle";reactionBtn.textContent="СТАРТ";
+  reactionResult.textContent="Твоя реакция: "+ms+" мс";return;
+ }
+ reactionState="waiting";reactionBtn.textContent="ЖДИ...";
+ reactionResult.textContent="Жди зелёного сигнала...";
+ reactionTimer=setTimeout(()=>{
+  reactionState="go";reactionStart=Date.now();
+  reactionResult.textContent="ЖМИ СЕЙЧАС!";
+  reactionBtn.textContent="ЖМИ!";
+ },1000+Math.random()*3000);
+};
 
-document.addEventListener("keydown",event=>{
-  if(event.target instanceof HTMLInputElement) return;
+// Монетка и кубик
+document.getElementById("coinBtn").onclick=()=>{
+ document.getElementById("coinResult").textContent=Math.random()<0.5?"Орёл":"Решка";
+};
+document.getElementById("diceBtn").onclick=()=>{
+ document.getElementById("diceResult").textContent="Результат: "+(Math.floor(Math.random()*6)+1);
+};
 
-  const key=event.key.length===1?event.key.toLowerCase():event.key;
-  typedKeys.push(key);
-  typedKeys=typedKeys.slice(-secretSequence.length);
-
-  if(secretSequence.every((item,index)=>item===typedKeys[index])){
-    $("konamiSecret").classList.add("show");
-    document.body.classList.toggle("secret-mode");
-    toast("KONAMI CODE ACTIVATED!");
-    typedKeys=[];
+// Змейка
+(()=>{
+ const canvas=document.getElementById("snakeCanvas"),ctx=canvas.getContext("2d");
+ const size=15,cells=20;
+ let snake,food,dir,nextDir,score,running,timer;
+ function reset(){
+  clearInterval(timer);snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+  dir={x:1,y:0};nextDir={x:1,y:0};score=0;running=false;
+  placeFood();draw();document.getElementById("snakeResult").textContent="Счёт: 0";
+ }
+ function placeFood(){
+  do{food={x:Math.floor(Math.random()*cells),y:Math.floor(Math.random()*cells)};}
+  while(snake.some(s=>s.x===food.x&&s.y===food.y));
+ }
+ function draw(){
+  ctx.fillStyle="#000";ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#ff3030";ctx.fillRect(food.x*size,food.y*size,size-2,size-2);
+  ctx.fillStyle="#00ff41";snake.forEach(s=>ctx.fillRect(s.x*size,s.y*size,size-2,size-2));
+ }
+ function tick(){
+  dir=nextDir;
+  const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+  if(head.x<0||head.y<0||head.x>=cells||head.y>=cells||snake.some(s=>s.x===head.x&&s.y===head.y)){
+   clearInterval(timer);running=false;
+   document.getElementById("snakeResult").textContent="Игра окончена. Счёт: "+score+". Нажми старт.";
+   return;
   }
-});
-
+  snake.unshift(head);
+  if(head.x===food.x&&head.y===food.y){score++;placeFood();}
+  else snake.pop();
+  document.getElementById("snakeResult").textContent="Счёт: "+score;
+  draw();
+ }
+ function setDir(name){
+  const dirs={up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}};
+  const d=dirs[name];if(!d)return;
+  if(d.x!==-dir.x||d.y!==-dir.y)nextDir=d;
+ }
+ document.querySelectorAll("[data-dir]").forEach(b=>b.onclick=()=>setDir(b.dataset.dir));
+ document.addEventListener("keydown",e=>{
+  if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)&&!["INPUT"].includes(e.target.tagName)){
+   e.preventDefault();setDir(({ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right"})[e.key]);
+  }
+ });
+ document.getElementById("snakeStart").onclick=()=>{
+  reset();running=true;timer=setInterval(tick,130);
+ };
+ reset();
 })();
+
+// Понг против простого компьютера
+(()=>{
+ const canvas=document.getElementById("pongCanvas"),ctx=canvas.getContext("2d");
+ let player=120,ball={x:160,y:110,vx:2.4,vy:2.2},enemy=120,score=0,running=false,frame=null;
+ function draw(){
+  ctx.fillStyle="#000";ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle="#333";ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(160,0);ctx.lineTo(160,220);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle="#00ff41";ctx.fillRect(8,player,6,48);
+  ctx.fillStyle="#ff3030";ctx.fillRect(306,enemy,6,48);
+  ctx.fillStyle="#fff";ctx.fillRect(ball.x-4,ball.y-4,8,8);
+ }
+ function step(){
+  if(!running)return;
+  ball.x+=ball.vx;ball.y+=ball.vy;
+  enemy+=(ball.y-24-enemy)*0.055;
+  if(ball.y<4||ball.y>216)ball.vy*=-1;
+  if(ball.x<18&&ball.y>player&&ball.y<player+48){ball.vx=Math.abs(ball.vx)*1.04;}
+  if(ball.x>302&&ball.y>enemy&&ball.y<enemy+48){ball.vx=-Math.abs(ball.vx)*1.04;}
+  if(ball.x<0){score++;resetBall(1);}
+  if(ball.x>320){score++;resetBall(-1);}
+  document.getElementById("pongResult").textContent="Счёт: "+score;
+  draw();frame=requestAnimationFrame(step);
+ }
+ function resetBall(direction){ball={x:160,y:110,vx:2.5*direction,vy:Math.random()*3-1.5};}
+ function start(){if(frame)cancelAnimationFrame(frame);score=0;player=86;enemy=86;resetBall(Math.random()<.5?1:-1);running=true;step();}
+ canvas.addEventListener("mousemove",e=>{
+  const rect=canvas.getBoundingClientRect();
+  player=Math.max(0,Math.min(172,(e.clientY-rect.top)*canvas.height/rect.height-24));
+ });
+ document.getElementById("pongStart").onclick=start;
+ document.getElementById("pongLeft").onclick=()=>player=Math.max(0,player-18);
+ document.getElementById("pongRight").onclick=()=>player=Math.min(172,player+18);
+ draw();
+})();
+
+// Терминал
+const terminalCommands={
+ help:"КОМАНДЫ: help, games, status, about, clear",
+ games:"ДОСТУПНЫЕ ИГРЫ:\nInfinite Mix\nКосмос\nПотрать миллиард\nПароль безумия\nМини-игры\nShadow Quest\nКликер\nУгадай число\nКамень, ножницы, бумага\nТест реакции\nМонетка\nКубик\nЗмейка\nПонг",
+ status:"SYSTEM STATUS: ONLINE\nARCADE: ACTIVE",
+ about:"XLEBUSH3K GAME SYSTEM\nЛичный игровой портал."
+};
+document.getElementById("terminalForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const input=document.getElementById("terminalInput");
+ const command=input.value.trim().toLowerCase();input.value="";
+ const output=document.getElementById("terminalOutput");
+ if(command==="clear"){output.textContent="";return;}
+ output.textContent=Object.prototype.hasOwnProperty.call(terminalCommands,command)?terminalCommands[command]:"Команда не найдена. Введи help.";
+});
 </script>
 </body>
 </html>
