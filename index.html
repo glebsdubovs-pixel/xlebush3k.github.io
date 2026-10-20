@@ -105,7 +105,8 @@ footer { text-align:center; color:#477b52; padding:25px; font-size:11px; border-
 <div class="section-title" id="terminal-section">FSOCIETY TERMINAL</div>
 <section class="panel"><div id="terminal">xlebush3k@arcade:~$ system boot complete
 Type "help" to list commands.</div><form id="termform"><input id="termInput" autocomplete="off" placeholder="введи команду..." aria-label="Команда терминала"><button>ENTER</button></form><p class="muted" style="font-size:12px">Декоративный игровой терминал, не подключённый к чужим системам.</p></section>
-<section class="panel" id="secret"><div class="section-title">/// ROOM 404: YOU FOUND IT</div><p>Ты заметил то, что остальные пролистывают.</p><p style="color:#d7b2ff">THERE IS NO PLACE LIKE 127.0.0.1</p><p class="muted">Секретная комната открыта. Добро пожаловать.</p></section>
+<section class="panel" id="secret"><div class="section-title">/// ROOM 404: YOU FOUND IT</div><p>Ты заметил то, что остальные пролистывают.</p><p style="color:#d7b2ff">THERE IS NO PLACE LIKE 127.0.0.1</p><p class="muted">Секретная комната открыта. Добро пожаловать.</p>
+<div class="game" style="border-color:#70449a;margin-top:14px"><h3 style="color:#d7b2ff">eXit.exe // TEXT ADVENTURE</h3><p>Мини-игра, вдохновлённая текстовой игрой из концовки Mr. Robot. Ты в тёмном подземелье. Рядом — друг, а впереди дверь с надписью EXIT.</p><div id="exitStory" class="out">Ты слышишь, как за дверью запускается система. Друг говорит: «Не оставляй меня здесь».</div><div class="row" style="margin-top:10px"><button onclick="exitChoice('leave')">ПОЙТИ К ВЫХОДУ ОДНОМУ</button><button onclick="exitChoice('stay')">ОСТАТЬСЯ С ДРУГОМ</button><button onclick="resetExitGame()">RESTART</button></div><div id="exitResult" class="out" style="color:#d7b2ff"></div></div></section>
 </main>
 <footer>xlebush3k // ARCADE — STAY CURIOUS, STAY HUMAN.</footer>
 <script>
@@ -140,19 +141,34 @@ let reactionState='idle',reactionTimer=null,reactionStart=0;function reactionAct
 const sc=$('snakeCanvas'),sx=sc.getContext('2d');let snake=[],food={x:5,y:5},dir={x:1,y:0},nextDir={x:1,y:0},snakeRun=false,snakeTimer=null,snakePoints=0;
 function startSnake(){clearInterval(snakeTimer);snake=[{x:9,y:9},{x:8,y:9},{x:7,y:9}];dir={x:1,y:0};nextDir={x:1,y:0};snakePoints=0;snakeRun=true;placeFood();$('snakeScore').textContent='0';$('snakeOut').textContent='RUNNING';snakeTimer=setInterval(tickSnake,125);drawSnake();}
 function placeFood(){do{food={x:Math.floor(Math.random()*20),y:Math.floor(Math.random()*20)};}while(snake.some(p=>p.x===food.x&&p.y===food.y));}
-function snakeDir(x,y){if(x!==-dir.x||y!==-dir.y)nextDir={x,y};}
+function snakeDir(x,y){if(!snakeRun)return;if(x!==-dir.x||y!==-dir.y)nextDir={x,y};}
+// TOUCH / SWIPE CONTROLS: swipe directly across the Snake game canvas
+let snakeTouchStart=null;
+sc.style.touchAction='none';
+sc.addEventListener('pointerdown',e=>{snakeTouchStart={x:e.clientX,y:e.clientY};try{sc.setPointerCapture(e.pointerId);}catch(err){}});
+sc.addEventListener('pointerup',e=>{
+  if(!snakeTouchStart)return;
+  const dx=e.clientX-snakeTouchStart.x,dy=e.clientY-snakeTouchStart.y;
+  snakeTouchStart=null;
+  if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;
+  if(Math.abs(dx)>Math.abs(dy))snakeDir(dx>0?1:-1,0);else snakeDir(0,dy>0?1:-1);
+  if(!snakeRun)startSnake();
+});
+sc.addEventListener('pointercancel',()=>{snakeTouchStart=null;});
 function tickSnake(){dir=nextDir;const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};if(h.x<0||h.x>=20||h.y<0||h.y>=20||snake.some(p=>p.x===h.x&&p.y===h.y)){snakeRun=false;clearInterval(snakeTimer);$('snakeOut').textContent='GAME OVER — Score: '+snakePoints;return;}snake.unshift(h);if(h.x===food.x&&h.y===food.y){snakePoints++;$('snakeScore').textContent=snakePoints;placeFood();}else snake.pop();drawSnake();}
 function drawSnake(){sx.fillStyle='#020703';sx.fillRect(0,0,300,300);sx.fillStyle='#64ff87';sx.fillRect(food.x*15+2,food.y*15+2,11,11);snake.forEach((p,i)=>{sx.fillStyle=i?'#258c43':'#a4ffb7';sx.fillRect(p.x*15+1,p.y*15+1,13,13);});}
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['input','textarea'].includes(document.activeElement.tagName.toLowerCase()))return;if(k==='arrowup'||k==='w')snakeDir(0,-1);if(k==='arrowdown'||k==='s')snakeDir(0,1);if(k==='arrowleft'||k==='a')snakeDir(-1,0);if(k==='arrowright'||k==='d')snakeDir(1,0);if(k==='w')movePaddle(-1);if(k==='s')movePaddle(1);});drawSnake();
 // PONG
-const pc=$('pongCanvas'),px=pc.getContext('2d');let py=70,cy=70,bx=160,by=95,bvx=2.5,bvy=1.5,ps=0,cs=0;
-function resetPong(){py=70;cy=70;bx=160;by=95;bvx=2.5*(Math.random()<.5?-1:1);bvy=(Math.random()*2-1)*2;drawPong();}
-function movePaddle(d){py=Math.max(0,Math.min(140,py+d*18));drawPong();}
-function drawPong(){px.fillStyle='#020703';px.fillRect(0,0,320,190);px.strokeStyle='#245c34';px.setLineDash([4,5]);px.beginPath();px.moveTo(160,0);px.lineTo(160,190);px.stroke();px.setLineDash([]);px.fillStyle='#65ff8b';px.fillRect(8,py,6,50);px.fillRect(306,cy,6,50);px.fillRect(bx-4,by-4,8,8);$('pongScore').textContent=ps+' : '+cs;}
-setInterval(()=>{bx+=bvx;by+=bvy;cy+=((by-25)-cy)*.07;if(by<4||by>186)bvy*=-1;if(bx<16&&by>py&&by<py+50){bvx=Math.abs(bvx)*1.04;bvy+=(by-(py+25))*.04;}if(bx>304&&by>cy&&by<cy+50)bvx=-Math.abs(bvx)*1.04;if(bx<0){cs++;resetPong();}if(bx>320){ps++;resetPong();}drawPong();},30);drawPong();
+const pc=$('pongCanvas'),px=pc.getContext('2d');let py=70,cy=70,bx=160,by=95,bvx=2.5,bvy=1.5,ps=0,cs=0,pongOver=false;
+function resetPong(resetScore=true){if(resetScore){ps=0;cs=0;pongOver=false;}py=70;cy=70;bx=160;by=95;bvx=2.5*(Math.random()<.5?-1:1);bvy=(Math.random()*2-1)*2;drawPong();}
+function movePaddle(d){if(pongOver)return;py=Math.max(0,Math.min(140,py+d*18));drawPong();}
+function drawPong(){px.fillStyle='#020703';px.fillRect(0,0,320,190);px.strokeStyle='#245c34';px.setLineDash([4,5]);px.beginPath();px.moveTo(160,0);px.lineTo(160,190);px.stroke();px.setLineDash([]);px.fillStyle='#65ff8b';px.fillRect(8,py,6,50);px.fillRect(306,cy,6,50);px.fillRect(bx-4,by-4,8,8);$('pongScore').textContent=ps+' : '+cs;if(pongOver){px.fillStyle='rgba(0,0,0,.78)';px.fillRect(20,58,280,74);px.fillStyle='#65ff8b';px.textAlign='center';px.font='bold 15px monospace';px.fillText(ps>=5?'YOU WIN!':'SYSTEM WINS',160,88);px.font='11px monospace';px.fillText('Нажми RESTART, чтобы сыграть снова',160,110);px.textAlign='start';}}
+setInterval(()=>{if(pongOver)return;bx+=bvx;by+=bvy;cy+=((Math.max(0,Math.min(140,by-25))-cy)*.045);if(by<4||by>186)bvy*=-1;if(bx<16&&by>py&&by<py+50){bvx=Math.abs(bvx)*1.04;bvy+=(by-(py+25))*.04;}if(bx>304&&by>cy&&by<cy+50)bvx=-Math.abs(bvx)*1.04;if(bx<0){cs++;if(cs>=5){pongOver=true;$('pongScore').textContent=ps+' : '+cs;}else resetPong(false);}if(bx>320){ps++;if(ps>=5){pongOver=true;$('pongScore').textContent=ps+' : '+cs;}else resetPong(false);}drawPong();},30);drawPong();
 // TERMINAL AND SECRET ROOM
 const terminal=$('terminal');function termWrite(s){terminal.textContent+='\n'+s;terminal.scrollTop=terminal.scrollHeight;}
 function unlockSecret(){$('secret').classList.add('unlocked');termWrite('ACCESS GRANTED: hidden room unlocked.');}
+function resetExitGame(){$('exitStory').textContent='Ты слышишь, как за дверью запускается система. Друг говорит: «Не оставляй меня здесь».';$('exitResult').textContent='';}
+function exitChoice(choice){if(choice==='leave'){$('exitStory').textContent='Ты проходишь через дверь. Свет становится ярче, но позади слышен стук в закрытую дверь.';$('exitResult').textContent='ENDING 01: SOLO EXIT — ты выбрал выход, но не спас друга. Попробуй другой выбор.';}else{$('exitStory').textContent='Ты остаёшься рядом с другом. Вместе вы ищете другой путь, вместо того чтобы бросать друг друга.';$('exitResult').textContent='ENDING 02: STAY TOGETHER — иногда важнее не быстрый выход, а тот, кого ты не оставляешь.';}}
 function trySecretNav(e){if(!$('secret').classList.contains('unlocked')){e.preventDefault();termWrite('ACCESS DENIED. Try command: secret');document.querySelector('#terminal-section').scrollIntoView({behavior:'smooth'});}}
 function termCommand(cmd){cmd=String(cmd||'').trim().toLowerCase();if(!cmd)return;termWrite('xlebush3k@arcade:~$ '+cmd);const commands={help:'commands: help, about, date, status, clear, secret, games, profile',about:'xlebush3k // ARCADE. A tiny green corner of the internet.',date:new Date().toString(),status:'SYSTEM ONLINE | LOCAL SESSION | ALL MODULES READY',games:'snake / clicker / guess / rps / reaction / coin / dice / pong',profile:'operator='+profileName+' | level='+$('profileLevel').textContent};if(cmd==='clear'){terminal.textContent='terminal cleared.';return;}if(cmd==='secret'){unlockSecret();termWrite('You were never supposed to stop looking.');return;}termWrite(commands[cmd]||'command not found. Type "help".');}
 $('termform').addEventListener('submit',e=>{e.preventDefault();termCommand($('termInput').value);$('termInput').value='';});
