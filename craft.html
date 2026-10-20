@@ -41,7 +41,7 @@ button:focus-visible{outline:2px solid white;outline-offset:3px}
 <strong>ТВОИ ЭЛЕМЕНТЫ</strong>
 <span id="count" class="small"></span>
 </div>
-<p class="small">Выбери два элемента и нажми «Смешать».</p>
+<p class="small">Можно выбирать даже два одинаковых элемента!</p>
 <div id="elements" class="elements"></div>
 <button id="mix" type="button">⚗️ СМЕШАТЬ ЭЛЕМЕНТЫ</button>
 <div id="result" aria-live="polite">Выбери два элемента!</div>
@@ -69,13 +69,23 @@ const initial=[
  {n:"Воздух",e:"💨"}
 ];
 
-const recipes={
+function key(a,b){
+ return [a,b].sort((x,y)=>x.localeCompare(y,"ru")).join("|");
+}
+
+const rawRecipes={
+ "Вода|Вода":{n:"Лужа",e:"💦"},
+ "Огонь|Огонь":{n:"Пламя",e:"🔥"},
+ "Земля|Земля":{n:"Гора",e:"⛰️"},
+ "Воздух|Воздух":{n:"Ветер",e:"🌪️"},
+
  "Вода|Огонь":{n:"Пар",e:"♨️"},
  "Вода|Земля":{n:"Грязь",e:"🟤"},
  "Воздух|Вода":{n:"Дождь",e:"🌧️"},
  "Воздух|Огонь":{n:"Дым",e:"💨"},
  "Воздух|Земля":{n:"Пыль",e:"🌫️"},
  "Земля|Огонь":{n:"Лава",e:"🌋"},
+
  "Дождь|Земля":{n:"Растение",e:"🌱"},
  "Вода|Растение":{n:"Водоросли",e:"🌿"},
  "Огонь|Растение":{n:"Пепел",e:"🪵"},
@@ -104,19 +114,31 @@ const recipes={
  "Вода|Дождь":{n:"Река",e:"🏞️"},
  "Дерево|Земля":{n:"Лес",e:"🌲"},
  "Лава|Воздух":{n:"Пепел",e:"🌋"},
- "Вода|Воздух":{n:"Дождь",e:"🌧️"},
- "Вода|Облако":{n:"Дождь",e:"🌧️"},
  "Вода|Песок":{n:"Пляж",e:"🏝️"},
  "Дерево|Кирпич":{n:"Дом",e:"🏠"},
  "Металл|Камень":{n:"Инструмент",e:"🛠️"},
  "Пар|Воздух":{n:"Облако",e:"☁️"},
  "Пыль|Вода":{n:"Грязь",e:"🟤"},
- "Растение|Солнце":{n:"Цветок",e:"🌻"}
+ "Растение|Солнце":{n:"Цветок",e:"🌻"},
+ "Вода|Лужа":{n:"Озеро",e:"🏞️"},
+ "Пламя|Воздух":{n:"Пожар",e:"🔥"},
+ "Гора|Вода":{n:"Река",e:"🏞️"},
+ "Ветер|Вода":{n:"Волна",e:"🌊"},
+ "Волна|Земля":{n:"Берег",e:"🏖️"},
+ "Песок|Огонь":{n:"Стекло",e:"🪟"},
+ "Камень|Камень":{n:"Гора",e:"⛰️"},
+ "Лес|Огонь":{n:"Пожар",e:"🔥"},
+ "Растение|Вода":{n:"Водоросли",e:"🌿"},
+ "Дождь|Ветер":{n:"Шторм",e:"🌩️"},
+ "Снег|Солнце":{n:"Вода",e:"💧"}
 };
 
-function key(a,b){
- return [a,b].sort((x,y)=>x.localeCompare(y)).join("|");
-}
+// Нормализуем ключи, чтобы рецепты работали в любом порядке.
+const recipes={};
+Object.entries(rawRecipes).forEach(([pair,result])=>{
+ const parts=pair.split("|");
+ recipes[key(parts[0],parts[1])]=result;
+});
 
 let known=initial.slice();
 let discovered=[];
@@ -157,21 +179,19 @@ function render(){
  known.forEach(item=>{
   const button=document.createElement("button");
   button.type="button";
-  button.className="element"+
-   (selected.includes(item.n)?" selected":"");
-  button.textContent=item.e+" "+item.n;
-  button.setAttribute("aria-pressed",
-   String(selected.includes(item.n)));
+
+  const selectedCount=selected.filter(n=>n===item.n).length;
+  button.className="element"+(selectedCount>0?" selected":"");
+  button.textContent=item.e+" "+item.n+
+   (selectedCount>1?" ×"+selectedCount:"");
+  button.setAttribute("aria-pressed",String(selectedCount>0));
 
   button.addEventListener("click",()=>{
-   if(selected.includes(item.n)){
-    selected=selected.filter(n=>n!==item.n);
-   }else if(selected.length<2){
-    selected.push(item.n);
-   }else{
-    say("Сначала убери один из выбранных элементов.");
+   if(selected.length>=2){
+    say("Сначала смешай выбранные элементы.");
     return;
    }
+   selected.push(item.n);
    say("");
    render();
   });
@@ -207,16 +227,6 @@ function mix(){
   return;
  }
 
- // Не разрешаем рецепту возвращать исходный элемент.
- if(out.n===a||out.n===b){
-  document.getElementById("result").textContent=
-   a+" + "+b+" — новый элемент не получился.";
-  say("Попробуй другую комбинацию.");
-  selected=[];
-  render();
-  return;
- }
-
  const alreadyKnown=known.some(x=>x.n===out.n);
 
  if(!alreadyKnown){
@@ -245,8 +255,7 @@ document.getElementById("reset").addEventListener("click",()=>{
  selected=[];
  save();
 
- document.getElementById("result").textContent=
-  "Выбери два элемента!";
+ document.getElementById("result").textContent="Выбери два элемента!";
  say("Прогресс сброшен.");
  render();
 });
