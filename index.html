@@ -79,6 +79,13 @@ footer { text-align:center; color:#477b52; padding:25px; font-size:11px; border-
   <a href="#profile">PROFILE</a><a href="#leaderboard">LEADERBOARD</a><a href="#games">GAMES</a><a href="#music">MUSIC</a><a href="#projects">PROJECTS</a><a href="#terminal-section">TERMINAL</a><a href="#secret" onclick="trySecretNav(event)">SECRET</a>
 </nav>
 <main>
+<section id="leaderboard" class="panel">
+  <div class="section-title">GLOBAL LEADERBOARD</div>
+  <p class="muted" style="font-size:12px">Топ игроков xlebush3k ARCADE. Для публикации результата войди в аккаунт.</p>
+  <div class="row"><select id="leaderGame" onchange="arcadeLoadLeaderboard()" style="flex:1;min-width:180px;background:#020703;color:var(--text);border:1px solid var(--line);padding:9px;border-radius:4px"><option value="snake">Snake — больше очков</option><option value="clicker">Green Clicker — рекорд credits</option><option value="pong">Pong — победы</option><option value="reaction">Reaction — быстрее реакция</option><option value="rps">Камень-ножницы-бумага — победы</option><option value="guess">Guess the Code — меньше попыток</option></select><button onclick="arcadeLoadLeaderboard()">REFRESH</button></div>
+  <div id="leaderStatus" class="out">Подключаюсь к Supabase…</div>
+  <div style="overflow-x:auto;margin-top:8px"><table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="color:var(--green);text-align:left;border-bottom:1px solid var(--line)"><th style="padding:8px">#</th><th style="padding:8px">PLAYER</th><th style="padding:8px">SCORE</th></tr></thead><tbody id="leaderRows"><tr><td colspan="3" class="muted" style="padding:10px">No data yet.</td></tr></tbody></table></div>
+</section>
 <section id="profile" class="panel">
   <div class="section-title">USER PROFILE</div>
   <div class="row"><div class="stat"><small>OPERATOR</small><strong id="profileName">xlebush3k</strong></div><div class="stat"><small>LEVEL</small><strong id="profileLevel">01</strong></div><div class="stat"><small>CLICKER RECORD</small><strong id="profileRecord">0</strong></div></div>
@@ -89,13 +96,7 @@ footer { text-align:center; color:#477b52; padding:25px; font-size:11px; border-
   <div class="row" style="margin-top:8px"><button onclick="arcadeSignUp()">CREATE ACCOUNT</button><button onclick="arcadeSignIn()">LOGIN</button><button onclick="arcadeSignOut()">LOGOUT</button><span id="authStatus" class="pill">OFFLINE</span></div>
   <p class="muted" id="authMessage" style="font-size:12px">Для онлайн-функций нужно один раз настроить Supabase по инструкции.</p>
 </section>
-<section id="leaderboard" class="panel">
-  <div class="section-title">GLOBAL LEADERBOARD</div>
-  <p class="muted" style="font-size:12px">Топ игроков xlebush3k ARCADE. Для публикации результата войди в аккаунт.</p>
-  <div class="row"><select id="leaderGame" onchange="arcadeLoadLeaderboard()" style="flex:1;min-width:180px;background:#020703;color:var(--text);border:1px solid var(--line);padding:9px;border-radius:4px"><option value="snake">Snake — больше очков</option><option value="clicker">Green Clicker — рекорд credits</option><option value="pong">Pong — победы</option><option value="reaction">Reaction — быстрее реакция</option><option value="rps">Камень-ножницы-бумага — победы</option><option value="guess">Guess the Code — меньше попыток</option></select><button onclick="arcadeLoadLeaderboard()">REFRESH</button></div>
-  <div id="leaderStatus" class="out">Настрой Supabase, чтобы загрузить онлайн-рейтинг.</div>
-  <div style="overflow-x:auto;margin-top:8px"><table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="color:var(--green);text-align:left;border-bottom:1px solid var(--line)"><th style="padding:8px">#</th><th style="padding:8px">PLAYER</th><th style="padding:8px">SCORE</th></tr></thead><tbody id="leaderRows"><tr><td colspan="3" class="muted" style="padding:10px">No data yet.</td></tr></tbody></table></div>
-</section>
+
 <div class="section-title" id="games">ARCADE MODULES <span class="pill">8 GAMES</span></div>
 <div class="grid">
 <article class="game"><h3>01 / SNAKE</h3><p>Собирай точки и не врезайся в стены.</p><canvas id="snakeCanvas" class="gamecanvas" width="300" height="300"></canvas><div class="row"><button onclick="startSnake()">START / RESTART</button><span class="muted">Score: <b id="snakeScore">0</b></span></div><div class="row" style="justify-content:center;margin-top:8px"><button onclick="snakeDir(0,-1)">▲</button></div><div class="row" style="justify-content:center"><button onclick="snakeDir(-1,0)">◀</button><button onclick="snakeDir(0,1)">▼</button><button onclick="snakeDir(1,0)">▶</button></div><div id="snakeOut" class="out">Нажми START.</div></article>
