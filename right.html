@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shadow Quest RPG | xlebush3k</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;padding:18px;background:#050805;color:#00ff66;
+  font-family:Consolas,monospace;
+}
+main{max-width:800px;margin:auto}
+header{text-align:center;padding:20px;border-bottom:1px solid #00ff66}
+a{color:#00ff66}
+.card{
+  border:1px solid #00ff66;border-radius:10px;
+  padding:18px;margin:18px 0;background:#071108;
+  box-shadow:0 0 12px #003b15;
+}
+button{
+  font:inherit;padding:10px 14px;margin:5px;
+  color:#00ff66;background:#020402;
+  border:1px solid #00ff66;border-radius:5px;cursor:pointer;
+}
+button:hover{background:#003b15}
+button:disabled{opacity:.4;cursor:not-allowed}
+.bar{height:16px;background:#222;border:1px solid #00ff66;border-radius:4px;overflow:hidden}
+.fill{height:100%;width:100%;background:#00ff66;transition:width .2s}
+.enemyfill{background:#ff4545}
+.stats{display:flex;gap:18px;flex-wrap:wrap}
+#log{white-space:pre-line;line-height:1.6;min-height:70px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>⚔️ SHADOW QUEST RPG</h1>
+<p>Сражайся, получай опыт и становись сильнее!</p>
+<p><a href="index.html">← Вернуться на главную</a></p>
+</header>
+
+<section class="card">
+<h2>🧙 Твой герой</h2>
+<div class="stats">
+<p>❤️ HP: <b id="hpText"></b></p>
+<p>⭐ Уровень: <b id="levelText"></b></p>
+<p>✨ Опыт: <b id="xpText"></b></p>
+<p>💰 Золото: <b id="goldText"></b></p>
+</div>
+<div class="bar"><div id="hpBar" class="fill"></div></div>
+</section>
+
+<section class="card">
+<h2>👹 Враг: <span id="enemyName"></span></h2>
+<p>HP врага: <b id="enemyHpText"></b></p>
+<div class="bar"><div id="enemyBar" class="fill enemyfill"></div></div>
+<p id="enemyDescription">Враг приближается...</p>
+<button id="attackButton">⚔️ Атаковать</button>
+<button id="healButton">🧪 Зелье</button>
+<button id="nextButton" disabled>➡️ Следующий враг</button>
+</section>
+
+<section class="card">
+<h2>📜 События</h2>
+<div id="log">Приключение начинается!</div>
+</section>
+
+<section class="card">
+<h2>🎒 Информация</h2>
+<p>Побеждай врагов, получай опыт и золото. При повышении уровня твой герой становится сильнее.</p>
+<p>Зелий на старте: 3. Каждое зелье восстанавливает до 30 HP.</p>
+<button id="restartButton">🔄 Начать заново</button>
+</section>
+</main>
+
+<script>
+const enemyTypes = [
+  {name:"Тёмный слизень",hp:40,attack:7,xp:25,gold:10},
+  {name:"Лесной гоблин",hp:60,attack:11,xp:40,gold:18},
+  {name:"Скелет-воин",hp:85,attack:14,xp:55,gold:25},
+  {name:"Теневой рыцарь",hp:120,attack:18,xp:80,gold:40},
+  {name:"Дракон тьмы",hp:170,attack:24,xp:120,gold:70}
+];
+
+let hero, enemy, enemyIndex, potions, gameOver, enemyDefeated;
+
+const $ = id => document.getElementById(id);
+
+function writeLog(text){
+  $("log").textContent = text;
+}
+
+function createEnemy(){
+  const type = enemyTypes[enemyIndex % enemyTypes.length];
+  const tier = Math.floor(enemyIndex / enemyTypes.length);
+  enemy = {
+    name: type.name + (tier ? " +" + tier : ""),
+    maxHp: type.hp + tier * 30,
+    hp: type.hp + tier * 30,
+    attack: type.attack + tier * 4,
+    xp: type.xp + tier * 15,
+    gold: type.gold + tier * 8
+  };
+  enemyDefeated = false;
+  $("enemyDescription").textContent = "Враг готов к бою!";
+  $("attackButton").disabled = false;
+  $("healButton").disabled = false;
+  $("nextButton").disabled = true;
+  render();
+}
+
+function render(){
+  $("hpText").textContent = hero.hp + " / " + hero.maxHp;
+  $("hpBar").style.width = (hero.hp / hero.maxHp * 100) + "%";
+  $("levelText").textContent = hero.level;
+  $("xpText").textContent = hero.xp + " / " + hero.level * 100;
+  $("goldText").textContent = hero.gold;
+  $("enemyName").textContent = enemy.name;
+  $("enemyHpText").textContent = enemy.hp + " / " + enemy.maxHp;
+  $("enemyBar").style.width = (enemy.hp / enemy.maxHp * 100) + "%";
+  $("healButton").textContent = "🧪 Зелье (" + potions + ")";
+}
+
+function startGame(){
+  hero = {hp:100,maxHp:100,attack:14,level:1,xp:0,gold:0};
+  enemyIndex = 0;
+  potions = 3;
+  gameOver = false;
+  writeLog("Ты вошёл в тёмный лес. Победи первого врага!");
+  createEnemy();
+}
+
+function levelUp(){
+  let message = "";
+  while(hero.xp >= hero.level * 100){
+    hero.xp -= hero.level * 100;
+    hero.level++;
+    hero.maxHp += 20;
+    hero.hp = hero.maxHp;
+    hero.attack += 4;
+    message += "\n⭐ Новый уровень: " + hero.level +
+      "! Здоровье восстановлено, сила увеличена.";
+  }
+  return message;
+}
+
+function attack(){
+  if(gameOver || enemyDefeated) return;
+
+  const damage = hero.attack + Math.floor(Math.random() * 9);
+  enemy.hp = Math.max(0, enemy.hp - damage);
+  let message = "Ты нанёс " + damage + " урона.";
+
+  if(enemy.hp === 0){
+    enemyDefeated = true;
+    hero.xp += enemy.xp;
+    hero.gold += enemy.gold;
+    message += "\n🏆 Победа! +" + enemy.xp + " опыта, +" +
+      enemy.gold + " золота.";
+    message += levelUp();
+    $("attackButton").disabled = true;
+    $("healButton").disabled = true;
+    $("nextButton").disabled = false;
+    $("enemyDescription").textContent = "Враг побеждён! Продолжай путь.";
+  } else {
+    const taken = Math.floor(Math.random() * enemy.attack) + 1;
+    hero.hp = Math.max(0, hero.hp - taken);
+    message += "\nВраг атакует и наносит " + taken + " урона.";
+
+    if(hero.hp === 0){
+      gameOver = true;
+      message += "\n💀 Ты проиграл! Нажми «Начать заново».";
+      $("attackButton").disabled = true;
+      $("healButton").disabled = true;
+      $("nextButton").disabled = true;
+    }
+  }
+
+  render();
+  writeLog(message);
+}
+
+function heal(){
+  if(gameOver || enemyDefeated || potions <= 0) return;
+
+  if(hero.hp === hero.maxHp){
+    writeLog("У тебя и так полное здоровье!");
+    return;
+  }
+
+  potions--;
+  const oldHp = hero.hp;
+  hero.hp = Math.min(hero.maxHp, hero.hp + 30);
+  const healed = hero.hp - oldHp;
+
+  const taken = Math.floor(Math.random() * enemy.attack) + 1;
+  hero.hp = Math.max(0, hero.hp - taken);
+
+  let message = "🧪 Зелье восстановило " + healed +
+    " HP.\nВраг нанёс " + taken + " урона.";
+
+  if(hero.hp === 0){
+    gameOver = true;
+    message += "\n💀 Ты проиграл! Начни заново.";
+    $("attackButton").disabled = true;
+    $("healButton").disabled = true;
+  }
+
+  render();
+  writeLog(message);
+}
+
+function nextEnemy(){
+  if(gameOver || !enemyDefeated) return;
+  enemyIndex++;
+  writeLog("Ты отправляешься навстречу следующему противнику...");
+  createEnemy();
+}
+
+$("attackButton").addEventListener("click", attack);
+$("healButton").addEventListener("click", heal);
+$("nextButton").addEventListener("click", nextEnemy);
+$("restartButton").addEventListener("click", startGame);
+
+startGame();
+</script>
+</body>
+</html>
