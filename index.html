@@ -6,864 +6,161 @@
 <meta name="theme-color" content="#050805">
 <title>xlebush3k // ARCADE</title>
 <style>
-:root {
-  --bg:#050805;
-  --panel:#0a100b;
-  --green:#00ff66;
-  --lime:#baff00;
-  --text:#d6ffe1;
-  --muted:#779b80;
-  --border:#164526;
-}
+:root { --bg:#050805; --panel:#0a100b; --green:#65ff8b; --dim:#2c9e50; --line:#1d6132; --text:#d7ffe0; --muted:#85b993; }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-body {
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Consolas,Monaco,monospace;
-  min-height:100vh;
-}
-body::before {
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:-1;
-  background:radial-gradient(ellipse at top,#063016 0%,transparent 55%),linear-gradient(#050805,#020402);
-}
-a { color:var(--green); }
+body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 monospace; overflow-x:hidden; }
+#matrix { position:fixed; inset:0; width:100%; height:100%; z-index:-2; opacity:.23; }
+body:before { content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; background:radial-gradient(ellipse,transparent 10%,#020402 100%); }
+a { color:var(--green); text-decoration:none; }
+a:hover { text-shadow:0 0 12px var(--green); }
 button,input { font:inherit; }
-button {
-  background:#07170b;
-  color:var(--green);
-  border:1px solid var(--green);
-  padding:11px 15px;
-  cursor:pointer;
-  transition:.15s;
-  border-radius:4px;
-}
-button:hover {
-  background:var(--green);
-  color:#001506;
-  box-shadow:0 0 14px #00ff6644;
-}
+button { cursor:pointer; background:#0a1c10; color:var(--green); border:1px solid var(--dim); padding:9px 12px; border-radius:4px; transition:.18s; }
+button:hover { background:#12331c; box-shadow:0 0 14px #39ff7044; }
 button:active { transform:scale(.97); }
-input {
-  width:100%;
-  padding:12px;
-  background:#020502;
-  color:var(--green);
-  border:1px solid var(--border);
-  border-radius:4px;
-  outline:none;
-  margin:8px 0;
-}
-input:focus { border-color:var(--green); }
-header {
-  position:relative;
-  padding:32px 18px 25px;
-  text-align:center;
-  border-bottom:1px solid var(--border);
-  overflow:hidden;
-}
-#matrix {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  opacity:.17;
-  pointer-events:none;
-}
-.header-content { position:relative; }
-.logo {
-  font-size:clamp(27px,6vw,48px);
-  color:var(--green);
-  text-shadow:0 0 18px #00ff6670;
-  margin:5px 0 10px;
-  overflow-wrap:anywhere;
-}
-.subtitle { color:var(--muted); font-size:13px; }
-
-/* TIKTOK — MR. ROBOT STYLE */
-.tiktok-link {
-  display:inline-block;
-  margin-top:18px;
-  padding:11px 16px;
-  color:#ff304f;
-  background:#100808;
-  border:1px solid #ff304f;
-  border-radius:3px;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:bold;
-  letter-spacing:1px;
-  box-shadow:3px 3px 0 #6d1426;
-  transition:.2s;
-}
-.tiktok-link:hover {
-  color:#080808;
-  background:#ff304f;
-  box-shadow:0 0 18px #ff304f66;
-  transform:translateY(-2px);
-}
-
-nav {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:9px;
-  padding:14px;
-  border-bottom:1px solid var(--border);
-}
-nav a {
-  text-decoration:none;
-  font-size:13px;
-  padding:8px 11px;
-  border:1px solid var(--border);
-  border-radius:4px;
-}
-nav a:hover {
-  border-color:var(--green);
-  background:#06200e;
-}
-main {
-  width:min(1050px,100%);
-  margin:auto;
-  padding:20px 14px 50px;
-}
-.section-title {
-  color:var(--green);
-  font-size:18px;
-  margin:24px 0 14px;
-}
-.games {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-}
-.card {
-  background:linear-gradient(145deg,#0b130d,#060906);
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:16px;
-  min-width:0;
-  box-shadow:0 5px 20px #0005;
-}
-.card h2 {
-  color:var(--green);
-  font-size:17px;
-  margin:0 0 10px;
-}
-.desc {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
-  min-height:35px;
-}
-.row {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.status { color:var(--lime); font-size:12px; }
-.output {
-  min-height:20px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.5;
-  overflow-wrap:anywhere;
-}
-.big-number {
-  color:var(--lime);
-  font-size:32px;
-  margin:12px 0;
-  text-shadow:0 0 12px #baff0040;
-}
-.game-canvas {
-  display:block;
-  width:100%;
-  max-width:300px;
-  height:auto;
-  aspect-ratio:1/1;
-  margin:12px auto;
-  background:#000;
-  border:1px solid #00ff6644;
-  image-rendering:pixelated;
-  touch-action:none;
-}
-.snake-controls {
-  display:grid;
-  grid-template-columns:repeat(3,52px);
-  justify-content:center;
-  gap:6px;
-  margin:12px auto 0;
-}
-.snake-controls button {
-  padding:8px;
-  min-height:46px;
-  font-size:20px;
-}
-.snake-controls .empty { visibility:hidden; }
-.terminal {
-  background:#020502;
-  border:1px solid var(--border);
-  padding:12px;
-  min-height:95px;
-  color:var(--green);
-  font-size:12px;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-.card a { text-decoration:none; }
-footer {
-  border-top:1px solid var(--border);
-  text-align:center;
-  padding:24px 12px;
-  color:var(--muted);
-  font-size:12px;
-}
-@media(max-width:650px) {
-  .games { grid-template-columns:1fr; }
-  main { padding:12px 10px 35px; }
-  .card { padding:14px; }
-  .desc { min-height:auto; }
-  button { padding:12px; }
-}
+input { background:#020703; color:var(--text); border:1px solid var(--line); padding:9px; border-radius:4px; max-width:100%; }
+header { padding:28px 18px 18px; text-align:center; border-bottom:1px solid #164526; background:#030704b8; }
+.logo { font-size:clamp(27px,6vw,54px); font-weight:900; letter-spacing:.07em; color:var(--green); text-shadow:0 0 8px #35ff67,0 0 25px #35ff6755; animation:flicker 6s infinite; }
+@keyframes flicker { 0%,96%,100% { opacity:1; } 97% { opacity:.72; } 98% { opacity:.94; } 99% { opacity:.65; } }
+.subtitle { color:var(--muted); letter-spacing:.14em; font-size:12px; margin:4px 0 15px; }
+.topline { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; color:var(--muted); font-size:12px; }
+nav { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; padding:13px 10px; background:#050b06; border-bottom:1px solid #143e22; position:sticky; top:0; z-index:10; }
+nav a { padding:6px 9px; border:1px solid #164526; border-radius:3px; font-size:12px; background:#07100a; }
+main { width:min(1120px,94%); margin:22px auto 60px; }
+.section-title { font-size:17px; color:var(--green); border-bottom:1px solid #1b5730; padding-bottom:8px; margin:30px 0 14px; }
+.section-title:before { content:"// "; color:#398b4e; }
+.panel,.game { background:rgba(7,17,10,.93); border:1px solid #174b29; border-radius:7px; box-shadow:0 0 25px #0008; backdrop-filter:blur(4px); }
+.panel { padding:16px; margin-bottom:15px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:13px; }
+.game { padding:15px; min-width:0; transition:border-color .2s,transform .2s; }
+.game:hover { border-color:var(--green); transform:translateY(-2px); }
+.game h3 { margin:0 0 9px; color:var(--green); font-size:15px; }
+.game p { color:var(--muted); font-size:12px; margin:5px 0 12px; }
+.row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.row>* { max-width:100%; }
+.stat { border:1px solid #1a4d2b; padding:8px 10px; background:#061009; border-radius:4px; flex:1; min-width:90px; }
+.stat small { display:block; color:var(--muted); font-size:10px; }
+.stat strong { font-size:17px; color:var(--green); }
+.out { margin-top:10px; color:var(--text); min-height:22px; overflow-wrap:anywhere; }
+.muted { color:var(--muted); }
+.big-number { font-size:30px; color:var(--green); font-weight:bold; text-shadow:0 0 15px #3aff6655; }
+.clicker-button { width:100%; font-size:22px; padding:22px 10px; margin:10px 0; border-color:var(--green); box-shadow:inset 0 0 20px #35ff7010; }
+.clicker-button.pop { animation:pop .18s; }
+@keyframes pop { 50% { transform:scale(.97); box-shadow:0 0 25px #43ff77; } }
+canvas.gamecanvas { display:block; width:100%; max-width:420px; height:auto; background:#020703; border:1px solid #1c6c35; border-radius:4px; margin:10px auto; }
+#terminal { height:180px; overflow:auto; background:#020502; border:1px solid #1b5b2e; padding:10px; color:#8dffa6; font-size:12px; white-space:pre-wrap; overflow-wrap:anywhere; }
+#termform { display:flex; margin-top:8px; }
+#termform input { flex:1; width:50%; min-width:0; }
+#termform button { margin-left:6px; }
+.musicbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.visualizer { height:44px; display:flex; align-items:end; gap:3px; flex:1; min-width:120px; }
+.visualizer i { display:block; width:5px; height:8px; background:var(--green); box-shadow:0 0 8px #4cff75; animation:bars .7s ease-in-out infinite alternate; animation-play-state:paused; }
+.visualizer.playing i { animation-play-state:running; }
+@keyframes bars { to { height:40px; } }
+.project { padding:12px; border:1px solid #174b29; background:#07100a; border-radius:5px; }
+.project strong { display:block; color:var(--green); margin-bottom:5px; }
+.project p { margin:0 0 10px; color:var(--muted); font-size:12px; }
+#secret { display:none; border-color:#4c236b; background:linear-gradient(135deg,#10091b,#061009); }
+#secret.unlocked { display:block; animation:reveal .7s; }
+@keyframes reveal { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+footer { text-align:center; color:#477b52; padding:25px; font-size:11px; border-top:1px solid #123a20; }
+.pill { border:1px solid #225d33; padding:3px 7px; border-radius:99px; color:var(--muted); font-size:10px; }
+@media(max-width:520px) { main { width:92%; } .panel { padding:12px; } nav { position:static; } .logo { letter-spacing:.02em; } .game { padding:12px; } }
 </style>
 </head>
 <body>
-
+<canvas id="matrix"></canvas>
 <header>
-  <canvas id="matrix"></canvas>
-  <div class="header-content">
-    <div class="subtitle">[ SYSTEM ONLINE ]</div>
-    <h1 class="logo">xlebush3k</h1>
-    <div class="subtitle">ARCADE // GAMES // TERMINAL</div>
-
-    <a class="tiktok-link"
-       href="https://www.tiktok.com/@xlebush3k00"
-       target="_blank"
-       rel="noopener noreferrer">
-      ♪ TIKTOK @xlebush3k00 ↗
-    </a>
-  </div>
+  <div class="logo">xlebush3k</div>
+  <div class="subtitle">ARCADE // A PLACE TO DISCONNECT</div>
+  <div class="topline"><span>STATUS: <b style="color:var(--green)">ONLINE</b></span><span id="clock">--:--:--</span><span>SESSION <b id="session">0000</b></span></div>
 </header>
-
 <nav>
-  <a href="#games">GAMES</a>
-  <a href="#snake">SNAKE.EXE</a>
-  <a href="#terminal">TERMINAL</a>
-  <a href="craft.html">CRAFT</a>
-  <a href="right.html">SHADOW QUEST</a>
-  <a href="billion.html">BILLION</a>
-  <a href="password.html">PASSWORD</a>
+  <a href="#profile">PROFILE</a><a href="#games">GAMES</a><a href="#music">MUSIC</a><a href="#projects">PROJECTS</a><a href="#terminal-section">TERMINAL</a><a href="#secret" onclick="trySecretNav(event)">SECRET</a>
 </nav>
-
 <main>
-  <h2 class="section-title" id="games">// MINI GAMES</h2>
-  <div class="games">
-    <!-- 01 — SNAKE -->
-    <section class="card" id="snake">
-      <h2>// 01 — Snake.exe</h2>
-      <p class="desc">Собирай светящиеся блоки. Управление: свайпы, экранные стрелки или клавиатура.</p>
-      <canvas class="game-canvas" id="snakeCanvas" width="300" height="300"></canvas>
-      <div class="row" style="margin-top:10px;justify-content:space-between">
-        <span class="status">SCORE: <b id="snakeScore">0</b></span>
-        <button id="snakeStart">START / RESTART</button>
-      </div>
-      <div class="snake-controls">
-        <span class="empty"></span><button data-dir="up">▲</button><span class="empty"></span>
-        <button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button>
-      </div>
-      <p class="output" id="snakeMsg">Нажми START, чтобы начать.</p>
-    </section>
-
-    <!-- 02 — CLICKER -->
-    <section class="card">
-      <h2>// 02 — Green Clicker</h2>
-      <p class="desc">Нажимай и набирай очки.</p>
-      <div class="big-number" id="clickScore">0</div>
-      <button id="clickButton">HACK!</button>
-      <button id="clickReset">RESET</button>
-      <p class="output">Всего кликов: <span id="clickTotal">0</span></p>
-    </section>
-
-    <!-- 03 — GUESS -->
-    <section class="card">
-      <h2>// 03 — Guess the Code</h2>
-      <p class="desc">Угадай число от 1 до 100.</p>
-      <input id="guessInput" type="number" min="1" max="100" placeholder="Введи число...">
-      <div class="row">
-        <button id="guessButton">CHECK</button>
-        <button id="guessReset">NEW GAME</button>
-      </div>
-      <p class="output" id="guessMsg">Система выбрала число.</p>
-      <p class="status">Попытки: <span id="guessAttempts">0</span></p>
-    </section>
-
-    <!-- 04 — ROCK PAPER SCISSORS -->
-    <section class="card">
-      <h2>// 04 — Rock / Paper / Scissors</h2>
-      <p class="desc">Камень, ножницы, бумага против компьютера.</p>
-      <div class="row">
-        <button data-rps="Камень">✊</button>
-        <button data-rps="Бумага">✋</button>
-        <button data-rps="Ножницы">✌</button>
-      </div>
-      <p class="output" id="rpsMsg">Выбирай ход.</p>
-      <p class="status">Победы: <span id="rpsWins">0</span></p>
-    </section>
-
-    <!-- 05 — REACTION -->
-    <section class="card">
-      <h2>// 05 — Reaction.exe</h2>
-      <p class="desc">Проверь скорость реакции.</p>
-      <div id="reactionBox" style="margin:12px 0">
-        <button id="reactionButton">START TEST</button>
-      </div>
-      <p class="output" id="reactionMsg">Нажми START TEST.</p>
-      <p class="status">Лучшее время: <span id="reactionBest">—</span></p>
-    </section>
-
-    <!-- 06 — COIN -->
-    <section class="card">
-      <h2>// 06 — Coin Flip</h2>
-      <p class="desc">Орёл или решка?</p>
-      <div class="big-number" id="coinResult">?</div>
-      <button id="coinButton">FLIP COIN</button>
-      <p class="output" id="coinMsg">Случайный результат.</p>
-    </section>
-
-    <!-- 07 — DICE -->
-    <section class="card">
-      <h2>// 07 — Dice.exe</h2>
-      <p class="desc">Брось виртуальный кубик.</p>
-      <div class="big-number" id="diceResult">⚄</div>
-      <button id="diceButton">ROLL DICE</button>
-      <p class="output" id="diceMsg">Результат от 1 до 6.</p>
-    </section>
-
-    <!-- 08 — PONG -->
-    <section class="card">
-      <h2>// 08 — Cyber Pong</h2>
-      <p class="desc">Отбивай мяч мышкой или пальцем. Не дай ему пройти!</p>
-      <canvas id="pongCanvas" class="game-canvas" width="300" height="300"></canvas>
-      <div class="row">
-        <button id="pongStart">START / RESTART</button>
-        <span class="status">SCORE: <b id="pongScore">0</b></span>
-      </div>
-      <p class="output" id="pongMsg">Нажми START.</p>
-    </section>
-
-    <!-- 09 — BILLION -->
-    <section class="card">
-      <h2>// 09 — Spend a Billion</h2>
-      <p class="desc">У тебя миллиард евро. Сможешь потратить всё?</p>
-      <a href="billion.html"><button>PLAY NOW</button></a>
-    </section>
-
-    <!-- 10 — PASSWORD MADNESS -->
-    <section class="card">
-      <h2>// 10 — Password Madness</h2>
-      <p class="desc">Создай пароль, выполняя всё более сложные правила.</p>
-      <a href="password.html"><button>PLAY NOW</button></a>
-    </section>
-
-    <!-- 11 — SHADOW QUEST -->
-    <section class="card">
-      <h2>// 11 — Shadow Quest</h2>
-      <p class="desc">Исследуй мир, сражайся с врагами и прокачивай героя.</p>
-      <a href="right.html"><button>PLAY NOW</button></a>
-    </section>
-
-    <!-- 12 — CRAFT PORTAL -->
-    <section class="card">
-      <h2>// 12 — Craft Portal</h2>
-      <p class="desc">Открой страницу с дополнительными играми.</p>
-      <a href="craft.html"><button>OPEN PORTAL</button></a>
-    </section>
-  </div>
-
-  <!-- TERMINAL -->
-  <h2 class="section-title" id="terminal">// TERMINAL</h2>
-  <section class="card">
-    <p class="desc">Попробуй команды: help, about, date, clear.</p>
-    <div class="terminal" id="terminalOutput">xlebush3k@arcade:~$ system online</div>
-    <form id="terminalForm">
-      <input id="terminalInput" autocomplete="off" placeholder="Введи команду..." aria-label="Команда терминала">
-      <button type="submit">EXECUTE</button>
-    </form>
-  </section>
+<section id="profile" class="panel">
+  <div class="section-title">USER PROFILE</div>
+  <div class="row"><div class="stat"><small>OPERATOR</small><strong id="profileName">xlebush3k</strong></div><div class="stat"><small>LEVEL</small><strong id="profileLevel">01</strong></div><div class="stat"><small>CLICKER RECORD</small><strong id="profileRecord">0</strong></div></div>
+  <div class="row" style="margin-top:10px"><input id="nameInput" maxlength="22" placeholder="Имя профиля"><button onclick="saveProfile()">Сохранить профиль</button><span class="pill">LOCAL PROFILE</span></div>
+  <p class="muted" style="font-size:12px">Прогресс хранится в браузере этого устройства.</p>
+</section>
+<div class="section-title" id="games">ARCADE MODULES <span class="pill">8 GAMES</span></div>
+<div class="grid">
+<article class="game"><h3>01 / SNAKE</h3><p>Собирай точки и не врезайся в стены.</p><canvas id="snakeCanvas" class="gamecanvas" width="300" height="300"></canvas><div class="row"><button onclick="startSnake()">START / RESTART</button><span class="muted">Score: <b id="snakeScore">0</b></span></div><div class="row" style="justify-content:center;margin-top:8px"><button onclick="snakeDir(0,-1)">▲</button></div><div class="row" style="justify-content:center"><button onclick="snakeDir(-1,0)">◀</button><button onclick="snakeDir(0,1)">▼</button><button onclick="snakeDir(1,0)">▶</button></div><div id="snakeOut" class="out">Нажми START.</div></article>
+<article class="game"><h3>02 / GREEN CLICKER</h3><p>Копи кредиты, покупай усиления и автоматический доход.</p><div class="stat"><small>GREEN CREDITS</small><strong class="big-number" id="coins">0</strong></div><button class="clicker-button" id="clickerBtn" onclick="clickCoin()">+ CLICK</button><div class="row"><div class="stat"><small>RECORD</small><strong id="clickRecord">0</strong></div><div class="stat"><small>PER CLICK</small><strong id="power">1</strong></div><div class="stat"><small>UPGRADES</small><strong id="upgradeCount">0</strong></div></div><div class="row" style="margin-top:10px"><button onclick="buyUpgrade()">UPGRADE <span id="upgradeCost">25</span></button><button onclick="buyAuto()">AUTO NODE <span id="autoCost">100</span></button></div><div id="clickerOut" class="out">Система готова.</div></article>
+<article class="game"><h3>03 / GUESS THE CODE</h3><p>Угадай секретный код из четырёх разных цифр.</p><div class="row"><input id="guessInput" inputmode="numeric" maxlength="4" placeholder="4 цифры"><button onclick="guessCode()">CHECK</button><button onclick="newCode()">RESET</button></div><div id="guessOut" class="out">Код сгенерирован.</div><div id="guessHistory" class="muted" style="font-size:12px"></div></article>
+<article class="game"><h3>04 / ROCK · PAPER · SCISSORS</h3><p>Классическая игра против системы.</p><div class="row"><button onclick="rps('Камень')">КАМЕНЬ</button><button onclick="rps('Бумага')">БУМАГА</button><button onclick="rps('Ножницы')">НОЖНИЦЫ</button></div><div id="rpsOut" class="out">Ты: 0 · Система: 0</div></article>
+<article class="game"><h3>05 / REACTION TEST</h3><p>Нажми, когда экран станет зелёным.</p><button id="reactionBtn" onclick="reactionAction()">START TEST</button><div id="reactionOut" class="out">Проверь скорость реакции.</div></article>
+<article class="game"><h3>06 / COIN FLIP</h3><p>Орёл или решка?</p><div class="row"><button onclick="flipCoin()">FLIP COIN</button><span class="big-number" id="coinFace">?</span></div><div id="coinOut" class="out">Ожидание команды.</div></article>
+<article class="game"><h3>07 / DICE ROLL</h3><p>Бросок цифрового кубика.</p><div class="row"><button onclick="rollDice()">ROLL DICE</button><span class="big-number" id="diceFace">⚄</span></div><div id="diceOut" class="out">Брось кубик.</div></article>
+<article class="game"><h3>08 / PONG</h3><p>Играй против компьютера. Управление кнопками или W/S.</p><canvas id="pongCanvas" class="gamecanvas" width="320" height="190"></canvas><div class="row"><button onclick="movePaddle(-1)">▲ UP</button><button onclick="movePaddle(1)">▼ DOWN</button><button onclick="resetPong()">RESTART</button><span class="muted" id="pongScore">0 : 0</span></div></article>
+</div>
+<div class="section-title" id="music">AUDIO INTERFACE</div>
+<section class="panel"><div class="musicbar"><input type="file" id="audioFile" accept="audio/*"><button onclick="toggleMusic()">PLAY / PAUSE</button><button onclick="stopMusic()">STOP</button><div class="visualizer" id="visualizer"></div></div><audio id="audio" controls style="width:100%;margin-top:12px"></audio><p class="muted" style="font-size:12px">Выбери музыкальный файл на телефоне. Он будет играть локально.</p></section>
+<div class="section-title" id="projects">PROJECT ARCHIVE</div>
+<div class="grid">
+<div class="project"><strong>CRAFT PORTAL</strong><p>Портал в отдельный проект.</p><a href="craft.html">OPEN craft.html ↗</a></div><div class="project"><strong>RIGHT SIDE</strong><p>Неизвестный модуль.</p><a href="right.html">OPEN right.html ↗</a></div><div class="project"><strong>BILLION MODE</strong><p>Большие числа. Большие цели.</p><a href="billion.html">OPEN billion.html ↗</a></div><div class="project"><strong>PASSWORD MADNESS</strong><p>Секретный модуль.</p><a href="password.html">OPEN password.html ↗</a></div><div class="project"><strong>SHADOW QUEST</strong><p>Проект ждёт своего часа.</p><span class="pill">ARCHIVED IDEA</span></div><div class="project"><strong>ABOUT THIS SITE</strong><p>Личная аркада xlebush3k на HTML, CSS и JavaScript.</p><span class="pill">BUILD 1.0</span></div>
+</div>
+<div class="section-title" id="terminal-section">FSOCIETY TERMINAL</div>
+<section class="panel"><div id="terminal">xlebush3k@arcade:~$ system boot complete
+Type "help" to list commands.</div><form id="termform"><input id="termInput" autocomplete="off" placeholder="введи команду..." aria-label="Команда терминала"><button>ENTER</button></form><p class="muted" style="font-size:12px">Декоративный игровой терминал, не подключённый к чужим системам.</p></section>
+<section class="panel" id="secret"><div class="section-title">/// ROOM 404: YOU FOUND IT</div><p>Ты заметил то, что остальные пролистывают.</p><p style="color:#d7b2ff">THERE IS NO PLACE LIKE 127.0.0.1</p><p class="muted">Секретная комната открыта. Добро пожаловать.</p></section>
 </main>
-
-<footer>
-  <div>xlebush3k // ARCADE</div>
-  <p>STAY CURIOUS. KEEP PLAYING.</p>
-</footer>
+<footer>xlebush3k // ARCADE — STAY CURIOUS, STAY HUMAN.</footer>
 <script>
-"use strict";
-
-// ===== SNAKE.EXE =====
-const snakeCanvas = document.getElementById("snakeCanvas");
-const snakeCtx = snakeCanvas.getContext("2d");
-const snakeScoreEl = document.getElementById("snakeScore");
-const snakeMsg = document.getElementById("snakeMsg");
-
-const cell = 15;
-const gridSize = 20;
-let snake = [];
-let food = { x: 10, y: 10 };
-let snakeDir = { x: 1, y: 0 };
-let nextDir = { x: 1, y: 0 };
-let snakeScore = 0;
-let snakeTimer = null;
-let snakeRunning = false;
-
-function randomFood() {
-  let pos;
-  do {
-    pos = {
-      x: Math.floor(Math.random() * gridSize),
-      y: Math.floor(Math.random() * gridSize)
-    };
-  } while (snake.some(part => part.x === pos.x && part.y === pos.y));
-  return pos;
-}
-
-function drawSnake() {
-  snakeCtx.fillStyle = "#020802";
-  snakeCtx.fillRect(0, 0, 300, 300);
-
-  snakeCtx.strokeStyle = "#092009";
-  for (let i = 0; i <= 300; i += cell) {
-    snakeCtx.beginPath();
-    snakeCtx.moveTo(i, 0);
-    snakeCtx.lineTo(i, 300);
-    snakeCtx.stroke();
-    snakeCtx.beginPath();
-    snakeCtx.moveTo(0, i);
-    snakeCtx.lineTo(300, i);
-    snakeCtx.stroke();
-  }
-
-  snakeCtx.fillStyle = "#ff4545";
-  snakeCtx.fillRect(food.x * cell + 2, food.y * cell + 2, cell - 4, cell - 4);
-
-  snake.forEach((part, i) => {
-    snakeCtx.fillStyle = i === 0 ? "#c4ffc4" : "#00ff41";
-    snakeCtx.shadowColor = "#00ff41";
-    snakeCtx.shadowBlur = 8;
-    snakeCtx.fillRect(part.x * cell + 1, part.y * cell + 1, cell - 2, cell - 2);
-  });
-
-  snakeCtx.shadowBlur = 0;
-}
-
-function startSnake() {
-  clearInterval(snakeTimer);
-  snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
-  snakeDir = { x: 1, y: 0 };
-  nextDir = { x: 1, y: 0 };
-  snakeScore = 0;
-  snakeScoreEl.textContent = "0";
-  food = randomFood();
-  snakeRunning = true;
-  snakeMsg.textContent = "Игра началась!";
-  drawSnake();
-  snakeTimer = setInterval(tickSnake, 120);
-}
-
-function tickSnake() {
-  snakeDir = nextDir;
-  const head = {
-    x: snake[0].x + snakeDir.x,
-    y: snake[0].y + snakeDir.y
-  };
-
-  const eating = head.x === food.x && head.y === food.y;
-  const body = eating ? snake : snake.slice(0, -1);
-
-  if (
-    head.x < 0 || head.x >= gridSize ||
-    head.y < 0 || head.y >= gridSize ||
-    body.some(part => part.x === head.x && part.y === head.y)
-  ) {
-    clearInterval(snakeTimer);
-    snakeRunning = false;
-    snakeMsg.textContent = "GAME OVER — нажми START / RESTART.";
-    return;
-  }
-
-  snake.unshift(head);
-
-  if (eating) {
-    snakeScore += 1;
-    snakeScoreEl.textContent = String(snakeScore);
-    food = randomFood();
-  } else {
-    snake.pop();
-  }
-
-  drawSnake();
-}
-
-function changeSnakeDir(dir) {
-  const directions = {
-    up: { x: 0, y: -1 },
-    down: { x: 0, y: 1 },
-    left: { x: -1, y: 0 },
-    right: { x: 1, y: 0 }
-  };
-
-  const d = directions[dir];
-  if (!d) return;
-
-  if (d.x === -snakeDir.x && d.y === -snakeDir.y) return;
-  nextDir = d;
-
-  if (!snakeRunning && snake.length === 0) startSnake();
-}
-
-document.getElementById("snakeStart").addEventListener("click", startSnake);
-
-document.querySelectorAll("[data-dir]").forEach(button => {
-  button.addEventListener("click", () => changeSnakeDir(button.dataset.dir));
-});
-
-document.addEventListener("keydown", event => {
-  const keys = {
-    ArrowUp: "up",
-    ArrowDown: "down",
-    ArrowLeft: "left",
-    ArrowRight: "right"
-  };
-
-  if (keys[event.key] && document.activeElement.tagName !== "INPUT") {
-    event.preventDefault();
-    changeSnakeDir(keys[event.key]);
-  }
-});
-
-let touchStartX = 0;
-let touchStartY = 0;
-
-snakeCanvas.addEventListener("touchstart", event => {
-  const touch = event.changedTouches[0];
-  touchStartX = touch.clientX;
-  touchStartY = touch.clientY;
-  event.preventDefault();
-}, { passive: false });
-
-snakeCanvas.addEventListener("touchend", event => {
-  const touch = event.changedTouches[0];
-  const dx = touch.clientX - touchStartX;
-  const dy = touch.clientY - touchStartY;
-
-  if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
-
-  if (Math.abs(dx) > Math.abs(dy)) {
-    changeSnakeDir(dx > 0 ? "right" : "left");
-  } else {
-    changeSnakeDir(dy > 0 ? "down" : "up");
-  }
-
-  event.preventDefault();
-}, { passive: false });
-
-snake = [];
-drawSnake();
-
-// ===== GREEN CLICKER =====
-let clicks = 0;
-const clickScore = document.getElementById("clickScore");
-const clickTotal = document.getElementById("clickTotal");
-
-document.getElementById("clickButton").addEventListener("click", () => {
-  clicks++;
-  clickScore.textContent = String(clicks);
-  clickTotal.textContent = String(clicks);
-});
-
-document.getElementById("clickReset").addEventListener("click", () => {
-  clicks = 0;
-  clickScore.textContent = "0";
-  clickTotal.textContent = "0";
-});
-
-// ===== GUESS THE CODE =====
-let secretNumber = Math.floor(Math.random() * 100) + 1;
-let guessCount = 0;
-
-function resetGuess() {
-  secretNumber = Math.floor(Math.random() * 100) + 1;
-  guessCount = 0;
-  document.getElementById("guessAttempts").textContent = "0";
-  document.getElementById("guessMsg").textContent = "Новое число загадано!";
-  document.getElementById("guessInput").value = "";
-}
-
-document.getElementById("guessButton").addEventListener("click", () => {
-  const input = document.getElementById("guessInput");
-  const value = Number(input.value);
-  const msg = document.getElementById("guessMsg");
-
-  if (!Number.isInteger(value) || value < 1 || value > 100) {
-    msg.textContent = "Введи целое число от 1 до 100.";
-    return;
-  }
-
-  guessCount++;
-  document.getElementById("guessAttempts").textContent = String(guessCount);
-
-  if (value === secretNumber) {
-    msg.textContent = `Угадал! Число: ${secretNumber}. Попыток: ${guessCount}.`;
-  } else if (value < secretNumber) {
-    msg.textContent = "Слишком мало. Попробуй больше!";
-  } else {
-    msg.textContent = "Слишком много. Попробуй меньше!";
-  }
-});
-
-document.getElementById("guessReset").addEventListener("click", resetGuess);
-document.getElementById("guessInput").addEventListener("keydown", event => {
-  if (event.key === "Enter") document.getElementById("guessButton").click();
-});
-
-// ===== ROCK / PAPER / SCISSORS =====
-let rpsWins = 0;
-const rpsChoices = ["Камень", "Бумага", "Ножницы"];
-
-document.querySelectorAll("[data-rps]").forEach(button => {
-  button.addEventListener("click", () => {
-    const player = button.dataset.rps;
-    const computer = rpsChoices[Math.floor(Math.random() * 3)];
-    let result;
-
-    if (player === computer) {
-      result = "Ничья!";
-    } else if (
-      (player === "Камень" && computer === "Ножницы") ||
-      (player === "Бумага" && computer === "Камень") ||
-      (player === "Ножницы" && computer === "Бумага")
-    ) {
-      result = "Ты победил!";
-      rpsWins++;
-      document.getElementById("rpsWins").textContent = String(rpsWins);
-    } else {
-      result = "Компьютер победил!";
-    }
-
-    document.getElementById("rpsMsg").textContent =
-      `Ты: ${player} | Компьютер: ${computer} | ${result}`;
-  });
-});
-
-// ===== REACTION.EXE =====
-const reactionButton = document.getElementById("reactionButton");
-const reactionMsg = document.getElementById("reactionMsg");
-let reactionTimeout = null;
-let reactionStart = 0;
-let reactionState = "idle";
-let reactionBest = Infinity;
-
-reactionButton.addEventListener("click", () => {
-  if (reactionState === "waiting") {
-    clearTimeout(reactionTimeout);
-    reactionState = "idle";
-    reactionButton.textContent = "START TEST";
-    reactionButton.style.background = "";
-    reactionMsg.textContent = "Слишком рано! Попробуй снова.";
-    return;
-  }
-
-  if (reactionState === "ready") {
-    const elapsed = Math.round(performance.now() - reactionStart);
-    reactionState = "idle";
-    reactionButton.textContent = "START TEST";
-    reactionButton.style.background = "";
-    reactionMsg.textContent = `Твоя реакция: ${elapsed} мс`;
-
-    if (elapsed < reactionBest) {
-      reactionBest = elapsed;
-      document.getElementById("reactionBest").textContent = `${elapsed} мс`;
-    }
-    return;
-  }
-
-  reactionState = "waiting";
-  reactionButton.textContent = "ЖДИ ЗЕЛЁНЫЙ...";
-  reactionButton.style.background = "#493000";
-  reactionMsg.textContent = "Жди сигнала...";
-
-  reactionTimeout = setTimeout(() => {
-    reactionState = "ready";
-    reactionStart = performance.now();
-    reactionButton.textContent = "ЖМИ СЕЙЧАС!";
-    reactionButton.style.background = "#00ff41";
-  }, 1500 + Math.random() * 3000);
-});
-
-// ===== COIN FLIP =====
-document.getElementById("coinButton").addEventListener("click", () => {
-  const result = Math.random() < 0.5 ? "ОРЁЛ" : "РЕШКА";
-  document.getElementById("coinResult").textContent = result === "ОРЁЛ" ? "🪙" : "◉";
-  document.getElementById("coinMsg").textContent = `Выпало: ${result}!`;
-});
-
-// ===== DICE.EXE =====
-document.getElementById("diceButton").addEventListener("click", () => {
-  const n = Math.floor(Math.random() * 6) + 1;
-  const diceFaces = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-  document.getElementById("diceResult").textContent = diceFaces[n];
-  document.getElementById("diceMsg").textContent = `Выпало число ${n}.`;
-});
-// ===== CYBER PONG =====
-const pongCanvas = document.getElementById("pongCanvas");
-const pongCtx = pongCanvas.getContext("2d");
-const pongScoreEl = document.getElementById("pongScore");
-const pongMsg = document.getElementById("pongMsg");
-
-let pongRunning = false;
-let pongAnimation = null;
-let pongScore = 0;
-let paddle = { x: 120, y: 275, w: 60, h: 8 };
-let ball = { x: 150, y: 150, vx: 2.5, vy: 3, r: 6 };
-
-function drawPong() {
-  pongCtx.fillStyle = "#020802";
-  pongCtx.fillRect(0, 0, 300, 300);
-
-  pongCtx.strokeStyle = "#0a3210";
-  pongCtx.setLineDash([5, 5]);
-  pongCtx.beginPath();
-  pongCtx.moveTo(0, 150);
-  pongCtx.lineTo(300, 150);
-  pongCtx.stroke();
-  pongCtx.setLineDash([]);
-
-  pongCtx.shadowColor = "#00ff41";
-  pongCtx.shadowBlur = 10;
-  pongCtx.fillStyle = "#00ff41";
-  pongCtx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
-
-  pongCtx.beginPath();
-  pongCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
-  pongCtx.fill();
-  pongCtx.shadowBlur = 0;
-}
-
-function pongFrame() {
-  if (!pongRunning) return;
-
-  ball.x += ball.vx;
-  ball.y += ball.vy;
-
-  if (ball.x < ball.r || ball.x > 300 - ball.r) ball.vx *= -1;
-  if (ball.y < ball.r) ball.vy *= -1;
-
-  if (
-    ball.vy > 0 &&
-    ball.y + ball.r >= paddle.y &&
-    ball.y - ball.r <= paddle.y + paddle.h &&
-    ball.x >= paddle.x &&
-    ball.x <= paddle.x + paddle.w
-  ) {
-    ball.vy = -Math.abs(ball.vy);
-    ball.vx += (ball.x - (paddle.x + paddle.w / 2)) * 0.04;
-    pongScore++;
-    pongScoreEl.textContent = String(pongScore);
-  }
-
-  if (ball.y > 300) {
-    pongRunning = false;
-    pongMsg.textContent = `GAME OVER! Твой счёт: ${pongScore}.`;
-    drawPong();
-    return;
-  }
-
-  drawPong();
-  pongAnimation = requestAnimationFrame(pongFrame);
-}
-
-function movePaddle(event) {
-  const rect = pongCanvas.getBoundingClientRect();
-  const clientX = event.clientX ?? event.touches?.[0]?.clientX;
-  if (clientX == null) return;
-
-  const scaleX = 300 / rect.width;
-  paddle.x = Math.max(
-    0,
-    Math.min(300 - paddle.w, (clientX - rect.left) * scaleX - paddle.w / 2)
-  );
-  drawPong();
-}
-
-pongCanvas.addEventListener("pointermove", movePaddle);
-pongCanvas.addEventListener("pointerdown", movePaddle);
-
-document.getElementById("pongStart").addEventListener("click", () => {
-  if (pongAnimation) cancelAnimationFrame(pongAnimation);
-
-  pongRunning = true;
-  pongScore = 0;
-  pongScoreEl.textContent = "0";
-  paddle = { x: 120, y: 275, w: 60, h: 8 };
-  ball = {
-    x: 150,
-    y: 150,
-    vx: Math.random() < 0.5 ? -2.5 : 2.5,
-    vy: 3,
-    r: 6
-  };
-
-  pongMsg.textContent = "Игра началась!";
-  pongFrame();
-});
-
-drawPong();
-
-// ===== TERMINAL =====
-const terminalOutput = document.getElementById("terminalOutput");
-const terminalForm = document.getElementById("terminalForm");
-const terminalInput = document.getElementById("terminalInput");
-
-function terminalPrint(line) {
-  terminalOutput.textContent += "\n" + line;
-  terminalOutput.scrollTop = terminalOutput.scrollHeight;
-}
-
-terminalForm.addEventListener("submit", event => {
-  event.preventDefault();
-
-  const command = terminalInput.value.trim().toLowerCase();
-  terminalInput.value = "";
-
-  if (!command) return;
-
-  terminalPrint("xlebush3k@arcade:~$ " + command);
-
-  switch (command) {
-    case "help":
-      terminalPrint("Доступные команды: help, about, date, clear, secret");
-      break;
-    case "about":
-      terminalPrint("xlebush3k ARCADE — мини-игры и секреты.");
-      break;
-    case "date":
-      terminalPrint(new Date().toLocaleString("ru-RU"));
-      break;
-    case "secret":
-      terminalPrint("SECRET FOUND // Ты нашёл скрытую команду!");
-      break;
-    case "clear":
-      terminalOutput.textContent = "xlebush3k@arcade:~$ terminal cleared";
-      break;
-    default:
-      terminalPrint("Команда не найдена. Напиши help.");
-  }
-});
+// MATRIX RAIN
+const matrix=document.getElementById('matrix');const mctx=matrix.getContext('2d');let drops=[];
+function resizeMatrix(){matrix.width=innerWidth;matrix.height=innerHeight;drops=Array(Math.ceil(matrix.width/16)).fill(1);}resizeMatrix();addEventListener('resize',resizeMatrix);
+setInterval(()=>{mctx.fillStyle='rgba(2,6,3,.12)';mctx.fillRect(0,0,matrix.width,matrix.height);mctx.fillStyle='#42ff70';mctx.font='14px monospace';drops.forEach((y,i)=>{mctx.fillText('01アイX',i*16,y*16);if(y*16>matrix.height&&Math.random()>.975)drops[i]=0;drops[i]++;});},45);
+const $=id=>document.getElementById(id);
+function clock(){$('clock').textContent=new Date().toLocaleTimeString('ru-RU');$('session').textContent=String(Math.floor(performance.now()/1000)).padStart(4,'0');}setInterval(clock,1000);clock();
+// PROFILE AND CLICKER SAVE
+const SAVE_KEY='xlebush3k_arcade_save_v1';let saved={};try{saved=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')||{};}catch(e){}
+let profileName=saved.name||'xlebush3k',coins=Number(saved.coins)||0,record=Number(saved.record)||0,power=Number(saved.power)||1,upgrades=Number(saved.upgrades)||0,autoLevel=Number(saved.autoLevel)||0;
+function saveAll(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({name:profileName,coins,record,power,upgrades,autoLevel}));}catch(e){}}
+function upgradeCost(){return 25+upgrades*upgrades*20;}function autoCost(){return 100+autoLevel*autoLevel*100;}
+function renderClicker(){$('coins').textContent=Math.floor(coins).toLocaleString('ru-RU');$('clickRecord').textContent=record.toLocaleString('ru-RU');$('power').textContent=power;$('upgradeCount').textContent=upgrades+autoLevel;$('upgradeCost').textContent=upgradeCost();$('autoCost').textContent=autoCost();$('profileName').textContent=profileName;$('profileLevel').textContent=String(1+Math.floor((upgrades+autoLevel)/3)).padStart(2,'0');$('profileRecord').textContent=record.toLocaleString('ru-RU');}
+function clickCoin(){coins+=power;if(coins>record)record=Math.floor(coins);$('clickerBtn').classList.remove('pop');void $('clickerBtn').offsetWidth;$('clickerBtn').classList.add('pop');$('clickerOut').textContent='+'+power+' credits // saved';renderClicker();saveAll();}
+function buyUpgrade(){const cost=upgradeCost();if(coins<cost){$('clickerOut').textContent='Не хватает credits: '+(cost-coins);return;}coins-=cost;power++;upgrades++;$('clickerOut').textContent='UPGRADE OK. Сила клика: '+power;renderClicker();saveAll();}
+function buyAuto(){const cost=autoCost();if(coins<cost){$('clickerOut').textContent='Не хватает credits: '+(cost-coins);return;}coins-=cost;autoLevel++;$('clickerOut').textContent='AUTO NODE ONLINE. Доход: '+autoLevel+'/сек.';renderClicker();saveAll();}
+setInterval(()=>{if(autoLevel){coins+=autoLevel;if(coins>record)record=Math.floor(coins);renderClicker();saveAll();}},1000);
+function saveProfile(){const value=$('nameInput').value.trim();if(value)profileName=value.slice(0,22);$('nameInput').value='';renderClicker();saveAll();}renderClicker();
+// GUESS THE CODE
+let secretCode='',guessTries=0;
+function newCode(){secretCode='';while(secretCode.length<4){const n=String(Math.floor(Math.random()*10));if(!secretCode.includes(n))secretCode+=n;}guessTries=0;$('guessOut').textContent='Новый код сгенерирован.';$('guessHistory').textContent='';$('guessInput').value='';}
+function guessCode(){const g=$('guessInput').value.trim();if(!/^\d{4}$/.test(g)||new Set(g).size!==4){$('guessOut').textContent='Введи ровно 4 разные цифры.';return;}guessTries++;let exact=0,near=0;for(let i=0;i<4;i++){if(g[i]===secretCode[i])exact++;else if(secretCode.includes(g[i]))near++;}if(exact===4){$('guessOut').textContent='ACCESS GRANTED! Код взломан за '+guessTries+' попыток.';unlockSecret();}else{$('guessOut').textContent='На месте: '+exact+' · Не на месте: '+near;}$('guessHistory').textContent='Попытка #'+guessTries+' — '+g;}newCode();
+// ROCK PAPER SCISSORS
+let rpsYou=0,rpsCpu=0;function rps(v){const opts=['Камень','Бумага','Ножницы'];const c=opts[Math.floor(Math.random()*3)];const win=v===c?0:((v==='Камень'&&c==='Ножницы')||(v==='Бумага'&&c==='Камень')||(v==='Ножницы'&&c==='Бумага'))?1:-1;if(win===1)rpsYou++;if(win===-1)rpsCpu++;$('rpsOut').textContent='Ты: '+v+' · Система: '+c+' — '+(win===0?'НИЧЬЯ':win===1?'ТВОЯ ПОБЕДА':'ПОБЕДА СИСТЕМЫ')+' | '+rpsYou+':'+rpsCpu;}
+// COIN AND DICE
+function flipCoin(){const heads=Math.random()<.5;$('coinFace').textContent=heads?'ОРЁЛ':'РЕШКА';$('coinOut').textContent='Монета остановилась.';}const diceFaces=['⚀','⚁','⚂','⚃','⚄','⚅'];function rollDice(){const n=1+Math.floor(Math.random()*6);$('diceFace').textContent=diceFaces[n-1];$('diceOut').textContent='Выпало '+n+'.';}
+// REACTION TEST
+let reactionState='idle',reactionTimer=null,reactionStart=0;function reactionAction(){const b=$('reactionBtn');if(reactionState==='idle'){reactionState='wait';b.textContent='WAIT FOR GREEN...';b.style.background='#302008';$('reactionOut').textContent='Жди зелёного сигнала!';reactionTimer=setTimeout(()=>{reactionState='go';reactionStart=performance.now();b.textContent='CLICK NOW!';b.style.background='#145b28';},1200+Math.random()*3000);}else if(reactionState==='wait'){clearTimeout(reactionTimer);reactionState='idle';b.textContent='START TEST';b.style.background='';$('reactionOut').textContent='Слишком рано! Попробуй ещё.';}else{const ms=Math.round(performance.now()-reactionStart);reactionState='idle';b.textContent='START TEST';b.style.background='';$('reactionOut').textContent='Твоя реакция: '+ms+' мс.';}}
+// SNAKE
+const sc=$('snakeCanvas'),sx=sc.getContext('2d');let snake=[],food={x:5,y:5},dir={x:1,y:0},nextDir={x:1,y:0},snakeRun=false,snakeTimer=null,snakePoints=0;
+function startSnake(){clearInterval(snakeTimer);snake=[{x:9,y:9},{x:8,y:9},{x:7,y:9}];dir={x:1,y:0};nextDir={x:1,y:0};snakePoints=0;snakeRun=true;placeFood();$('snakeScore').textContent='0';$('snakeOut').textContent='RUNNING';snakeTimer=setInterval(tickSnake,125);drawSnake();}
+function placeFood(){do{food={x:Math.floor(Math.random()*20),y:Math.floor(Math.random()*20)};}while(snake.some(p=>p.x===food.x&&p.y===food.y));}
+function snakeDir(x,y){if(x!==-dir.x||y!==-dir.y)nextDir={x,y};}
+function tickSnake(){dir=nextDir;const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};if(h.x<0||h.x>=20||h.y<0||h.y>=20||snake.some(p=>p.x===h.x&&p.y===h.y)){snakeRun=false;clearInterval(snakeTimer);$('snakeOut').textContent='GAME OVER — Score: '+snakePoints;return;}snake.unshift(h);if(h.x===food.x&&h.y===food.y){snakePoints++;$('snakeScore').textContent=snakePoints;placeFood();}else snake.pop();drawSnake();}
+function drawSnake(){sx.fillStyle='#020703';sx.fillRect(0,0,300,300);sx.fillStyle='#64ff87';sx.fillRect(food.x*15+2,food.y*15+2,11,11);snake.forEach((p,i)=>{sx.fillStyle=i?'#258c43':'#a4ffb7';sx.fillRect(p.x*15+1,p.y*15+1,13,13);});}
+addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['input','textarea'].includes(document.activeElement.tagName.toLowerCase()))return;if(k==='arrowup'||k==='w')snakeDir(0,-1);if(k==='arrowdown'||k==='s')snakeDir(0,1);if(k==='arrowleft'||k==='a')snakeDir(-1,0);if(k==='arrowright'||k==='d')snakeDir(1,0);if(k==='w')movePaddle(-1);if(k==='s')movePaddle(1);});drawSnake();
+// PONG
+const pc=$('pongCanvas'),px=pc.getContext('2d');let py=70,cy=70,bx=160,by=95,bvx=2.5,bvy=1.5,ps=0,cs=0;
+function resetPong(){py=70;cy=70;bx=160;by=95;bvx=2.5*(Math.random()<.5?-1:1);bvy=(Math.random()*2-1)*2;drawPong();}
+function movePaddle(d){py=Math.max(0,Math.min(140,py+d*18));drawPong();}
+function drawPong(){px.fillStyle='#020703';px.fillRect(0,0,320,190);px.strokeStyle='#245c34';px.setLineDash([4,5]);px.beginPath();px.moveTo(160,0);px.lineTo(160,190);px.stroke();px.setLineDash([]);px.fillStyle='#65ff8b';px.fillRect(8,py,6,50);px.fillRect(306,cy,6,50);px.fillRect(bx-4,by-4,8,8);$('pongScore').textContent=ps+' : '+cs;}
+setInterval(()=>{bx+=bvx;by+=bvy;cy+=((by-25)-cy)*.07;if(by<4||by>186)bvy*=-1;if(bx<16&&by>py&&by<py+50){bvx=Math.abs(bvx)*1.04;bvy+=(by-(py+25))*.04;}if(bx>304&&by>cy&&by<cy+50)bvx=-Math.abs(bvx)*1.04;if(bx<0){cs++;resetPong();}if(bx>320){ps++;resetPong();}drawPong();},30);drawPong();
+// TERMINAL AND SECRET ROOM
+const terminal=$('terminal');function termWrite(s){terminal.textContent+='\n'+s;terminal.scrollTop=terminal.scrollHeight;}
+function unlockSecret(){$('secret').classList.add('unlocked');termWrite('ACCESS GRANTED: hidden room unlocked.');}
+function trySecretNav(e){if(!$('secret').classList.contains('unlocked')){e.preventDefault();termWrite('ACCESS DENIED. Try command: secret');document.querySelector('#terminal-section').scrollIntoView({behavior:'smooth'});}}
+function termCommand(cmd){cmd=String(cmd||'').trim().toLowerCase();if(!cmd)return;termWrite('xlebush3k@arcade:~$ '+cmd);const commands={help:'commands: help, about, date, status, clear, secret, games, profile',about:'xlebush3k // ARCADE. A tiny green corner of the internet.',date:new Date().toString(),status:'SYSTEM ONLINE | LOCAL SESSION | ALL MODULES READY',games:'snake / clicker / guess / rps / reaction / coin / dice / pong',profile:'operator='+profileName+' | level='+$('profileLevel').textContent};if(cmd==='clear'){terminal.textContent='terminal cleared.';return;}if(cmd==='secret'){unlockSecret();termWrite('You were never supposed to stop looking.');return;}termWrite(commands[cmd]||'command not found. Type "help".');}
+$('termform').addEventListener('submit',e=>{e.preventDefault();termCommand($('termInput').value);$('termInput').value='';});
+// MUSIC PLAYER
+const audio=$('audio');$('audioFile').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(f){audio.src=URL.createObjectURL(f);audio.play().catch(()=>{});$('visualizer').classList.add('playing');}});
+function toggleMusic(){if(!audio.src){$('audioFile').click();return;}if(audio.paused){audio.play().then(()=>$('visualizer').classList.add('playing')).catch(()=>{});}else{audio.pause();$('visualizer').classList.remove('playing');}}
+function stopMusic(){audio.pause();audio.currentTime=0;$('visualizer').classList.remove('playing');}audio.addEventListener('pause',()=>$('visualizer').classList.remove('playing'));audio.addEventListener('play',()=>$('visualizer').classList.add('playing'));
+for(let i=0;i<28;i++){const bar=document.createElement('i');bar.style.animationDelay=(Math.random()*.8)+'s';bar.style.height=(8+Math.random()*25)+'px';$('visualizer').appendChild(bar);}
 </script>
 </body>
 </html>
