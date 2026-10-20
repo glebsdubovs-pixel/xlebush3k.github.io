@@ -4,316 +4,926 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#050505">
-<title>XLEBUSH3K // GAME SYSTEM</title>
+<meta name="theme-color" content="#050805">
+<title>xlebush3k // ARCADE</title>
+
 <style>
-:root{--green:#00ff41;--red:#ff3030;--bg:#050505;--panel:#101010;--muted:#888}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:#ddd;font-family:Consolas,Monaco,monospace}
-a{color:inherit;text-decoration:none}
-button,input{font:inherit}
-.wrap{width:min(1050px,92%);margin:auto}
-header{border-bottom:1px solid #252525}
-nav{min-height:65px;display:flex;align-items:center;justify-content:space-between;gap:15px}
-.logo{font-size:20px;font-weight:bold;letter-spacing:2px;color:var(--green)}
-.navlinks{display:flex;gap:16px;font-size:12px;color:#aaa}
-.navlinks a:hover{color:var(--green)}
-.hero{padding:65px 0 45px}
-.label{font-size:11px;letter-spacing:3px;color:var(--red)}
-h1{font-size:clamp(36px,8vw,70px);line-height:1.05;margin:18px 0}
-h1 span{color:var(--green)}
-.hero p{color:#999;line-height:1.7;max-width:600px}
-.btn{display:inline-block;padding:12px 17px;background:var(--green);color:#000;border:0;font-weight:bold;cursor:pointer}
-.btn:hover{background:#fff}
-.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:28px 0 15px}
-h2{font-size:20px;margin:0;color:var(--green)}
-.section-title small{color:#777}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.card{background:var(--panel);border:1px solid #292929;padding:17px;min-height:215px;display:flex;flex-direction:column;transition:.15s}
-.card:hover{border-color:var(--green);transform:translateY(-2px)}
-.number{font-size:11px;color:var(--red);letter-spacing:2px}
-h3{font-size:18px;margin:12px 0 8px}
-.card p{font-size:12px;line-height:1.7;color:#999;margin:0 0 18px}
-.play{display:block;margin-top:auto;padding:10px;text-align:center;background:#1b1b1b;border:1px solid #333;color:var(--green);font-size:11px}
-.play:hover{background:var(--green);color:#000}
-.gamebox{margin:14px 0 30px;background:var(--panel);border:1px solid #292929;padding:18px}
-.gamebox h3{margin-top:0;color:var(--green)}
-.gamebox p{color:#aaa;font-size:13px;line-height:1.6}
-.game-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.game-controls button{padding:10px 13px;background:#181818;color:var(--green);border:1px solid #444;cursor:pointer}
-.game-controls button:hover{border-color:var(--green)}
-.game-controls input{width:130px;max-width:100%;padding:10px;background:#050505;color:var(--green);border:1px solid #444}
-.result{color:var(--green);font-size:13px;min-height:20px;white-space:pre-wrap;line-height:1.7}
-canvas{display:block;max-width:100%;background:#000;border:1px solid #333;margin:10px 0}
-#terminal{margin:30px 0;background:#080808;border:1px solid #333;padding:18px}
-#terminal h2{margin-bottom:10px}
-#terminalInput{width:100%;padding:12px;background:#000;color:var(--green);border:1px solid #333}
-#terminalOutput{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--green);font-size:13px;line-height:1.7}
-footer{border-top:1px solid #252525;padding:22px 0;color:#666;font-size:11px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-@media(max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-top:45px}}
-@media(max-width:480px){.grid{grid-template-columns:1fr}.navlinks{gap:9px;font-size:10px}nav{flex-wrap:wrap;padding:15px 0}.card{min-height:180px}}
+:root {
+  --bg: #050805;
+  --panel: #0a100b;
+  --green: #00ff66;
+  --lime: #baff00;
+  --text: #d6ffe1;
+  --muted: #779b80;
+  --border: #164526;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Consolas, Monaco, monospace;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at top, #063016 0%, transparent 55%),
+    linear-gradient(#050805, #020402);
+}
+
+a { color: var(--green); }
+
+button, input {
+  font: inherit;
+}
+
+button {
+  background: #07170b;
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 11px 15px;
+  cursor: pointer;
+  transition: .15s;
+  border-radius: 4px;
+}
+
+button:hover {
+  background: var(--green);
+  color: #001506;
+  box-shadow: 0 0 14px #00ff6644;
+}
+
+button:active { transform: scale(.97); }
+
+input {
+  width: 100%;
+  padding: 12px;
+  background: #020502;
+  color: var(--green);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  outline: none;
+  margin: 8px 0;
+}
+
+input:focus { border-color: var(--green); }
+
+header {
+  position: relative;
+  padding: 32px 18px 25px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+#matrix {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .17;
+  pointer-events: none;
+}
+
+.header-content { position: relative; }
+
+.logo {
+  font-size: clamp(27px, 6vw, 48px);
+  color: var(--green);
+  text-shadow: 0 0 18px #00ff6670;
+  margin: 5px 0 10px;
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+nav a {
+  text-decoration: none;
+  font-size: 13px;
+  padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+nav a:hover {
+  border-color: var(--green);
+  background: #06200e;
+}
+
+main {
+  width: min(1050px, 100%);
+  margin: auto;
+  padding: 20px 14px 50px;
+}
+
+.section-title {
+  color: var(--green);
+  font-size: 18px;
+  margin: 24px 0 14px;
+}
+
+.games {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: linear-gradient(145deg, #0b130d, #060906);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 16px;
+  min-width: 0;
+  box-shadow: 0 5px 20px #0005;
+}
+
+.card h2 {
+  color: var(--green);
+  font-size: 17px;
+  margin: 0 0 10px;
+}
+
+.desc {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 35px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status {
+  color: var(--lime);
+  font-size: 12px;
+}
+
+.output {
+  min-height: 20px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.big-number {
+  color: var(--lime);
+  font-size: 32px;
+  margin: 12px 0;
+  text-shadow: 0 0 12px #baff0040;
+}
+
+.game-canvas {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  margin: 12px auto;
+  background: #000;
+  border: 1px solid #00ff6644;
+  image-rendering: pixelated;
+  touch-action: none;
+}
+
+.snake-controls {
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  justify-content: center;
+  gap: 6px;
+  margin: 12px auto 0;
+}
+
+.snake-controls button {
+  padding: 8px;
+  min-height: 46px;
+  font-size: 20px;
+}
+
+.snake-controls .empty { visibility: hidden; }
+
+.terminal {
+  background: #020502;
+  border: 1px solid var(--border);
+  padding: 12px;
+  min-height: 95px;
+  color: var(--green);
+  font-size: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 24px 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 650px) {
+  .games { grid-template-columns: 1fr; }
+  main { padding: 12px 10px 35px; }
+  .card { padding: 14px; }
+  .desc { min-height: auto; }
+  button { padding: 12px; }
+}
 </style>
 </head>
+
 <body>
 <header>
-<div class="wrap">
-<nav>
-<a class="logo" href="index.html">XLEBUSH3K</a>
-<div class="navlinks">
-<a href="#projects">PROJECTS</a>
-<a href="#arcade">ARCADE</a>
-<a href="#terminal">TERMINAL</a>
-</div>
-</nav>
-</div>
+  <canvas id="matrix"></canvas>
+  <div class="header-content">
+    <div class="subtitle">[ SYSTEM ONLINE ]</div>
+    <h1 class="logo">xlebush3k</h1>
+    <div class="subtitle">ARCADE // GAMES // TERMINAL</div>
+  </div>
 </header>
 
-<main class="wrap">
-<section class="hero">
-<div class="label">SYSTEM STATUS: ONLINE</div>
-<h1>WELCOME TO<br><span>THE GAME SYSTEM</span></h1>
-<p>Игровой портал XLEBUSH3K. Выбирай игру, запускай и проверяй свои навыки. Система готова к работе.</p>
-<a class="btn" href="#projects">ОТКРЫТЬ ПРОЕКТЫ</a>
-</section>
+<nav>
+  <a href="#games">GAMES</a>
+  <a href="#snake">SNAKE.EXE</a>
+  <a href="#terminal">TERMINAL</a>
+</nav>
 
-<section id="projects">
-<div class="section-title"><h2>01 // МОИ ПРОЕКТЫ</h2><small>EXTERNAL MODULES</small></div>
-<div class="grid">
-<a class="card" href="craft.html"><div class="number">MODULE 01</div><h3>Infinite Mix</h3><p>Смешивай элементы и открывай новые комбинации.</p><span class="play">ЗАПУСТИТЬ →</span></a>
-<a class="card" href="space.html"><div class="number">MODULE 02</div><h3>Космос</h3><p>Исследуй планеты и отправляйся в космическое путешествие.</p><span class="play">ЗАПУСТИТЬ →</span></a>
-<a class="card" href="billion.html"><div class="number">MODULE 03</div><h3>Потрать миллиард</h3><p>Попробуй потратить миллиард евро на разные покупки.</p><span class="play">ЗАПУСТИТЬ →</span></a>
-<a class="card" href="password.html"><div class="number">MODULE 04</div><h3>Пароль безумия</h3><p>Выполняй правила и создай необычный пароль.</p><span class="play">ЗАПУСТИТЬ →</span></a>
-<a class="card" href="games.html"><div class="number">MODULE 05</div><h3>Мини-игры</h3><p>Открой коллекцию игр и выбери испытание.</p><span class="play">ЗАПУСТИТЬ →</span></a>
-<a class="card" href="rpg.html"><div class="number">MODULE 06</div><h3>Shadow Quest</h3><p>Приключение с монстрами, боями и заданиями.</p><span class="play">ЗАПУСТИТЬ →</span></a>
-</div>
-</section>
+<main>
+  <h2 class="section-title" id="games">// MINI GAMES</h2>
 
-<section id="arcade">
-<div class="section-title"><h2>02 // ARCADE</h2><small>GAMES BUILT IN</small></div>
-<div class="grid">
-<div class="card"><div class="number">GAME 07</div><h3>Кликер</h3><p>Нажимай кнопку, зарабатывай очки и побей свой рекорд.</p><div class="result" id="clickScore">Счёт: 0</div><div class="game-controls"><button id="clickBtn">КЛИК</button><button id="clickReset">СБРОС</button></div></div>
-<div class="card"><div class="number">GAME 08</div><h3>Угадай число</h3><p>Я загадал число от 1 до 100. Попробуй найти его.</p><div class="game-controls"><input id="guessInput" type="number" min="1" max="100" placeholder="1–100"><button id="guessBtn">ПРОВЕРИТЬ</button></div><div class="result" id="guessResult">Попыток: 0</div></div>
-<div class="card"><div class="number">GAME 09</div><h3>Камень, ножницы, бумага</h3><p>Сыграй против компьютера. Кто победит?</p><div class="game-controls"><button data-rps="Камень">КАМЕНЬ</button><button data-rps="Ножницы">НОЖНИЦЫ</button><button data-rps="Бумага">БУМАГА</button></div><div class="result" id="rpsResult">Ожидание выбора...</div></div>
-<div class="card"><div class="number">GAME 10</div><h3>Тест реакции</h3><p>Нажми старт и дождись зелёного сигнала. Не торопись.</p><div class="game-controls"><button id="reactionBtn">СТАРТ</button></div><div class="result" id="reactionResult">Готов?</div></div>
-<div class="card"><div class="number">GAME 11</div><h3>Монетка</h3><p>Выбери сторону случайности.</p><div class="game-controls"><button id="coinBtn">БРОСИТЬ</button></div><div class="result" id="coinResult">Ожидание...</div></div>
-<div class="card"><div class="number">GAME 12</div><h3>Случайный кубик</h3><p>Брось кубик и получи результат от одного до шести.</p><div class="game-controls"><button id="diceBtn">БРОСИТЬ КУБИК</button></div><div class="result" id="diceResult">Результат: —</div></div>
-</div>
+  <div class="games">
 
-<div class="gamebox">
-<h3>GAME 13 // ЗМЕЙКА</h3>
-<p>Собирай точки и не врезайся в стены или собственный хвост. Управление: стрелки на клавиатуре или кнопки ниже.</p>
-<canvas id="snakeCanvas" width="300" height="300"></canvas>
-<div class="game-controls">
-<button id="snakeStart">СТАРТ / ЗАНОВО</button>
-<button data-dir="up">ВВЕРХ</button>
-<button data-dir="left">ВЛЕВО</button>
-<button data-dir="down">ВНИЗ</button>
-<button data-dir="right">ВПРАВО</button>
-</div>
-<div class="result" id="snakeResult">Счёт: 0</div>
-</div>
+    <!-- SNAKE -->
+    <section class="card" id="snake">
+      <h2>// 01 — Snake.exe</h2>
+      <p class="desc">
+        Собирай светящиеся блоки. Управление: свайпы по полю,
+        стрелки на экране или клавиши клавиатуры.
+      </p>
 
-<div class="gamebox">
-<h3>GAME 14 // ПОНГ</h3>
-<p>Отбивай мяч платформой. Управление: мышь над игровым полем или кнопки ниже.</p>
-<canvas id="pongCanvas" width="320" height="220"></canvas>
-<div class="game-controls">
-<button id="pongStart">СТАРТ</button>
-<button id="pongLeft">← ВЛЕВО</button>
-<button id="pongRight">ВПРАВО →</button>
-</div>
-<div class="result" id="pongResult">Счёт: 0</div>
-</div>
-</section>
+      <canvas class="game-canvas" id="snakeCanvas"
+        width="300" height="300"
+        aria-label="Игровое поле змейки"></canvas>
 
-<section id="terminal">
-<h2>03 // TERMINAL</h2>
-<p style="color:#888;font-size:12px">Введи help, чтобы посмотреть доступные команды.</p>
-<form id="terminalForm">
-<input id="terminalInput" placeholder="Введите команду..." autocomplete="off" maxlength="60">
-</form>
-<pre id="terminalOutput"></pre>
-</section>
+      <div class="row" style="margin-top:10px;justify-content:space-between">
+        <span class="status">SCORE: <b id="snakeScore">0</b></span>
+        <button id="snakeStart">START / RESTART</button>
+      </div>
 
-<footer><span>XLEBUSH3K // GAME SYSTEM</span><span>ALL SYSTEMS OPERATIONAL</span></footer>
+      <div class="snake-controls" aria-label="Управление змейкой">
+        <span class="empty"></span>
+        <button data-dir="up" aria-label="Вверх">▲</button>
+        <span class="empty"></span>
+        <button data-dir="left" aria-label="Влево">◀</button>
+        <button data-dir="down" aria-label="Вниз">▼</button>
+        <button data-dir="right" aria-label="Вправо">▶</button>
+      </div>
+
+      <p class="output" id="snakeMsg" aria-live="polite">
+        Нажми START, чтобы начать.
+      </p>
+    </section>
+
+    <!-- CLICKER -->
+    <section class="card">
+      <h2>// 02 — Green Clicker</h2>
+      <p class="desc">Нажимай и набирай очки.</p>
+      <div class="big-number" id="clickScore">0</div>
+      <button id="clickButton">HACK!</button>
+      <button id="clickReset">RESET</button>
+      <p class="output">Всего кликов: <span id="clickTotal">0</span></p>
+    </section>
+
+    <!-- GUESS -->
+    <section class="card">
+      <h2>// 03 — Guess the Code</h2>
+      <p class="desc">Угадай число от 1 до 100.</p>
+      <input id="guessInput" type="number" min="1" max="100"
+        placeholder="Введи число..." />
+      <div class="row">
+        <button id="guessButton">CHECK</button>
+        <button id="guessReset">NEW GAME</button>
+      </div>
+      <p class="output" id="guessMsg">Система выбрала число.</p>
+      <p class="status">Попытки: <span id="guessAttempts">0</span></p>
+    </section>
+
+    <!-- RPS -->
+    <section class="card">
+      <h2>// 04 — Rock / Paper / Scissors</h2>
+      <p class="desc">Камень, ножницы, бумага против компьютера.</p>
+      <div class="row">
+        <button data-rps="Камень">✊</button>
+        <button data-rps="Бумага">✋</button>
+        <button data-rps="Ножницы">✌</button>
+      </div>
+      <p class="output" id="rpsMsg">Выбирай ход.</p>
+      <p class="status">Победы: <span id="rpsWins">0</span></p>
+    </section>
+
+    <!-- REACTION -->
+    <section class="card">
+      <h2>// 05 — Reaction.exe</h2>
+      <p class="desc">Проверь скорость реакции.</p>
+      <div id="reactionBox" style="margin:12px 0">
+        <button id="reactionButton">START TEST</button>
+      </div>
+      <p class="output" id="reactionMsg">Нажми START TEST.</p>
+      <p class="status">Лучшее время: <span id="reactionBest">—</span></p>
+    </section>
+
+    <!-- COIN -->
+    <section class="card">
+      <h2>// 06 — Coin Flip</h2>
+      <p class="desc">Орёл или решка?</p>
+      <div class="big-number" id="coinResult">?</div>
+      <button id="coinButton">FLIP COIN</button>
+      <p class="output" id="coinMsg">Случайный результат.</p>
+    </section>
+
+    <!-- DICE -->
+    <section class="card">
+      <h2>// 07 — Dice.exe</h2>
+      <p class="desc">Брось виртуальный кубик.</p>
+      <div class="big-number" id="diceResult">⚄</div>
+      <button id="diceButton">ROLL DICE</button>
+      <p class="output" id="diceMsg">Результат от 1 до 6.</p>
+    </section>
+
+    <!-- PONG -->
+    <section class="card">
+      <h2>// 08 — Cyber Pong</h2>
+      <p class="desc">Отбивай мяч мышкой или пальцем. Не дай ему пройти!</p>
+      <canvas id="pongCanvas" class="game-canvas"
+        width="300" height="300" aria-label="Pong"></canvas>
+      <div class="row">
+        <button id="pongStart">START / RESTART</button>
+        <span class="status">SCORE: <b id="pongScore">0</b></span>
+      </div>
+      <p class="output" id="pongMsg">Нажми START.</p>
+    </section>
+
+  </div>
+
+  <!-- TERMINAL -->
+  <h2 class="section-title" id="terminal">// TERMINAL</h2>
+  <section class="card">
+    <p class="desc">Попробуй команды: help, about, date, clear.</p>
+    <div class="terminal" id="terminalOutput">xlebush3k@arcade:~$ system online</div>
+    <form id="terminalForm">
+      <input id="terminalInput" autocomplete="off"
+        placeholder="Введи команду..." aria-label="Команда терминала">
+      <button type="submit">EXECUTE</button>
+    </form>
+  </section>
 </main>
 
+<footer>
+  <div>xlebush3k // ARCADE</div>
+  <p>STAY CURIOUS. KEEP PLAYING.</p>
+</footer>
+
 <script>
-"use strict";
+// MATRIX BACKGROUND
+(() => {
+  const canvas = document.getElementById("matrix");
+  const ctx = canvas.getContext("2d");
+  const chars = "01アイウエオカキクケコ";
+  let columns = [];
 
-// Кликер
-let clicks=0;
-const clickScore=document.getElementById("clickScore");
-document.getElementById("clickBtn").onclick=()=>{
- clicks++;
- clickScore.textContent="Счёт: "+clicks;
-};
-document.getElementById("clickReset").onclick=()=>{
- clicks=0;
- clickScore.textContent="Счёт: 0";
-};
-
-// Угадай число
-let target=Math.floor(Math.random()*100)+1,tries=0,guessDone=false;
-document.getElementById("guessBtn").onclick=()=>{
- const input=document.getElementById("guessInput");
- const value=Number(input.value);
- const out=document.getElementById("guessResult");
- if(guessDone){target=Math.floor(Math.random()*100)+1;tries=0;guessDone=false;out.textContent="Новая игра!";input.value="";return;}
- if(!input.value||value<1||value>100){out.textContent="Введи число от 1 до 100.";return;}
- tries++;
- if(value===target){out.textContent="Верно! Попыток: "+tries+". Нажми ПРОВЕРИТЬ для новой игры.";guessDone=true;}
- else out.textContent=(value<target?"Загаданное число больше.":"Загаданное число меньше.")+" Попыток: "+tries;
-};
-
-// Камень, ножницы, бумага
-document.querySelectorAll("[data-rps]").forEach(button=>{
- button.onclick=()=>{
-  const choices=["Камень","Ножницы","Бумага"];
-  const player=button.dataset.rps;
-  const computer=choices[Math.floor(Math.random()*3)];
-  let result;
-  if(player===computer)result="Ничья.";
-  else if((player==="Камень"&&computer==="Ножницы")||(player==="Ножницы"&&computer==="Бумага")||(player==="Бумага"&&computer==="Камень"))result="Ты выиграл!";
-  else result="Компьютер выиграл.";
-  document.getElementById("rpsResult").textContent="Ты: "+player+"\nКомпьютер: "+computer+"\n"+result;
- };
-});
-
-// Тест реакции
-let reactionTimer=null,reactionStart=0,reactionState="idle";
-const reactionBtn=document.getElementById("reactionBtn");
-const reactionResult=document.getElementById("reactionResult");
-reactionBtn.onclick=()=>{
- if(reactionState==="waiting")return;
- if(reactionState==="ready"){
-  clearTimeout(reactionTimer);reactionState="idle";
-  reactionResult.textContent="Слишком рано! Нажми СТАРТ ещё раз.";
-  reactionBtn.textContent="СТАРТ";return;
- }
- if(reactionState==="go"){
-  const ms=Date.now()-reactionStart;
-  reactionState="idle";reactionBtn.textContent="СТАРТ";
-  reactionResult.textContent="Твоя реакция: "+ms+" мс";return;
- }
- reactionState="waiting";reactionBtn.textContent="ЖДИ...";
- reactionResult.textContent="Жди зелёного сигнала...";
- reactionTimer=setTimeout(()=>{
-  reactionState="go";reactionStart=Date.now();
-  reactionResult.textContent="ЖМИ СЕЙЧАС!";
-  reactionBtn.textContent="ЖМИ!";
- },1000+Math.random()*3000);
-};
-
-// Монетка и кубик
-document.getElementById("coinBtn").onclick=()=>{
- document.getElementById("coinResult").textContent=Math.random()<0.5?"Орёл":"Решка";
-};
-document.getElementById("diceBtn").onclick=()=>{
- document.getElementById("diceResult").textContent="Результат: "+(Math.floor(Math.random()*6)+1);
-};
-
-// Змейка
-(()=>{
- const canvas=document.getElementById("snakeCanvas"),ctx=canvas.getContext("2d");
- const size=15,cells=20;
- let snake,food,dir,nextDir,score,running,timer;
- function reset(){
-  clearInterval(timer);snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
-  dir={x:1,y:0};nextDir={x:1,y:0};score=0;running=false;
-  placeFood();draw();document.getElementById("snakeResult").textContent="Счёт: 0";
- }
- function placeFood(){
-  do{food={x:Math.floor(Math.random()*cells),y:Math.floor(Math.random()*cells)};}
-  while(snake.some(s=>s.x===food.x&&s.y===food.y));
- }
- function draw(){
-  ctx.fillStyle="#000";ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="#ff3030";ctx.fillRect(food.x*size,food.y*size,size-2,size-2);
-  ctx.fillStyle="#00ff41";snake.forEach(s=>ctx.fillRect(s.x*size,s.y*size,size-2,size-2));
- }
- function tick(){
-  dir=nextDir;
-  const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
-  if(head.x<0||head.y<0||head.x>=cells||head.y>=cells||snake.some(s=>s.x===head.x&&s.y===head.y)){
-   clearInterval(timer);running=false;
-   document.getElementById("snakeResult").textContent="Игра окончена. Счёт: "+score+". Нажми старт.";
-   return;
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+    canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    columns = Array.from(
+      { length: Math.ceil(rect.width / 14) },
+      () => Math.random() * rect.height / 14
+    );
   }
-  snake.unshift(head);
-  if(head.x===food.x&&head.y===food.y){score++;placeFood();}
-  else snake.pop();
-  document.getElementById("snakeResult").textContent="Счёт: "+score;
+
+  function draw() {
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    ctx.fillStyle = "rgba(0,5,2,0.12)";
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = "#00ff66";
+    ctx.font = "12px monospace";
+
+    columns.forEach((y, i) => {
+      ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 14, y * 14);
+      if (y * 14 > h && Math.random() > .975) columns[i] = 0;
+      else columns[i] += .6;
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
   draw();
- }
- function setDir(name){
-  const dirs={up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}};
-  const d=dirs[name];if(!d)return;
-  if(d.x!==-dir.x||d.y!==-dir.y)nextDir=d;
- }
- document.querySelectorAll("[data-dir]").forEach(b=>b.onclick=()=>setDir(b.dataset.dir));
- document.addEventListener("keydown",e=>{
-  if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)&&!["INPUT"].includes(e.target.tagName)){
-   e.preventDefault();setDir(({ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right"})[e.key]);
+})();
+
+// SNAKE — ORIGINAL MATRIX VERSION WITH SWIPE CONTROLS
+(() => {
+  const c = document.getElementById("snakeCanvas");
+  const ctx = c.getContext("2d");
+  const N = 20, CELL = 15;
+
+  let snake, food, dir, next, score, timer;
+  let running = false, over = true;
+
+  const scoreEl = document.getElementById("snakeScore");
+  const msg = document.getElementById("snakeMsg");
+
+  function foodSpot() {
+    let p;
+    do {
+      p = {
+        x: Math.floor(Math.random() * N),
+        y: Math.floor(Math.random() * N)
+      };
+    } while (snake.some(s => s.x === p.x && s.y === p.y));
+    return p;
   }
- });
- document.getElementById("snakeStart").onclick=()=>{
-  reset();running=true;timer=setInterval(tick,130);
- };
- reset();
+
+  function draw() {
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, 300, 300);
+
+    ctx.strokeStyle = "#003b19";
+    ctx.lineWidth = .5;
+
+    for (let i = 0; i <= N; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * CELL, 0);
+      ctx.lineTo(i * CELL, 300);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(0, i * CELL);
+      ctx.lineTo(300, i * CELL);
+      ctx.stroke();
+    }
+
+    if (food) {
+      ctx.fillStyle = "#baff00";
+      ctx.shadowColor = "#00ff66";
+      ctx.shadowBlur = 12;
+      ctx.fillRect(food.x * CELL + 3, food.y * CELL + 3, 9, 9);
+      ctx.shadowBlur = 0;
+    }
+
+    if (snake) {
+      snake.forEach((s, i) => {
+        ctx.fillStyle = i === 0 ? "#caffd8" : "#00ff66";
+        ctx.shadowColor = "#00ff66";
+        ctx.shadowBlur = i === 0 ? 10 : 3;
+        ctx.fillRect(
+          s.x * CELL + 1,
+          s.y * CELL + 1,
+          CELL - 2,
+          CELL - 2
+        );
+      });
+      ctx.shadowBlur = 0;
+    }
+
+    if (over) {
+      ctx.fillStyle = "#00ff66";
+      ctx.font = "bold 14px monospace";
+      ctx.textAlign = "center";
+      ctx.fillText(running ? "GAME OVER" : "SNAKE.EXE", 150, 145);
+      ctx.textAlign = "left";
+    }
+  }
+
+  function start() {
+    clearInterval(timer);
+    snake = [
+      { x: 9, y: 10 },
+      { x: 8, y: 10 },
+      { x: 7, y: 10 }
+    ];
+    dir = { x: 1, y: 0 };
+    next = { x: 1, y: 0 };
+    score = 0;
+    food = foodSpot();
+    running = true;
+    over = false;
+    scoreEl.textContent = "0";
+    msg.textContent = "Collect the glowing data.";
+    draw();
+    timer = setInterval(step, 125);
+  }
+
+  function step() {
+    dir = next;
+    const head = {
+      x: snake[0].x + dir.x,
+      y: snake[0].y + dir.y
+    };
+
+    const ate = head.x === food.x && head.y === food.y;
+    const body = snake.slice(0, ate ? snake.length : snake.length - 1);
+
+    if (
+      head.x < 0 || head.x >= N ||
+      head.y < 0 || head.y >= N ||
+      body.some(s => s.x === head.x && s.y === head.y)
+    ) {
+      clearInterval(timer);
+      running = false;
+      over = true;
+      msg.textContent =
+        "GAME OVER — score: " + score + ". Press START / RESTART.";
+      draw();
+      return;
+    }
+
+    snake.unshift(head);
+
+    if (ate) {
+      score++;
+      scoreEl.textContent = score;
+      food = foodSpot();
+
+      if (snake.length === N * N) {
+        clearInterval(timer);
+        running = false;
+        over = true;
+        msg.textContent = "MAXIMUM DATA COLLECTED. YOU WIN!";
+        draw();
+        return;
+      }
+    } else {
+      snake.pop();
+    }
+
+    draw();
+  }
+
+  function turn(d) {
+    if (!running) return;
+    if (d.x === -dir.x && d.y === -dir.y) return;
+    next = d;
+  }
+
+  const directions = {
+    up: { x: 0, y: -1 },
+    down: { x: 0, y: 1 },
+    left: { x: -1, y: 0 },
+    right: { x: 1, y: 0 }
+  };
+
+  document.querySelectorAll("[data-dir]").forEach(button => {
+    button.addEventListener("click", () => {
+      turn(directions[button.dataset.dir]);
+    });
+  });
+
+  document.addEventListener("keydown", event => {
+    const map = {
+      ArrowUp: "up",
+      ArrowDown: "down",
+      ArrowLeft: "left",
+      ArrowRight: "right"
+    };
+
+    if (map[event.key] && document.activeElement.tagName !== "INPUT") {
+      event.preventDefault();
+      turn(directions[map[event.key]]);
+    }
+  });
+
+  let touch = null;
+
+  c.addEventListener("touchstart", event => {
+    const t = event.changedTouches[0];
+    touch = { x: t.clientX, y: t.clientY };
+  }, { passive: true });
+
+  c.addEventListener("touchend", event => {
+    if (!touch) return;
+    const t = event.changedTouches[0];
+    const dx = t.clientX - touch.x;
+    const dy = t.clientY - touch.y;
+
+    if (Math.max(Math.abs(dx), Math.abs(dy)) > 18) {
+      if (Math.abs(dx) > Math.abs(dy)) {
+        turn({ x: Math.sign(dx), y: 0 });
+      } else {
+        turn({ x: 0, y: Math.sign(dy) });
+      }
+    }
+    touch = null;
+  }, { passive: true });
+
+  document.getElementById("snakeStart").addEventListener("click", start);
+  draw();
 })();
 
-// Понг против простого компьютера
-(()=>{
- const canvas=document.getElementById("pongCanvas"),ctx=canvas.getContext("2d");
- let player=120,ball={x:160,y:110,vx:2.4,vy:2.2},enemy=120,score=0,running=false,frame=null;
- function draw(){
-  ctx.fillStyle="#000";ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.strokeStyle="#333";ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(160,0);ctx.lineTo(160,220);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle="#00ff41";ctx.fillRect(8,player,6,48);
-  ctx.fillStyle="#ff3030";ctx.fillRect(306,enemy,6,48);
-  ctx.fillStyle="#fff";ctx.fillRect(ball.x-4,ball.y-4,8,8);
- }
- function step(){
-  if(!running)return;
-  ball.x+=ball.vx;ball.y+=ball.vy;
-  enemy+=(ball.y-24-enemy)*0.055;
-  if(ball.y<4||ball.y>216)ball.vy*=-1;
-  if(ball.x<18&&ball.y>player&&ball.y<player+48){ball.vx=Math.abs(ball.vx)*1.04;}
-  if(ball.x>302&&ball.y>enemy&&ball.y<enemy+48){ball.vx=-Math.abs(ball.vx)*1.04;}
-  if(ball.x<0){score++;resetBall(1);}
-  if(ball.x>320){score++;resetBall(-1);}
-  document.getElementById("pongResult").textContent="Счёт: "+score;
-  draw();frame=requestAnimationFrame(step);
- }
- function resetBall(direction){ball={x:160,y:110,vx:2.5*direction,vy:Math.random()*3-1.5};}
- function start(){if(frame)cancelAnimationFrame(frame);score=0;player=86;enemy=86;resetBall(Math.random()<.5?1:-1);running=true;step();}
- canvas.addEventListener("mousemove",e=>{
-  const rect=canvas.getBoundingClientRect();
-  player=Math.max(0,Math.min(172,(e.clientY-rect.top)*canvas.height/rect.height-24));
- });
- document.getElementById("pongStart").onclick=start;
- document.getElementById("pongLeft").onclick=()=>player=Math.max(0,player-18);
- document.getElementById("pongRight").onclick=()=>player=Math.min(172,player+18);
- draw();
+// CLICKER
+(() => {
+  let score = 0;
+  let total = 0;
+  const scoreEl = document.getElementById("clickScore");
+  const totalEl = document.getElementById("clickTotal");
+
+  document.getElementById("clickButton").addEventListener("click", () => {
+    score++;
+    total++;
+    scoreEl.textContent = score;
+    totalEl.textContent = total;
+  });
+
+  document.getElementById("clickReset").addEventListener("click", () => {
+    score = 0;
+    scoreEl.textContent = score;
+  });
 })();
 
-// Терминал
-const terminalCommands={
- help:"КОМАНДЫ: help, games, status, about, clear",
- games:"ДОСТУПНЫЕ ИГРЫ:\nInfinite Mix\nКосмос\nПотрать миллиард\nПароль безумия\nМини-игры\nShadow Quest\nКликер\nУгадай число\nКамень, ножницы, бумага\nТест реакции\nМонетка\nКубик\nЗмейка\nПонг",
- status:"SYSTEM STATUS: ONLINE\nARCADE: ACTIVE",
- about:"XLEBUSH3K GAME SYSTEM\nЛичный игровой портал."
-};
-document.getElementById("terminalForm").addEventListener("submit",e=>{
- e.preventDefault();
- const input=document.getElementById("terminalInput");
- const command=input.value.trim().toLowerCase();input.value="";
- const output=document.getElementById("terminalOutput");
- if(command==="clear"){output.textContent="";return;}
- output.textContent=Object.prototype.hasOwnProperty.call(terminalCommands,command)?terminalCommands[command]:"Команда не найдена. Введи help.";
+// GUESS THE NUMBER
+(() => {
+  let secret, attempts;
+  const input = document.getElementById("guessInput");
+  const msg = document.getElementById("guessMsg");
+  const attemptsEl = document.getElementById("guessAttempts");
+  const check = document.getElementById("guessButton");
+
+  function reset() {
+    secret = Math.floor(Math.random() * 100) + 1;
+    attempts = 0;
+    attemptsEl.textContent = "0";
+    input.value = "";
+    msg.textContent = "Новое число выбрано. Удачи!";
+    check.disabled = false;
+  }
+
+  check.addEventListener("click", () => {
+    const n = Number(input.value);
+    if (!Number.isInteger(n) || n < 1 || n > 100) {
+      msg.textContent = "Введи целое число от 1 до 100.";
+      return;
+    }
+
+    attempts++;
+    attemptsEl.textContent = attempts;
+
+    if (n === secret) {
+      msg.textContent = "ACCESS GRANTED! Ты угадал за " + attempts + " попыток.";
+      check.disabled = true;
+    } else {
+      msg.textContent = n < secret ? "Слишком мало. Попробуй выше." : "Слишком много. Попробуй ниже.";
+    }
+  });
+
+  document.getElementById("guessReset").addEventListener("click", reset);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") check.click();
+  });
+  reset();
+})();
+
+// ROCK PAPER SCISSORS
+(() => {
+  let wins = 0;
+  const options = ["Камень", "Бумага", "Ножницы"];
+  const msg = document.getElementById("rpsMsg");
+  const winsEl = document.getElementById("rpsWins");
+
+  document.querySelectorAll("[data-rps]").forEach(button => {
+    button.addEventListener("click", () => {
+      const player = button.dataset.rps;
+      const computer = options[Math.floor(Math.random() * 3)];
+      let result;
+
+      if (player === computer) {
+        result = "Ничья!";
+      } else if (
+        (player === "Камень" && computer === "Ножницы") ||
+        (player === "Бумага" && computer === "Камень") ||
+        (player === "Ножницы" && computer === "Бумага")
+      ) {
+        result = "Ты победил!";
+        wins++;
+        winsEl.textContent = wins;
+      } else {
+        result = "Компьютер победил.";
+      }
+
+      msg.textContent = "Ты: " + player + " | Компьютер: " + computer + ". " + result;
+    });
+  });
+})();
+
+// REACTION TEST
+(() => {
+  const button = document.getElementById("reactionButton");
+  const msg = document.getElementById("reactionMsg");
+  const bestEl = document.getElementById("reactionBest");
+  let timeout, startTime, best = Infinity, state = "idle";
+
+  button.addEventListener("click", () => {
+    if (state === "waiting") {
+      clearTimeout(timeout);
+      state = "idle";
+      button.textContent = "START TEST";
+      button.style.background = "";
+      msg.textContent = "Слишком рано! Попробуй снова.";
+      return;
+    }
+
+    if (state === "ready") {
+      const time = Math.round(performance.now() - startTime);
+      msg.textContent = "Твоя реакция: " + time + " мс.";
+      if (time < best) {
+        best = time;
+        bestEl.textContent = best + " мс";
+      }
+      state = "idle";
+      button.textContent = "TRY AGAIN";
+      button.style.background = "";
+      return;
+    }
+
+    state = "waiting";
+    button.textContent = "ЖДИ ЗЕЛЁНЫЙ...";
+    button.style.background = "#332900";
+    msg.textContent = "Жди сигнала...";
+
+    timeout = setTimeout(() => {
+      state = "ready";
+      startTime = performance.now();
+      button.textContent = "НАЖМИ!";
+      button.style.background = "#00ff66";
+      button.style.color = "#001506";
+    }, 1000 + Math.random() * 3000);
+  });
+})();
+
+// COIN FLIP
+document.getElementById("coinButton").addEventListener("click", () => {
+  const result = Math.random() < .5 ? "ОРЁЛ" : "РЕШКА";
+  document.getElementById("coinResult").textContent = result;
+  document.getElementById("coinMsg").textContent = "Выпало: " + result + ".";
 });
+
+// DICE
+document.getElementById("diceButton").addEventListener("click", () => {
+  const n = Math.floor(Math.random() * 6) + 1;
+  document.getElementById("diceResult").textContent = ["⚀","⚁","⚂","⚃","⚄","⚅"][n - 1];
+  document.getElementById("diceMsg").textContent = "Выпало число: " + n + ".";
+});
+
+// PONG
+(() => {
+  const c = document.getElementById("pongCanvas");
+  const ctx = c.getContext("2d");
+  const scoreEl = document.getElementById("pongScore");
+  const msg = document.getElementById("pongMsg");
+
+  let paddleX = 110, ballX = 150, ballY = 150;
+  let vx = 2, vy = 2, score = 0, running = false, raf = 0;
+
+  function draw() {
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, 300, 300);
+
+    ctx.strokeStyle = "#003b19";
+    for (let y = 0; y < 300; y += 15) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(300, y);
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = "#00ff66";
+    ctx.shadowColor = "#00ff66";
+    ctx.shadowBlur = 10;
+    ctx.fillRect(paddleX, 275, 80, 7);
+
+    ctx.fillStyle = "#baff00";
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  function loop() {
+    if (!running) return;
+
+    ballX += vx;
+    ballY += vy;
+
+    if (ballX < 6 || ballX > 294) vx *= -1;
+    if (ballY < 6) vy *= -1;
+
+    if (ballY >= 269 && ballY <= 283 &&
+        ballX >= paddleX - 4 && ballX <= paddleX + 84 && vy > 0) {
+      vy = -Math.abs(vy) - .03;
+      vx += (ballX - (paddleX + 40)) * .025;
+      score++;
+      scoreEl.textContent = score;
+    }
+
+    if (ballY > 300) {
+      running = false;
+      msg.textContent = "GAME OVER. Итоговый счёт: " + score;
+      draw();
+      return;
+    }
+
+    draw();
+    raf = requestAnimationFrame(loop);
+  }
+
+  function move(event) {
+    const rect = c.getBoundingClientRect();
+    const clientX = event.clientX;
+    paddleX = Math.max(0, Math.min(220, (clientX - rect.left) * 300 / rect.width - 40));
+    if (!running) draw();
+  }
+
+  c.addEventListener("pointermove", move);
+
+  document.getElementById("pongStart").addEventListener("click", () => {
+    cancelAnimationFrame(raf);
+    paddleX = 110;
+    ballX = 150;
+    ballY = 150;
+    vx = Math.random() > .5 ? 2 : -2;
+    vy = 2;
+    score = 0;
+    scoreEl.textContent = "0";
+    running = true;
+    msg.textContent = "Двигай платформу пальцем или мышкой.";
+    draw();
+    loop();
+  });
+
+  draw();
+})();
+
+// TERMINAL
+(() => {
+  const form = document.getElementById("terminalForm");
+  const input = document.getElementById("terminalInput");
+  const output = document.getElementById("terminalOutput");
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    const command = input.value.trim().toLowerCase();
+    let response;
+
+    switch (command) {
+      case "help":
+        response = "Available commands: help, about, date, clear";
+        break;
+      case "about":
+        response = "xlebush3k ARCADE — mini games in your browser.";
+        break;
+      case "date":
+        response = new Date().toLocaleString();
+        break;
+      case "clear":
+        output.textContent = "";
+        input.value = "";
+        return;
+      default:
+        response = command ? "Command not found: " + command : "Enter a command.";
+    }
+
+    output.textContent += "\n\nxlebush3k@arcade:~$ " + command + "\n" + response;
+    output.scrollTop = output.scrollHeight;
+    input.value = "";
+  });
+})();
 </script>
 </body>
 </html>
