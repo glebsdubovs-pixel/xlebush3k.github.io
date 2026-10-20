@@ -76,14 +76,25 @@ footer { text-align:center; color:#477b52; padding:25px; font-size:11px; border-
   <div class="topline"><span>STATUS: <b style="color:var(--green)">ONLINE</b></span><span id="clock">--:--:--</span><span>SESSION <b id="session">0000</b></span></div>
 </header>
 <nav>
-  <a href="#profile">PROFILE</a><a href="#games">GAMES</a><a href="#music">MUSIC</a><a href="#projects">PROJECTS</a><a href="#terminal-section">TERMINAL</a><a href="#secret" onclick="trySecretNav(event)">SECRET</a>
+  <a href="#profile">PROFILE</a><a href="#leaderboard">LEADERBOARD</a><a href="#games">GAMES</a><a href="#music">MUSIC</a><a href="#projects">PROJECTS</a><a href="#terminal-section">TERMINAL</a><a href="#secret" onclick="trySecretNav(event)">SECRET</a>
 </nav>
 <main>
 <section id="profile" class="panel">
   <div class="section-title">USER PROFILE</div>
   <div class="row"><div class="stat"><small>OPERATOR</small><strong id="profileName">xlebush3k</strong></div><div class="stat"><small>LEVEL</small><strong id="profileLevel">01</strong></div><div class="stat"><small>CLICKER RECORD</small><strong id="profileRecord">0</strong></div></div>
-  <div class="row" style="margin-top:10px"><input id="nameInput" maxlength="22" placeholder="Имя профиля"><button onclick="saveProfile()">Сохранить профиль</button><span class="pill">LOCAL PROFILE</span></div>
-  <p class="muted" style="font-size:12px">Прогресс хранится в браузере этого устройства.</p>
+  <div class="row" style="margin-top:10px"><input id="nameInput" maxlength="22" placeholder="Никнейм профиля"><button onclick="saveProfile()">Сохранить ник</button></div>
+  <div class="section-title">ONLINE IDENTITY</div>
+  <p class="muted" style="font-size:12px">Создай аккаунт или войди, чтобы публиковать рекорды и видеть общий рейтинг. Используй пароль, который не применяешь на других сайтах.</p>
+  <div class="row"><input id="authEmail" type="email" autocomplete="email" placeholder="Email" style="flex:1;min-width:190px"><input id="authPassword" type="password" autocomplete="current-password" placeholder="Пароль (6+ символов)" style="flex:1;min-width:190px"></div>
+  <div class="row" style="margin-top:8px"><button onclick="arcadeSignUp()">CREATE ACCOUNT</button><button onclick="arcadeSignIn()">LOGIN</button><button onclick="arcadeSignOut()">LOGOUT</button><span id="authStatus" class="pill">OFFLINE</span></div>
+  <p class="muted" id="authMessage" style="font-size:12px">Для онлайн-функций нужно один раз настроить Supabase по инструкции.</p>
+</section>
+<section id="leaderboard" class="panel">
+  <div class="section-title">GLOBAL LEADERBOARD</div>
+  <p class="muted" style="font-size:12px">Топ игроков xlebush3k ARCADE. Для публикации результата войди в аккаунт.</p>
+  <div class="row"><select id="leaderGame" onchange="arcadeLoadLeaderboard()" style="flex:1;min-width:180px;background:#020703;color:var(--text);border:1px solid var(--line);padding:9px;border-radius:4px"><option value="snake">Snake — больше очков</option><option value="clicker">Green Clicker — рекорд credits</option><option value="pong">Pong — победы</option><option value="reaction">Reaction — быстрее реакция</option><option value="rps">Камень-ножницы-бумага — победы</option><option value="guess">Guess the Code — меньше попыток</option></select><button onclick="arcadeLoadLeaderboard()">REFRESH</button></div>
+  <div id="leaderStatus" class="out">Настрой Supabase, чтобы загрузить онлайн-рейтинг.</div>
+  <div style="overflow-x:auto;margin-top:8px"><table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="color:var(--green);text-align:left;border-bottom:1px solid var(--line)"><th style="padding:8px">#</th><th style="padding:8px">PLAYER</th><th style="padding:8px">SCORE</th></tr></thead><tbody id="leaderRows"><tr><td colspan="3" class="muted" style="padding:10px">No data yet.</td></tr></tbody></table></div>
 </section>
 <div class="section-title" id="games">ARCADE MODULES <span class="pill">8 GAMES</span></div>
 <div class="grid">
@@ -109,6 +120,7 @@ Type "help" to list commands.</div><form id="termform"><input id="termInput" aut
 <div class="game" style="border-color:#70449a;margin-top:14px"><h3 style="color:#d7b2ff">eXit.exe // TEXT ADVENTURE</h3><p>Мини-игра, вдохновлённая текстовой игрой из концовки Mr. Robot. Ты в тёмном подземелье. Рядом — друг, а впереди дверь с надписью EXIT.</p><div id="exitStory" class="out">Ты слышишь, как за дверью запускается система. Друг говорит: «Не оставляй меня здесь».</div><div class="row" style="margin-top:10px"><button onclick="exitChoice('leave')">ПОЙТИ К ВЫХОДУ ОДНОМУ</button><button onclick="exitChoice('stay')">ОСТАТЬСЯ С ДРУГОМ</button><button onclick="resetExitGame()">RESTART</button></div><div id="exitResult" class="out" style="color:#d7b2ff"></div></div></section>
 </main>
 <footer>xlebush3k // ARCADE — STAY CURIOUS, STAY HUMAN.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // MATRIX RAIN
 const matrix=document.getElementById('matrix');const mctx=matrix.getContext('2d');let drops=[];
@@ -130,13 +142,13 @@ function saveProfile(){const value=$('nameInput').value.trim();if(value)profileN
 // GUESS THE CODE
 let secretCode='',guessTries=0;
 function newCode(){secretCode='';while(secretCode.length<4){const n=String(Math.floor(Math.random()*10));if(!secretCode.includes(n))secretCode+=n;}guessTries=0;$('guessOut').textContent='Новый код сгенерирован.';$('guessHistory').textContent='';$('guessInput').value='';}
-function guessCode(){const g=$('guessInput').value.trim();if(!/^\d{4}$/.test(g)||new Set(g).size!==4){$('guessOut').textContent='Введи ровно 4 разные цифры.';return;}guessTries++;let exact=0,near=0;for(let i=0;i<4;i++){if(g[i]===secretCode[i])exact++;else if(secretCode.includes(g[i]))near++;}if(exact===4){$('guessOut').textContent='ACCESS GRANTED! Код взломан за '+guessTries+' попыток.';unlockSecret();}else{$('guessOut').textContent='На месте: '+exact+' · Не на месте: '+near;}$('guessHistory').textContent='Попытка #'+guessTries+' — '+g;}newCode();
+function guessCode(){const g=$('guessInput').value.trim();if(!/^\d{4}$/.test(g)||new Set(g).size!==4){$('guessOut').textContent='Введи ровно 4 разные цифры.';return;}guessTries++;let exact=0,near=0;for(let i=0;i<4;i++){if(g[i]===secretCode[i])exact++;else if(secretCode.includes(g[i]))near++;}if(exact===4){$('guessOut').textContent='ACCESS GRANTED! Код взломан за '+guessTries+' попыток.';if(window.arcadeSubmitScore)window.arcadeSubmitScore('guess',Math.max(1,1000-guessTries));unlockSecret();}else{$('guessOut').textContent='На месте: '+exact+' · Не на месте: '+near;}$('guessHistory').textContent='Попытка #'+guessTries+' — '+g;}newCode();
 // ROCK PAPER SCISSORS
-let rpsYou=0,rpsCpu=0;function rps(v){const opts=['Камень','Бумага','Ножницы'];const c=opts[Math.floor(Math.random()*3)];const win=v===c?0:((v==='Камень'&&c==='Ножницы')||(v==='Бумага'&&c==='Камень')||(v==='Ножницы'&&c==='Бумага'))?1:-1;if(win===1)rpsYou++;if(win===-1)rpsCpu++;$('rpsOut').textContent='Ты: '+v+' · Система: '+c+' — '+(win===0?'НИЧЬЯ':win===1?'ТВОЯ ПОБЕДА':'ПОБЕДА СИСТЕМЫ')+' | '+rpsYou+':'+rpsCpu;}
+let rpsYou=0,rpsCpu=0;function rps(v){const opts=['Камень','Бумага','Ножницы'];const c=opts[Math.floor(Math.random()*3)];const win=v===c?0:((v==='Камень'&&c==='Ножницы')||(v==='Бумага'&&c==='Камень')||(v==='Ножницы'&&c==='Бумага'))?1:-1;if(win===1){rpsYou++;if(window.arcadeSubmitScore)window.arcadeSubmitScore('rps',rpsYou);}if(win===-1)rpsCpu++;$('rpsOut').textContent='Ты: '+v+' · Система: '+c+' — '+(win===0?'НИЧЬЯ':win===1?'ТВОЯ ПОБЕДА':'ПОБЕДА СИСТЕМЫ')+' | '+rpsYou+':'+rpsCpu;}
 // COIN AND DICE
 function flipCoin(){const heads=Math.random()<.5;$('coinFace').textContent=heads?'ОРЁЛ':'РЕШКА';$('coinOut').textContent='Монета остановилась.';}const diceFaces=['⚀','⚁','⚂','⚃','⚄','⚅'];function rollDice(){const n=1+Math.floor(Math.random()*6);$('diceFace').textContent=diceFaces[n-1];$('diceOut').textContent='Выпало '+n+'.';}
 // REACTION TEST
-let reactionState='idle',reactionTimer=null,reactionStart=0;function reactionAction(){const b=$('reactionBtn');if(reactionState==='idle'){reactionState='wait';b.textContent='WAIT FOR GREEN...';b.style.background='#302008';$('reactionOut').textContent='Жди зелёного сигнала!';reactionTimer=setTimeout(()=>{reactionState='go';reactionStart=performance.now();b.textContent='CLICK NOW!';b.style.background='#145b28';},1200+Math.random()*3000);}else if(reactionState==='wait'){clearTimeout(reactionTimer);reactionState='idle';b.textContent='START TEST';b.style.background='';$('reactionOut').textContent='Слишком рано! Попробуй ещё.';}else{const ms=Math.round(performance.now()-reactionStart);reactionState='idle';b.textContent='START TEST';b.style.background='';$('reactionOut').textContent='Твоя реакция: '+ms+' мс.';}}
+let reactionState='idle',reactionTimer=null,reactionStart=0;function reactionAction(){const b=$('reactionBtn');if(reactionState==='idle'){reactionState='wait';b.textContent='WAIT FOR GREEN...';b.style.background='#302008';$('reactionOut').textContent='Жди зелёного сигнала!';reactionTimer=setTimeout(()=>{reactionState='go';reactionStart=performance.now();b.textContent='CLICK NOW!';b.style.background='#145b28';},1200+Math.random()*3000);}else if(reactionState==='wait'){clearTimeout(reactionTimer);reactionState='idle';b.textContent='START TEST';b.style.background='';$('reactionOut').textContent='Слишком рано! Попробуй ещё.';}else{const ms=Math.round(performance.now()-reactionStart);reactionState='idle';b.textContent='START TEST';b.style.background='';$('reactionOut').textContent='Твоя реакция: '+ms+' мс.';if(window.arcadeSubmitScore)window.arcadeSubmitScore('reaction',Math.max(1,10000-ms));}}
 // SNAKE
 const sc=$('snakeCanvas'),sx=sc.getContext('2d');let snake=[],food={x:5,y:5},dir={x:1,y:0},nextDir={x:1,y:0},snakeRun=false,snakeTimer=null,snakePoints=0;
 function startSnake(){clearInterval(snakeTimer);snake=[{x:9,y:9},{x:8,y:9},{x:7,y:9}];dir={x:1,y:0};nextDir={x:1,y:0};snakePoints=0;snakeRun=true;placeFood();$('snakeScore').textContent='0';$('snakeOut').textContent='RUNNING';snakeTimer=setInterval(tickSnake,125);drawSnake();}
@@ -155,7 +167,7 @@ sc.addEventListener('pointerup',e=>{
   if(!snakeRun)startSnake();
 });
 sc.addEventListener('pointercancel',()=>{snakeTouchStart=null;});
-function tickSnake(){dir=nextDir;const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};if(h.x<0||h.x>=20||h.y<0||h.y>=20||snake.some(p=>p.x===h.x&&p.y===h.y)){snakeRun=false;clearInterval(snakeTimer);$('snakeOut').textContent='GAME OVER — Score: '+snakePoints;return;}snake.unshift(h);if(h.x===food.x&&h.y===food.y){snakePoints++;$('snakeScore').textContent=snakePoints;placeFood();}else snake.pop();drawSnake();}
+function tickSnake(){dir=nextDir;const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};if(h.x<0||h.x>=20||h.y<0||h.y>=20||snake.some(p=>p.x===h.x&&p.y===h.y)){snakeRun=false;clearInterval(snakeTimer);$('snakeOut').textContent='GAME OVER — Score: '+snakePoints;if(window.arcadeSubmitScore)window.arcadeSubmitScore('snake',snakePoints);return;}snake.unshift(h);if(h.x===food.x&&h.y===food.y){snakePoints++;$('snakeScore').textContent=snakePoints;placeFood();}else snake.pop();drawSnake();}
 function drawSnake(){sx.fillStyle='#020703';sx.fillRect(0,0,300,300);sx.fillStyle='#64ff87';sx.fillRect(food.x*15+2,food.y*15+2,11,11);snake.forEach((p,i)=>{sx.fillStyle=i?'#258c43':'#a4ffb7';sx.fillRect(p.x*15+1,p.y*15+1,13,13);});}
 addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['input','textarea'].includes(document.activeElement.tagName.toLowerCase()))return;if(k==='arrowup'||k==='w')snakeDir(0,-1);if(k==='arrowdown'||k==='s')snakeDir(0,1);if(k==='arrowleft'||k==='a')snakeDir(-1,0);if(k==='arrowright'||k==='d')snakeDir(1,0);if(k==='w')movePaddle(-1);if(k==='s')movePaddle(1);});drawSnake();
 // PONG
@@ -163,7 +175,7 @@ const pc=$('pongCanvas'),px=pc.getContext('2d');let py=70,cy=70,bx=160,by=95,bvx
 function resetPong(resetScore=true){if(resetScore){ps=0;cs=0;pongOver=false;}py=70;cy=70;bx=160;by=95;bvx=2.5*(Math.random()<.5?-1:1);bvy=(Math.random()*2-1)*2;drawPong();}
 function movePaddle(d){if(pongOver)return;py=Math.max(0,Math.min(140,py+d*18));drawPong();}
 function drawPong(){px.fillStyle='#020703';px.fillRect(0,0,320,190);px.strokeStyle='#245c34';px.setLineDash([4,5]);px.beginPath();px.moveTo(160,0);px.lineTo(160,190);px.stroke();px.setLineDash([]);px.fillStyle='#65ff8b';px.fillRect(8,py,6,50);px.fillRect(306,cy,6,50);px.fillRect(bx-4,by-4,8,8);$('pongScore').textContent=ps+' : '+cs;if(pongOver){px.fillStyle='rgba(0,0,0,.78)';px.fillRect(20,58,280,74);px.fillStyle='#65ff8b';px.textAlign='center';px.font='bold 15px monospace';px.fillText(ps>=5?'YOU WIN!':'SYSTEM WINS',160,88);px.font='11px monospace';px.fillText('Нажми RESTART, чтобы сыграть снова',160,110);px.textAlign='start';}}
-setInterval(()=>{if(pongOver)return;bx+=bvx;by+=bvy;cy+=((Math.max(0,Math.min(140,by-25))-cy)*.045);if(by<4||by>186)bvy*=-1;if(bx<16&&by>py&&by<py+50){bvx=Math.abs(bvx)*1.04;bvy+=(by-(py+25))*.04;}if(bx>304&&by>cy&&by<cy+50)bvx=-Math.abs(bvx)*1.04;if(bx<0){cs++;if(cs>=5){pongOver=true;$('pongScore').textContent=ps+' : '+cs;}else resetPong(false);}if(bx>320){ps++;if(ps>=5){pongOver=true;$('pongScore').textContent=ps+' : '+cs;}else resetPong(false);}drawPong();},30);drawPong();
+setInterval(()=>{if(pongOver)return;bx+=bvx;by+=bvy;cy+=((Math.max(0,Math.min(140,by-25))-cy)*.045);if(by<4||by>186)bvy*=-1;if(bx<16&&by>py&&by<py+50){bvx=Math.abs(bvx)*1.04;bvy+=(by-(py+25))*.04;}if(bx>304&&by>cy&&by<cy+50)bvx=-Math.abs(bvx)*1.04;if(bx<0){cs++;if(cs>=5){pongOver=true;$('pongScore').textContent=ps+' : '+cs;}else resetPong(false);}if(bx>320){ps++;if(ps>=5){pongOver=true;$('pongScore').textContent=ps+' : '+cs;if(window.arcadeSubmitScore)window.arcadeSubmitScore('pong',ps);}else resetPong(false);}drawPong();},30);drawPong();
 // TERMINAL AND SECRET ROOM
 const terminal=$('terminal');function termWrite(s){terminal.textContent+='\n'+s;terminal.scrollTop=terminal.scrollHeight;}
 function unlockSecret(){$('secret').classList.add('unlocked');termWrite('ACCESS GRANTED: hidden room unlocked.');}
@@ -177,6 +189,101 @@ const audio=$('audio');$('audioFile').addEventListener('change',e=>{const f=e.ta
 function toggleMusic(){if(!audio.src){$('audioFile').click();return;}if(audio.paused){audio.play().then(()=>$('visualizer').classList.add('playing')).catch(()=>{});}else{audio.pause();$('visualizer').classList.remove('playing');}}
 function stopMusic(){audio.pause();audio.currentTime=0;$('visualizer').classList.remove('playing');}audio.addEventListener('pause',()=>$('visualizer').classList.remove('playing'));audio.addEventListener('play',()=>$('visualizer').classList.add('playing'));
 for(let i=0;i<28;i++){const bar=document.createElement('i');bar.style.animationDelay=(Math.random()*.8)+'s';bar.style.height=(8+Math.random()*25)+'px';$('visualizer').appendChild(bar);}
+</script>
+
+<script>
+// SUPABASE AUTH + GLOBAL LEADERBOARDS
+// Публичный ключ можно использовать в браузере; секретный/service_role сюда НИКОГДА не вставляй.
+const SUPABASE_URL = 'https://jakeqoauoaodutfrwzpr.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'PASTE_YOUR_sb_publishable_KEY_HERE';
+let arcadeDb = null, arcadeUser = null, arcadeLastSubmitted = {};
+const arcadeConfigured = () => Boolean(window.supabase && SUPABASE_URL.startsWith('https://') && SUPABASE_PUBLISHABLE_KEY.startsWith('sb_publishable_') && SUPABASE_PUBLISHABLE_KEY.length > 25 && !SUPABASE_PUBLISHABLE_KEY.includes('PASTE_'));
+function arcadeMessage(message, status){const el=document.getElementById('authMessage');if(el)el.textContent=message;const badge=document.getElementById('authStatus');if(badge)badge.textContent=status||'OFFLINE';}
+function arcadeNickname(){const local=(document.getElementById('nameInput')?.value||profileName||'player').trim().slice(0,22);return local||'player';}
+async function arcadeEnsureProfile(){
+  if(!arcadeDb||!arcadeUser)return;
+  const username=String(arcadeUser.user_metadata?.username||profileName||'player').trim().slice(0,22)||'player';
+  const {error}=await arcadeDb.from('profiles').upsert({id:arcadeUser.id,username},{onConflict:'id'});
+  if(error) arcadeMessage('Вход есть, но профиль не сохранился: '+error.message,'PROFILE WARNING');
+}
+async function arcadeInit(){
+  if(!arcadeConfigured()){
+    arcadeMessage('Вставь полный sb_publishable_ ключ в SUPABASE_PUBLISHABLE_KEY внизу файла.','SETUP REQUIRED');
+    const st=document.getElementById('leaderStatus');if(st)st.textContent='Supabase пока не настроен.';return;
+  }
+  try{
+    arcadeDb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+    const {data,error}=await arcadeDb.auth.getSession();if(error)throw error;
+    arcadeUser=data.session?.user||null;
+    arcadeUpdateAuthUI();
+    arcadeDb.auth.onAuthStateChange((_event,session)=>{
+      arcadeUser=session?.user||null;arcadeUpdateAuthUI();
+      if(arcadeUser){setTimeout(async()=>{await arcadeEnsureProfile();await arcadeLoadLeaderboard();},0);}
+      else arcadeLoadLeaderboard();
+    });
+    if(arcadeUser)await arcadeEnsureProfile();
+    await arcadeLoadLeaderboard();
+  }catch(e){arcadeMessage('Ошибка подключения: '+e.message,'ERROR');}
+}
+function arcadeUpdateAuthUI(){
+  if(arcadeUser){arcadeMessage('Вход выполнен: '+(arcadeUser.email||'account'),'AUTHENTICATED');
+    const n=arcadeUser.user_metadata?.username;if(n){profileName=String(n).slice(0,22);renderClicker();saveAll();}
+  }else if(arcadeConfigured())arcadeMessage('Войди или создай аккаунт.','SIGNED OUT');
+}
+async function arcadeSignUp(){
+  if(!arcadeDb){arcadeMessage('Сначала вставь публичный ключ Supabase.','SETUP REQUIRED');return;}
+  const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
+  if(!email||password.length<6){arcadeMessage('Введи email и пароль минимум из 6 символов.','CHECK INPUT');return;}
+  const username=arcadeNickname();
+  const {data,error}=await arcadeDb.auth.signUp({email,password,options:{data:{username}}});
+  if(error){arcadeMessage(error.message,'SIGNUP ERROR');return;}
+  arcadeUser=data.user||null;
+  if(data.session&&arcadeUser)await arcadeEnsureProfile();
+  arcadeMessage(data.session?'Аккаунт создан, вход выполнен.':'Аккаунт создан. Проверь почту, если включено подтверждение email.','SIGNUP OK');
+  arcadeUpdateAuthUI();await arcadeLoadLeaderboard();
+}
+async function arcadeSignIn(){
+  if(!arcadeDb){arcadeMessage('Сначала вставь публичный ключ Supabase.','SETUP REQUIRED');return;}
+  const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
+  const {data,error}=await arcadeDb.auth.signInWithPassword({email,password});
+  if(error){arcadeMessage(error.message,'LOGIN ERROR');return;}
+  arcadeUser=data.user;await arcadeEnsureProfile();arcadeUpdateAuthUI();await arcadeLoadLeaderboard();
+}
+async function arcadeSignOut(){if(!arcadeDb)return;const {error}=await arcadeDb.auth.signOut();if(error){arcadeMessage(error.message,'ERROR');return;}arcadeUser=null;arcadeUpdateAuthUI();await arcadeLoadLeaderboard();}
+async function arcadeSubmitScore(game,score){
+  if(!arcadeDb||!arcadeUser||!Number.isFinite(Number(score)))return;
+  score=Math.max(0,Math.floor(Number(score)));if(score<=0)return;
+  const previous=arcadeLastSubmitted[game]??-1;if(score<=previous)return;
+  arcadeLastSubmitted[game]=score;
+  const {error}=await arcadeDb.from('scores').insert({user_id:arcadeUser.id,game_name:game,score});
+  if(error){arcadeMessage('Не удалось сохранить рекорд: '+error.message,'SCORE ERROR');arcadeLastSubmitted[game]=previous;return;}
+  const st=document.getElementById('leaderStatus');if(st)st.textContent='Рекорд отправлен. Обновляю таблицу…';await arcadeLoadLeaderboard();
+}
+async function arcadeLoadLeaderboard(){
+  const rows=document.getElementById('leaderRows'),status=document.getElementById('leaderStatus');if(!rows||!status)return;
+  if(!arcadeDb){status.textContent='Вставь публичный ключ Supabase, чтобы включить онлайн-рейтинг.';return;}
+  if(!arcadeUser){status.textContent='Войди в аккаунт, чтобы просматривать общий рейтинг.';rows.innerHTML='<tr><td colspan="3" class="muted" style="padding:10px">Войди или создай аккаунт для просмотра рейтинга.</td></tr>';return;}
+  const game=document.getElementById('leaderGame')?.value||'snake';status.textContent='Загружаю рейтинг…';
+  const {data,error}=await arcadeDb.from('scores').select('user_id,score,created_at').eq('game_name',game).order('score',{ascending:false}).order('created_at',{ascending:true}).limit(100);
+  if(error){status.textContent='Ошибка рейтинга: '+error.message+' — проверь таблицы и RLS.';return;}
+  rows.innerHTML='';if(!data?.length){rows.innerHTML='<tr><td colspan="3" class="muted" style="padding:10px">Пока нет рекордов. Будь первым!</td></tr>';status.textContent='Подключено. Рекордов пока нет.';return;}
+  const userIds=[...new Set(data.map(x=>x.user_id).filter(Boolean))];
+  const {data:profiles, error:profileError}=await arcadeDb.from('profiles').select('id,username').in('id',userIds);
+  if(profileError){status.textContent='Не удалось загрузить профили: '+profileError.message;return;}
+  const names=new Map((profiles||[]).map(p=>[p.id,p.username||'player']));
+  // Показываем лучший результат каждого пользователя в выбранной игре.
+  const best=new Map();for(const item of data){if(!best.has(item.user_id))best.set(item.user_id,item);}
+  const ranked=[...best.values()].slice(0,10);
+  ranked.forEach((item,i)=>{const tr=document.createElement('tr');tr.style.borderBottom='1px solid #123a20';[String(i+1).padStart(2,'0'),names.get(item.user_id)||'player',String(item.score)].forEach((value,j)=>{const td=document.createElement('td');td.style.padding='9px 8px';td.textContent=value;if(i===0)td.style.color='var(--green)';tr.appendChild(td);});rows.appendChild(tr);});
+  status.textContent='TOP '+ranked.length+' // '+game.toUpperCase();
+}
+// Отправлять только новые локальные рекорды; не отправлять каждый клик.
+const arcadeOriginalClickCoin=window.clickCoin;
+window.clickCoin=function(){const before=Number(record)||0;arcadeOriginalClickCoin();const now=Number(record)||0;if(now>before)arcadeSubmitScore('clicker',now);};
+setInterval(()=>{if(arcadeUser&&Number(record)>(arcadeLastSubmitted.clicker||0))arcadeSubmitScore('clicker',Number(record));},5000);
+const arcadeOriginalBuyAuto=window.buyAuto;
+window.buyAuto=function(){arcadeOriginalBuyAuto();const now=Number(record)||0;if(now>(arcadeLastSubmitted.clicker||0))arcadeSubmitScore('clicker',now);};
+arcadeInit();
 </script>
 </body>
 </html>
